@@ -9,7 +9,7 @@
 <meta property="og:description" content="Del dron al diagnóstico estructural, en minutos. Informe normativo con costo estimado de reparación, validado por tu inspector.">
 <meta property="og:image" content="img/overlay-demo.jpg">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230b1a2b'/><circle cx='16' cy='16' r='7' fill='none' stroke='%23e08a4f' stroke-width='3'/><circle cx='16' cy='16' r='2.4' fill='%232f9b8f'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='13' fill='%230b1a2b'/><path d='M32 8 51 19v22L32 52 13 41V19z' fill='none' stroke='%23e08a4f' stroke-width='4'/><path d='M24 31l6 6 11-12' fill='none' stroke='%232f9b8f' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
   :root{
     --navy:#0b1a2b; --navy2:#112438; --card:#16304a; --line:#2a4a6b;
@@ -46,7 +46,9 @@
   /* nav */
   header{position:sticky;top:0;z-index:50;background:rgba(11,26,43,.86);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
   .nav{display:flex;align-items:center;gap:26px;height:64px}
-  .logo{font-weight:800;font-size:21px;letter-spacing:-.02em;color:#fff}
+  .logo{display:flex;align-items:center;font-weight:800;font-size:21px;letter-spacing:-.02em;color:#fff}
+  .logo .mk{width:26px;height:26px;flex:0 0 auto;margin-right:9px}
+  footer .logo .mk{width:30px;height:30px}
   .logo span{color:var(--copperB)}
   .nav a.link{color:var(--muted);font-size:14px}
   .nav a.link:hover{color:#fff}
@@ -118,7 +120,7 @@
 
 <header>
   <div class="wrap nav">
-    <div class="logo">Vig<span>IA</span></div>
+    <div class="logo"><svg class="mk" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 3.4 55.7 17.1v27.8L32 58.6 8.3 44.9V17.1z" stroke="#e08a4f" stroke-width="3.2" stroke-linejoin="round"/><circle cx="32" cy="31" r="12.4" stroke="#fff" stroke-width="2.6" opacity=".92"/><path d="M32 12.2v6.2M32 43.8V50M12.8 31h6.2M45 31h6.2" stroke="#e08a4f" stroke-width="2.6" stroke-linecap="round"/><path d="M25.2 31.4 30.2 36.4 39.4 25.8" stroke="#2f9b8f" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#fff">Vig</span><span>IA</span></div>
     <a class="link" href="#solucion" data-es="Solución" data-en="Solution">Solución</a>
     <a class="link" href="#entregable" data-es="Entregable" data-en="Deliverable">Entregable</a>
     <a class="link" href="#comparativa" data-es="Comparativa" data-en="Comparison">Comparativa</a>
@@ -333,16 +335,20 @@
     <h2 data-es="15 minutos. Un resultado real sobre una planta como la tuya." data-en="15 minutes. A real result on a plant like yours.">15 minutos. Un resultado real sobre una planta como la tuya.</h2>
     <p class="lead" data-es="Te mostramos el gemelo 3D y el informe completo de una inspección real — y definimos juntos cuál sería tu activo piloto." data-en="We'll walk you through the 3D twin and the full report of a real inspection — and together define which asset would be your pilot.">Te mostramos el gemelo 3D y el informe completo de una inspección real — y definimos juntos cuál sería tu activo piloto.</p>
     <div class="cta" style="margin-top:28px">
-      <a class="btn" href="mailto:contacto@vigia.ai?subject=Piloto%20VigIA" data-es="Escribir a contacto@vigia.ai" data-en="Email contacto@vigia.ai">Escribir a contacto@vigia.ai</a>
-      <a class="btn ghost" href="VigIA_Pitch_Comercial_2026.pdf" data-es="Ver el pitch comercial" data-en="View the commercial pitch">Ver el pitch comercial</a>
+      <a class="btn" href="mailto:jespinozallanos@gmail.com?subject=Piloto%20VigIA" data-es="Escribir a Julio Espinoza" data-en="Email Julio Espinoza">Escribir a Julio Espinoza</a>
+      <a class="btn ghost" href="tel:+56976357290">+56 9 7635 7290</a>
     </div>
+    <p style="margin-top:22px;color:var(--muted);font-size:15px">
+      <strong style="color:#fff">Julio Espinoza Llanos</strong> · <a href="mailto:jespinozallanos@gmail.com">jespinozallanos@gmail.com</a> · <a href="tel:+56976357290">+56 9 7635 7290</a>
+    </p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div class="logo" style="margin-bottom:10px">Vig<span>IA</span></div>
-    <p style="margin:0" data-es="Inspección estructural con inteligencia artificial · Chile → Latinoamérica · contacto@vigia.ai" data-en="Structural inspection powered by artificial intelligence · Chile → Latin America · contacto@vigia.ai">Inspección estructural con inteligencia artificial · Chile → Latinoamérica · contacto@vigia.ai</p>
+    <div class="logo" style="margin-bottom:12px;font-size:24px"><svg class="mk" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 3.4 55.7 17.1v27.8L32 58.6 8.3 44.9V17.1z" stroke="#e08a4f" stroke-width="3.2" stroke-linejoin="round"/><circle cx="32" cy="31" r="12.4" stroke="#fff" stroke-width="2.6" opacity=".92"/><path d="M32 12.2v6.2M32 43.8V50M12.8 31h6.2M45 31h6.2" stroke="#e08a4f" stroke-width="2.6" stroke-linecap="round"/><path d="M25.2 31.4 30.2 36.4 39.4 25.8" stroke="#2f9b8f" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#fff">Vig</span><span>IA</span></div>
+    <p style="margin:0" data-es="Inspección estructural con inteligencia artificial · Chile → Latinoamérica" data-en="Structural inspection powered by artificial intelligence · Chile → Latin America">Inspección estructural con inteligencia artificial · Chile → Latinoamérica</p>
+    <p style="margin:0 0 6px"><strong style="color:#fff">Julio Espinoza Llanos</strong> · <a href="mailto:jespinozallanos@gmail.com">jespinozallanos@gmail.com</a> · <a href="tel:+56976357290">+56 9 7635 7290</a></p>
     <p class="note" data-es="Los costos de reparación se entregan como rango preliminar de referencia. Todo informe es validado y firmado por un inspector responsable; VigIA es soporte a la decisión, no reemplazo del criterio experto." data-en="Repair costs are provided as a preliminary reference range. Every report is validated and signed by a responsible inspector; VigIA is decision support, not a replacement for expert judgement.">Los costos de reparación se entregan como rango preliminar de referencia. Todo informe es validado y firmado por un inspector responsable; VigIA es soporte a la decisión, no reemplazo del criterio experto.</p>
   </div>
 </footer>
