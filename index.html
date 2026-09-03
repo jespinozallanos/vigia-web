@@ -81,7 +81,12 @@
   /* pricing */
   .plan{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px}
   .plan.hl{background:var(--copperD);border-color:var(--copperB)}
-  .plan .price{font-size:34px;font-weight:800;margin:10px 0 4px}
+  .plan .price{font-size:34px;font-weight:800;margin:10px 0 2px}
+  .plan .permo{font-size:13.5px;color:var(--muted2);margin-bottom:14px}
+  .plan .cap{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--copperB);background:var(--card);border:1px solid var(--line);
+    border-radius:999px;padding:6px 14px}
+  .plan .cap.hl{color:#0b1a2b;background:var(--copperB);border-color:var(--copperB)}
   .plan ul{list-style:none;padding:0;margin:18px 0 0}
   .plan li{color:var(--muted);font-size:14px;padding:7px 0 7px 20px;position:relative}
   .plan.hl li{color:#f5e8dc}
@@ -269,39 +274,67 @@
 <!-- PLANES -->
 <section id="planes">
   <div class="wrap">
-    <p class="kicker" data-es="Planes" data-en="Pricing">Planes</p>
-    <h2 data-es="Empieza por un activo. Crece cuando el ahorro esté demostrado." data-en="Start with one asset. Scale once the savings are proven.">Empieza por un activo. Crece cuando el ahorro esté demostrado.</h2>
+    <p class="kicker" data-es="Licencias anuales" data-en="Annual licences">Licencias anuales</p>
+    <h2 data-es="Contratas activos bajo monitoreo, no informes" data-en="You license assets under monitoring, not reports">Contratas activos bajo monitoreo, no informes</h2>
+    <p class="lead" data-es="Dentro de tu portafolio contratado generas todos los diagnósticos, informes y cotizaciones ISO que necesites. Sin costo por imagen procesada ni por PDF emitido." data-en="Within your licensed portfolio you generate every diagnosis, report and ISO quotation you need. No charge per processed image or per PDF issued.">Dentro de tu portafolio contratado generas todos los diagnósticos, informes y cotizaciones ISO que necesites. Sin costo por imagen procesada ni por PDF emitido.</p>
     <div class="grid g3" style="margin-top:34px">
       <div class="plan">
         <div class="tagm">STARTER</div>
-        <div class="price">US$ 300 <span style="font-size:15px;color:var(--muted);font-weight:400" data-es="/mes" data-en="/month">/mes</span></div>
+        <div class="price">US$ 3.600 <span style="font-size:15px;color:var(--muted);font-weight:400" data-es="/año" data-en="/year">/año</span></div>
+        <div class="permo" data-es="US$ 300 / mes" data-en="US$ 300 / month">US$ 300 / mes</div>
+        <div class="cap" data-es="Hasta 10 activos" data-en="Up to 10 assets">Hasta 10 activos</div>
         <ul>
-          <li data-es="Para ingenierías, contratistas e inspectores independientes" data-en="For engineering firms, contractors and independent inspectors">Para ingenierías, contratistas e inspectores independientes</li>
-          <li data-es="Detección multi-defecto con severidad" data-en="Multi-defect detection with severity">Detección multi-defecto con severidad</li>
-          <li data-es="Informe normativo y costo estimado" data-en="Standards-based report and estimated cost">Informe normativo y costo estimado</li>
+          <li data-es="Inspectores, ingenierías y faenas pequeñas" data-en="Inspectors, engineering firms and small sites">Inspectores, ingenierías y faenas pequeñas</li>
+          <li data-es="Multi-defecto con severidad y grado ISO" data-en="Multi-defect with severity and ISO grade">Multi-defecto con severidad y grado ISO</li>
+          <li data-es="Informes y cotizaciones ilimitados" data-en="Unlimited reports and quotations">Informes y cotizaciones ilimitados</li>
+          <li data-es="Historial básico por activo" data-en="Basic history per asset">Historial básico por activo</li>
         </ul>
       </div>
       <div class="plan hl">
         <div class="tagm" style="color:#fff">PROFESSIONAL<span class="badge" data-es="MÁS ELEGIDO" data-en="MOST CHOSEN">MÁS ELEGIDO</span></div>
-        <div class="price">US$ 2.000 <span style="font-size:15px;color:#f5e8dc;font-weight:400" data-es="/mes" data-en="/month">/mes</span></div>
+        <div class="price">US$ 24.000 <span style="font-size:15px;color:#f5e8dc;font-weight:400" data-es="/año" data-en="/year">/año</span></div>
+        <div class="permo" style="color:#e8cdb6" data-es="US$ 2.000 / mes" data-en="US$ 2,000 / month">US$ 2.000 / mes</div>
+        <div class="cap hl" data-es="Hasta 100 activos" data-en="Up to 100 assets">Hasta 100 activos</div>
         <ul>
+          <li data-es="Faena industrial, puerto o planta mediana" data-en="Industrial site, port or mid-size plant">Faena industrial, puerto o planta mediana</li>
           <li data-es="Multi-sitio con historial comparable" data-en="Multi-site with comparable history">Multi-sitio con historial comparable</li>
-          <li data-es="Tendencias, priorización y alertas" data-en="Trends, prioritisation and alerts">Tendencias, priorización y alertas</li>
           <li data-es="Gemelo 3D y pronóstico de degradación" data-en="3D twin and degradation forecast">Gemelo 3D y pronóstico de degradación</li>
           <li data-es="Onboarding US$ 3.000" data-en="Onboarding US$ 3,000">Onboarding US$ 3.000</li>
         </ul>
       </div>
       <div class="plan">
         <div class="tagm">ENTERPRISE</div>
-        <div class="price">US$ 80 K+ <span style="font-size:15px;color:var(--muted);font-weight:400" data-es="/año" data-en="/year">/año</span></div>
+        <div class="price" style="font-size:29px" data-es="Desde US$ 80.000" data-en="From US$ 80,000">Desde US$ 80.000</div>
+        <div class="permo" data-es="Al año, a medida según portafolio" data-en="Per year, tailored to the portfolio">Al año, a medida según portafolio</div>
+        <div class="cap" data-es="Portafolio ilimitado" data-en="Unlimited portfolio">Portafolio ilimitado</div>
         <ul>
-          <li data-es="Gran minería, puertos, petróleo y gas" data-en="Large mining, ports, oil &amp; gas">Gran minería, puertos, petróleo y gas</li>
-          <li data-es="Predictivo, integraciones y opción on-premise" data-en="Predictive, integrations and on-premise option">Predictivo, integraciones y opción on-premise</li>
-          <li data-es="Benchmarking de industria US$ 12 K/año" data-en="Industry benchmarking US$ 12K/year">Benchmarking de industria US$ 12 K/año</li>
+          <li data-es="Corporaciones, gran minería y flotas" data-en="Corporations, large mining and fleets">Corporaciones, gran minería y flotas</li>
+          <li data-es="API, integraciones CMMS y on-premise" data-en="API, CMMS integrations and on-premise">API, integraciones CMMS y on-premise</li>
+          <li data-es="SSO, SLA y soporte dedicado" data-en="SSO, SLA and dedicated support">SSO, SLA y soporte dedicado</li>
           <li data-es="Onboarding US$ 15.000" data-en="Onboarding US$ 15,000">Onboarding US$ 15.000</li>
         </ul>
       </div>
     </div>
+
+    <h3 style="margin:44px 0 18px;font-size:20px" data-es="Sin letra chica" data-en="No fine print">Sin letra chica</h3>
+    <div class="grid g3">
+      <div class="card">
+        <div class="tagm">01</div>
+        <h3 data-es="Cero cobro por informe o por foto" data-en="No charge per report or per photo">Cero cobro por informe o por foto</h3>
+        <p data-es="Generas todos los reportes, diagnósticos y cotizaciones ISO que necesites. No hay costo por imagen procesada ni por PDF emitido." data-en="Generate every report, diagnosis and ISO quotation you need. No cost per processed image or per PDF issued.">Generas todos los reportes, diagnósticos y cotizaciones ISO que necesites. No hay costo por imagen procesada ni por PDF emitido.</p>
+      </div>
+      <div class="card">
+        <div class="tagm" style="color:var(--teal)">02</div>
+        <h3 data-es="El activo manda" data-en="The asset is the unit">El activo manda</h3>
+        <p data-es="Un activo es un equipo, embarcación, estanque, puente o estructura física con identidad permanente en el sistema. Se cuenta una vez, no una vez por campaña." data-en="An asset is a piece of equipment, vessel, tank, bridge or structure with a permanent identity in the system. Counted once, not once per campaign.">Un activo es un equipo, embarcación, estanque, puente o estructura física con identidad permanente en el sistema. Se cuenta una vez, no una vez por campaña.</p>
+      </div>
+      <div class="card">
+        <div class="tagm" style="color:var(--signal)">03</div>
+        <h3 data-es="Repetir no cuesta más" data-en="Repeating costs nothing extra">Repetir no cuesta más</h3>
+        <p data-es="Las campañas sucesivas sobre el mismo activo durante el año no generan cobro adicional. Mientras más lo inspeccionas, más vale tu línea de tiempo." data-en="Successive campaigns on the same asset during the year carry no extra charge. The more you inspect it, the more your timeline is worth.">Las campañas sucesivas sobre el mismo activo durante el año no generan cobro adicional. Mientras más lo inspeccionas, más vale tu línea de tiempo.</p>
+      </div>
+    </div>
+
     <div class="card" style="margin-top:22px;background:var(--navy2)">
       <p style="margin:0"><strong style="color:var(--copperB)" data-es="Antes del plan, el piloto:" data-en="Before any plan, the pilot:">Antes del plan, el piloto:</strong> <span data-es="un activo real, precio fijo acordado antes de volar, informe validado en 7 días — y si no encontramos hallazgos accionables, no lo pagas." data-en="one real asset, a fixed price agreed before we fly, a validated report in 7 days — and if we find nothing actionable, you don't pay for it.">un activo real, precio fijo acordado antes de volar, informe validado en 7 días — y si no encontramos hallazgos accionables, no lo pagas.</span></p>
     </div>
