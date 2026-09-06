@@ -4,120 +4,241 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VigIA — Inspección estructural con inteligencia artificial</title>
-<meta name="description" content="VigIA convierte una foto de dron o celular en un diagnóstico de integridad estructural: corrosión, grietas, recubrimiento y deformación, geolocalizados sobre un gemelo 3D y cotizados bajo norma ISO.">
+<meta name="description" content="VigIA convierte una foto de dron o celular en un diagnóstico de integridad estructural: corrosión, grietas, recubrimiento y deformación, geolocalizados sobre un gemelo 3D y cotizados bajo norma ISO. La IA propone, tu inspector firma.">
 <meta property="og:title" content="VigIA — Inspección estructural con IA">
-<meta property="og:description" content="Del dron al diagnóstico estructural, en minutos. Informe normativo con costo estimado de reparación, validado por tu inspector.">
+<meta property="og:description" content="Del dron al diagnóstico, tu experto al mando. Informe normativo con costo estimado de reparación, validado por tu inspector.">
 <meta property="og:image" content="img/overlay-demo.jpg">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='13' fill='%230b1a2b'/><path d='M32 8 51 19v22L32 52 13 41V19z' fill='none' stroke='%23e08a4f' stroke-width='4'/><path d='M24 31l6 6 11-12' fill='none' stroke='%232f9b8f' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
   :root{
-    --navy:#0b1a2b; --navy2:#112438; --card:#16304a; --line:#2a4a6b;
+    --navy:#0b1a2b; --navy2:#112438; --card:#16304a; --card2:#1b3a58; --line:#2a4a6b;
     --copper:#c9743f; --copperB:#e08a4f; --copperD:#9a5026;
-    --teal:#2f9b8f; --signal:#e3a53c; --severe:#e11d48; --mod:#ea580c;
+    --teal:#2f9b8f; --signal:#e3a53c; --severe:#e11d48; --mod:#ea580c; --cyan:#0ea5c4;
     --white:#fff; --muted:#9baac0; --muted2:#6f8299;
     --mono:"SFMono-Regular",Menlo,Consolas,"Courier New",monospace;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    --maxw:1180px;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,
+           "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    --maxw:1200px;
+    --shadow:0 24px 60px -34px rgba(0,0,0,.95);
+    --ease:cubic-bezier(.16,1,.3,1);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;background:var(--navy);color:var(--white);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  body{margin:0;background:var(--navy);color:var(--white);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   img{max-width:100%;display:block}
   a{color:var(--copperB);text-decoration:none}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  .kicker{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--copperB);margin:0 0 14px}
-  h1,h2,h3{margin:0;line-height:1.15;letter-spacing:-.01em}
-  h2{font-size:clamp(26px,3.4vw,40px);font-weight:800;margin-bottom:14px}
-  h3{font-size:19px;font-weight:700}
+  .kicker{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--copperB);margin:0 0 16px}
+  .kicker:before{content:"";width:26px;height:2px;background:var(--copperB);border-radius:2px}
+  h1,h2,h3{margin:0;line-height:1.15;letter-spacing:-.015em;text-wrap:balance}
+  h2{font-size:clamp(27px,3.5vw,42px);font-weight:800;margin-bottom:14px}
+  h3{font-size:18px;font-weight:700}
   p{margin:0 0 14px}
-  .lead{color:var(--muted);font-size:17px;max-width:820px}
-  section{padding:84px 0;border-top:1px solid rgba(255,255,255,.06)}
+  .lead{color:var(--muted);font-size:17px;max-width:830px}
+  section{padding:88px 0;position:relative}
+  section+section{border-top:1px solid rgba(255,255,255,.06)}
   .grid{display:grid;gap:20px}
   .g2{grid-template-columns:repeat(2,1fr)}
   .g3{grid-template-columns:repeat(3,1fr)}
   .g4{grid-template-columns:repeat(4,1fr)}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 18px 40px -28px rgba(0,0,0,.8)}
+  .gt{background:linear-gradient(96deg,#e08a4f 0%,#f2b98a 55%,#e3a53c 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent}
+  .card{background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
+  .card:hover{transform:translateY(-4px);border-color:rgba(224,138,79,.55)}
   .card h3{margin-bottom:8px}
   .card p{color:var(--muted);font-size:14.5px;margin:0}
   .stat{font-size:clamp(24px,2.8vw,32px);font-weight:800;line-height:1.1;margin-bottom:10px}
-  .tagm{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--copperB)}
+  .tagm{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--copperB);display:block;margin-bottom:8px}
 
-  /* nav */
-  header{position:sticky;top:0;z-index:50;background:rgba(11,26,43,.86);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
-  .nav{display:flex;align-items:center;gap:26px;height:64px}
+  /* ---- reveal ---- */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* ---- header ---- */
+  header{position:sticky;top:0;z-index:60;background:rgba(11,26,43,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07)}
+  .nav{display:flex;align-items:center;gap:20px;height:66px}
   .logo{display:flex;align-items:center;font-weight:800;font-size:21px;letter-spacing:-.02em;color:#fff}
-  .logo .mk{width:26px;height:26px;flex:0 0 auto;margin-right:9px}
-  footer .logo .mk{width:30px;height:30px}
-  .logo span{color:var(--copperB)}
-  .nav a.link{color:var(--muted);font-size:14px}
+  .logo .mk{width:27px;height:27px;flex:0 0 auto;margin-right:9px}
+  footer .logo .mk{width:31px;height:31px}
+  .logo .ia{color:var(--copperB)}
+  .nav a.link{color:var(--muted);font-size:14px;white-space:nowrap;position:relative;transition:color .25s}
+  .nav a.link:after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:2px;background:var(--copperB);transition:right .3s var(--ease)}
   .nav a.link:hover{color:#fff}
+  .nav a.link:hover:after{right:0}
   .nav .spacer{flex:1}
-  .btn{display:inline-block;background:var(--copperB);color:#0b1a2b !important;font-weight:700;font-size:14px;padding:11px 20px;border-radius:999px;border:0;cursor:pointer;font-family:inherit}
-  .btn:hover{background:var(--copper)}
+  .btn{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;background:var(--copperB);color:#0b1a2b !important;font-weight:700;font-size:14px;padding:11px 20px;border-radius:999px;border:0;cursor:pointer;font-family:inherit;transition:transform .25s var(--ease),box-shadow .25s,background .25s}
+  .btn:hover{background:#efa068;transform:translateY(-2px);box-shadow:0 12px 28px -14px rgba(224,138,79,.9)}
   .btn.ghost{background:transparent;color:#fff !important;border:1px solid var(--line)}
-  .btn.ghost:hover{border-color:var(--copperB)}
-  .langbtn{background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:11px;font-weight:700;padding:6px 10px;border-radius:8px;cursor:pointer}
-  .langbtn.on{border-color:var(--copperB);color:var(--copperB)}
+  .btn.ghost:hover{border-color:var(--copperB);background:rgba(224,138,79,.1)}
+  .btn.live{background:transparent;color:#7fe0d3 !important;border:1px solid rgba(47,155,143,.6)}
+  .btn.live:hover{background:rgba(47,155,143,.16);border-color:var(--teal);box-shadow:0 12px 28px -16px rgba(47,155,143,.9)}
+  .dot{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#39d3bf;box-shadow:0 0 0 0 rgba(57,211,191,.7);animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 8px rgba(57,211,191,0)}100%{box-shadow:0 0 0 0 rgba(57,211,191,0)}}
+  .langs{display:flex;gap:4px}
+  .langbtn{background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:10.5px;font-weight:700;padding:5px 8px;border-radius:7px;cursor:pointer;transition:.25s}
+  .langbtn:hover{color:#fff;border-color:var(--copperB)}
+  .langbtn.on{border-color:var(--copperB);color:var(--copperB);background:rgba(224,138,79,.12)}
 
-  /* hero */
-  .hero{position:relative;padding:0;border-top:0;min-height:640px;display:flex;align-items:center;overflow:hidden}
-  .hero .bg{position:absolute;inset:0;background:url('img/hero.jpg') center/cover no-repeat}
-  .hero .bg:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,26,43,.97) 0%,rgba(11,26,43,.86) 48%,rgba(11,26,43,.5) 100%)}
-  .hero .wrap{position:relative;padding-top:96px;padding-bottom:96px}
-  .hero h1{font-size:clamp(34px,5.2vw,58px);font-weight:800;max-width:16ch;margin-bottom:20px}
-  .hero .sub{color:#d3dce8;font-size:18px;max-width:640px}
-  .chips{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 32px}
-  .chip{border:1px solid var(--copperB);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:600;background:rgba(255,255,255,.05)}
+  /* ---- hero ---- */
+  .hero{padding:0;overflow:hidden;position:relative;border-top:0}
+  .hero .glow{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(900px 480px at 78% 8%,rgba(224,138,79,.20),transparent 62%),
+               radial-gradient(700px 420px at 6% 86%,rgba(47,155,143,.16),transparent 60%)}
+  .hero .mesh{position:absolute;inset:0;pointer-events:none;opacity:.28;
+    background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:64px 64px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000,transparent 75%);
+            mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000,transparent 75%)}
+  .hero .wrap{position:relative;display:grid;grid-template-columns:1.02fr .98fr;gap:60px;align-items:center;padding-top:74px;padding-bottom:92px}
+  .hero h1{font-size:clamp(34px,4.9vw,55px);font-weight:800;max-width:15ch;margin-bottom:20px}
+  .hero h1 .b{display:block}
+  .hero .sub{color:#cfdae8;font-size:17.5px;max-width:560px}
+  .trust{display:flex;flex-wrap:wrap;gap:8px 22px;margin:26px 0 30px;color:#b7c5d6;font-size:14px}
+  .trust span{display:inline-flex;align-items:center;gap:7px}
+  .trust svg{color:var(--teal);flex:0 0 auto}
   .cta{display:flex;flex-wrap:wrap;gap:12px}
 
-  /* iso chain */
-  .chain{display:grid;gap:14px}
-  .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:flex;gap:18px;align-items:flex-start}
-  .step .n{flex:0 0 auto;width:34px;height:34px;border-radius:10px;background:var(--copperD);color:#fff;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:700}
-  .step p{color:var(--muted);font-size:14.5px;margin:6px 0 0}
-  .out{background:var(--copperD);border:0;border-radius:14px;padding:18px 22px;font-weight:700}
+  /* ---- hero mock ---- */
+  .mock{position:relative;padding:0 8px}
+  .mockmain{background:rgba(22,48,74,.75);border:1px solid var(--line);border-radius:20px;padding:9px;box-shadow:0 40px 80px -40px rgba(0,0,0,1);backdrop-filter:blur(6px)}
+  .mockmain .fr{position:relative;aspect-ratio:4/3;border-radius:13px;overflow:hidden;background:#0f1420}
+  .mockmain img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .scan{position:absolute;left:0;right:0;height:2px;background:var(--copperB);box-shadow:0 0 20px 3px rgba(224,138,79,.9);animation:sweep 4s ease-in-out infinite}
+  @keyframes sweep{0%{top:5%}50%{top:93%}100%{top:5%}}
+  .mocklbl{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.9);background:rgba(0,0,0,.5);padding:4px 8px;border-radius:6px}
+  .mockhud{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:#0b1a2b;background:var(--signal);padding:4px 8px;border-radius:6px;font-weight:700}
+  .retc{position:absolute;width:16px;height:16px;border:2px solid rgba(224,138,79,.85);opacity:.9}
+  .retc.tl{top:14px;left:14px;border-right:0;border-bottom:0}
+  .retc.tr{top:14px;right:14px;border-left:0;border-bottom:0}
+  .retc.bl{bottom:14px;left:14px;border-right:0;border-top:0}
+  .retc.br{bottom:14px;right:14px;border-left:0;border-top:0}
+  .mockdet{position:absolute;bottom:-36px;left:-14px;width:60%;max-width:262px;background:linear-gradient(160deg,#1a3category,#16304a);background:linear-gradient(160deg,#1b3a58,#16304a);border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:0 30px 60px -28px rgba(0,0,0,1);animation:floatA 7s ease-in-out infinite}
+  .mockdet .di{position:relative;aspect-ratio:5/4;border-radius:11px;overflow:hidden;margin-bottom:11px}
+  .mockdet .di img{width:100%;height:100%;object-fit:cover}
+  .mockdet .bx{position:absolute;left:25%;top:21%;width:45%;height:49%;border:2px solid var(--severe);border-radius:5px}
+  .mockdet .bxl{position:absolute;top:-16px;left:-2px;font-family:var(--mono);font-size:8px;font-weight:700;color:#fff;background:var(--severe);padding:2px 5px;border-radius:4px;white-space:nowrap}
+  .okp{position:absolute;bottom:7px;left:7px;display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:800;color:#fff;background:var(--teal);padding:3px 7px;border-radius:999px}
+  .dfoot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .dfoot .tagm{margin:0;font-size:9px}
+  .dfoot .vd{font-size:18px;font-weight:800}
+  .mockchip{position:absolute;top:-20px;right:-6px;display:inline-flex;align-items:center;gap:8px;background:linear-gradient(160deg,#1b3a58,#16304a);border:1px solid var(--line);border-radius:12px;padding:9px 13px;font-size:12px;font-weight:700;box-shadow:0 24px 48px -26px rgba(0,0,0,1);animation:floatB 8s ease-in-out infinite}
+  .mockchip svg{color:var(--copperB)}
+  @keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  @keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
 
-  /* pricing */
-  .plan{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px}
-  .plan.hl{background:var(--copperD);border-color:var(--copperB)}
-  .plan .price{font-size:34px;font-weight:800;margin:10px 0 2px}
+  /* ---- image cards ---- */
+  .icard{display:flex;flex-direction:column;background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:transform .38s var(--ease),border-color .38s}
+  .icard:hover{transform:translateY(-6px);border-color:rgba(224,138,79,.6)}
+  .icard .ph{position:relative;height:154px;overflow:hidden}
+  .icard .ph img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+  .icard:hover .ph img{transform:scale(1.08)}
+  .icard .ph:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(11,26,43,.92),rgba(11,26,43,.05) 62%)}
+  .icard .ph .n{position:absolute;left:14px;bottom:11px;z-index:2;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.12em;color:var(--copperB)}
+  .icard .bd{padding:20px 22px 24px}
+  .icard .bd h3{margin-bottom:8px}
+  .icard .bd p{color:var(--muted);font-size:14px;margin:0}
+
+  /* ---- flow ---- */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;position:relative}
+  .flow .f{background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:16px;padding:22px;position:relative;transition:transform .35s var(--ease),border-color .35s}
+  .flow .f:hover{transform:translateY(-4px);border-color:rgba(224,138,79,.55)}
+  .flow .num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:linear-gradient(140deg,var(--copperB),var(--copperD));color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;margin-bottom:13px;box-shadow:0 10px 20px -12px rgba(224,138,79,.9)}
+  .flow p{color:var(--muted);font-size:13.5px;margin:6px 0 0}
+  .flow .f:not(:last-child):after{content:"";position:absolute;top:38px;right:-11px;width:14px;height:2px;background:linear-gradient(90deg,var(--copperB),transparent);z-index:2}
+
+  /* ---- chain ---- */
+  .chain{display:grid;gap:14px}
+  .step{background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:15px;padding:20px 22px;display:flex;gap:18px;align-items:flex-start;transition:transform .35s var(--ease),border-color .35s}
+  .step:hover{transform:translateX(5px);border-color:rgba(224,138,79,.55)}
+  .step .n{flex:0 0 auto;width:34px;height:34px;border-radius:11px;background:linear-gradient(140deg,var(--copperB),var(--copperD));color:#fff;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:700}
+  .step p{color:var(--muted);font-size:14.5px;margin:6px 0 0}
+  .out{background:linear-gradient(100deg,var(--copperD),var(--copper));border:0;border-radius:15px;padding:18px 22px;font-weight:700;box-shadow:0 22px 44px -26px rgba(224,138,79,.9)}
+
+  .shot{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .shot img{transition:transform .8s var(--ease)}
+  .shot:hover img{transform:scale(1.035)}
+  .shot .sl{position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;background:rgba(0,0,0,.55);color:#fff;padding:5px 10px;border-radius:7px}
+
+  .quote{background:rgba(255,255,255,.04);border-left:3px solid var(--copperB);border-radius:0 14px 14px 0;padding:20px 24px;font-size:17px;font-style:italic;color:#fff;margin-top:24px}
+
+  .pills{display:flex;flex-wrap:wrap;gap:10px}
+  .pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:10px 18px;font-size:14px;font-weight:600;color:#fff;transition:.3s var(--ease)}
+  .pill:hover{border-color:var(--copperB);color:var(--copperB);transform:translateY(-2px)}
+
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+  .metrics .v{font-size:clamp(36px,4.6vw,54px);font-weight:800;line-height:1}
+  .metrics .l{color:var(--muted);font-size:13.5px;margin-top:10px}
+
+  /* ---- dark band ---- */
+  .band{background:linear-gradient(120deg,#08131f 0%,#0f2438 55%,#123049 100%);position:relative;overflow:hidden}
+  .band:before{content:"";position:absolute;inset:0;background:radial-gradient(600px 320px at 88% 12%,rgba(224,138,79,.16),transparent 62%)}
+  .band .wrap{position:relative}
+
+  /* ---- plans ---- */
+  .plan{background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:18px;padding:28px;transition:transform .38s var(--ease),border-color .38s}
+  .plan:hover{transform:translateY(-6px);border-color:rgba(224,138,79,.6)}
+  .plan.hl{background:linear-gradient(155deg,#a9572a,#8a4622);border-color:var(--copperB);box-shadow:0 34px 66px -34px rgba(224,138,79,.75)}
+  .plan .price{font-size:33px;font-weight:800;margin:10px 0 2px}
   .plan .permo{font-size:13.5px;color:var(--muted2);margin-bottom:14px}
-  .plan .cap{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;
-    text-transform:uppercase;color:var(--copperB);background:var(--card);border:1px solid var(--line);
-    border-radius:999px;padding:6px 14px}
+  .plan.hl .permo{color:#e8cdb6}
+  .plan .cap{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--copperB);background:rgba(11,26,43,.55);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
   .plan .cap.hl{color:#0b1a2b;background:var(--copperB);border-color:var(--copperB)}
   .plan ul{list-style:none;padding:0;margin:18px 0 0}
   .plan li{color:var(--muted);font-size:14px;padding:7px 0 7px 20px;position:relative}
-  .plan.hl li{color:#f5e8dc}
-  .plan li:before{content:"—";position:absolute;left:0;color:var(--copperB)}
-  .plan.hl li:before{color:#fff}
-  .badge{display:inline-block;background:var(--copperB);color:#0b1a2b;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.08em;padding:4px 9px;border-radius:999px;margin-left:10px;vertical-align:middle}
+  .plan.hl li{color:#f7ece2}
+  .plan li:before{content:"";position:absolute;left:0;top:14px;width:9px;height:2px;background:var(--copperB);border-radius:2px}
+  .plan.hl li:before{background:#fff}
+  .badge{display:inline-block;background:#fff;color:#8a4622;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.08em;padding:4px 9px;border-radius:999px;margin-left:10px;vertical-align:middle}
 
-  /* table */
   .tbl{width:100%;border-collapse:collapse;font-size:14.5px}
   .tbl th{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);text-align:left;padding:0 16px 12px;font-weight:700}
   .tbl th.me{color:var(--copperB)}
   .tbl td{padding:15px 16px;border-top:1px solid rgba(255,255,255,.07);color:var(--muted);vertical-align:top}
+  .tbl tr{transition:background .3s}
+  .tbl tbody tr:hover{background:rgba(255,255,255,.03)}
   .tbl td:first-child{color:#fff;font-weight:700}
   .tbl td.me{color:#fff;font-weight:600;background:rgba(154,80,38,.34)}
-  .tblwrap{overflow-x:auto}
+  .tblwrap{overflow-x:auto;border-radius:16px}
 
-  /* downloads */
   .dl{display:flex;gap:16px;flex-wrap:wrap}
-  .dlcard{flex:1 1 300px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px}
+  .dlcard{flex:1 1 300px;background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;transition:transform .35s var(--ease),border-color .35s}
+  .dlcard:hover{transform:translateY(-5px);border-color:rgba(224,138,79,.6)}
   .dlcard .t{font-weight:700;font-size:17px}
-  .dlcard .d{color:var(--muted);font-size:14px;flex:1}
+  .dlcard .d{color:var(--muted);font-size:14px;flex:1;margin:0}
 
-  footer{padding:44px 0;border-top:1px solid rgba(255,255,255,.07);color:var(--muted2);font-size:13.5px}
+  /* ---- live demo ---- */
+  .livegrid{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+  .term{background:#07121d;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+  .term .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0d1d2e;border-bottom:1px solid var(--line)}
+  .term .bar i{width:10px;height:10px;border-radius:50%;display:block}
+  .term .bar .u{margin-left:10px;font-family:var(--mono);font-size:11px;color:var(--muted2)}
+  .term pre{margin:0;padding:18px 20px;font-family:var(--mono);font-size:12.5px;line-height:1.85;color:#bfe9e0;white-space:pre-wrap}
+  .term pre .c{color:var(--muted2)}
+  .term pre .k{color:var(--copperB)}
+
+  footer{padding:48px 0;border-top:1px solid rgba(255,255,255,.07);color:var(--muted2);font-size:13.5px}
   .note{color:var(--muted2);font-size:12.5px;font-style:italic;margin-top:18px}
-  .hide{display:none !important}
-  @media(max-width:900px){
-    .g4{grid-template-columns:repeat(2,1fr)}
-    .g3{grid-template-columns:1fr}
-    .g2{grid-template-columns:1fr}
+
+  @media(max-width:1000px){
+    .hero .wrap{grid-template-columns:1fr;gap:76px;padding-bottom:70px}
+    .mock{margin-bottom:26px}
+    .livegrid{grid-template-columns:1fr}
+  }
+  @media(max-width:980px){
+    .g4,.flow,.metrics{grid-template-columns:repeat(2,1fr)}
+    .g3,.g2{grid-template-columns:1fr}
     .nav a.link{display:none}
-    section{padding:60px 0}
+    .flow .f:after{display:none}
+    section{padding:58px 0}
+  }
+  @media(max-width:560px){
+    .metrics{grid-template-columns:repeat(2,1fr)}
+    .g4{grid-template-columns:1fr}
+    .mockdet{width:66%;left:-6px}
+    .mockchip{font-size:11px;right:0}
   }
 </style>
 </head>
@@ -125,250 +246,352 @@
 
 <header>
   <div class="wrap nav">
-    <div class="logo"><svg class="mk" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 3.4 55.7 17.1v27.8L32 58.6 8.3 44.9V17.1z" stroke="#e08a4f" stroke-width="3.2" stroke-linejoin="round"/><circle cx="32" cy="31" r="12.4" stroke="#fff" stroke-width="2.6" opacity=".92"/><path d="M32 12.2v6.2M32 43.8V50M12.8 31h6.2M45 31h6.2" stroke="#e08a4f" stroke-width="2.6" stroke-linecap="round"/><path d="M25.2 31.4 30.2 36.4 39.4 25.8" stroke="#2f9b8f" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#fff">Vig</span><span>IA</span></div>
-    <a class="link" href="#solucion" data-es="Solución" data-en="Solution">Solución</a>
-    <a class="link" href="#entregable" data-es="Entregable" data-en="Deliverable">Entregable</a>
-    <a class="link" href="#comparativa" data-es="Comparativa" data-en="Comparison">Comparativa</a>
-    <a class="link" href="#planes" data-es="Planes" data-en="Pricing">Planes</a>
-    <a class="link" href="#material" data-es="Material" data-en="Materials">Material</a>
+    <div class="logo">
+      <svg class="mk" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M32 3.4 55.7 17.1v27.8L32 58.6 8.3 44.9V17.1z" stroke="#e08a4f" stroke-width="3.2" stroke-linejoin="round"/>
+        <circle cx="32" cy="31" r="12.4" stroke="#fff" stroke-width="2.6" opacity=".92"/>
+        <path d="M32 12.2v6.2M32 43.8V50M12.8 31h6.2M45 31h6.2" stroke="#e08a4f" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M25.2 31.4 30.2 36.4 39.4 25.8" stroke="#2f9b8f" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg><span>Vig</span><span class="ia">IA</span>
+    </div>
+    <a class="link" href="#soluciones" data-k="nav.sol">Soluciones</a>
+    <a class="link" href="#entregable" data-k="nav.deliv">Entregable</a>
+    <a class="link" href="#copiloto" data-k="nav.cop">Copiloto</a>
+    <a class="link" href="#planes" data-k="nav.plans">Planes</a>
     <span class="spacer"></span>
-    <button class="langbtn on" id="btn-es">ES</button>
-    <button class="langbtn" id="btn-en">EN</button>
-    <a class="btn" href="#contacto" data-es="Solicitar piloto" data-en="Request a pilot">Solicitar piloto</a>
+    <div class="langs">
+      <button class="langbtn on" data-lang="es">ES</button>
+      <button class="langbtn" data-lang="en">EN</button>
+      <button class="langbtn" data-lang="zh">中文</button>
+      <button class="langbtn" data-lang="fr">FR</button>
+    </div>
+    <a class="btn live" id="applink-nav" href="http://localhost:3000" target="_blank" rel="noopener">
+      <span class="dot"></span><span data-k="nav.app">Abrir la app</span>
+    </a>
+    <a class="btn" href="#contacto" data-k="nav.cta">Solicitar piloto</a>
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="bg"></div>
+  <div class="glow"></div>
+  <div class="mesh"></div>
   <div class="wrap">
-    <p class="kicker" data-es="Inspección estructural con inteligencia artificial" data-en="Structural inspection powered by AI">Inspección estructural con inteligencia artificial</p>
-    <h1 data-es="Del dron al diagnóstico estructural, en minutos." data-en="From drone to structural diagnosis, in minutes.">Del dron al diagnóstico estructural, en minutos.</h1>
-    <p class="sub" data-es="VigIA detecta corrosión, grietas, deterioro de pintura y deformación, los ubica sobre un gemelo digital 3D del activo y entrega el informe con el costo estimado de reparación bajo norma ISO — validado y firmado por tu inspector." data-en="VigIA detects corrosion, cracks, coating breakdown and deformation, places every finding on a 3D digital twin of the asset, and delivers an ISO-graded report with the estimated repair cost — reviewed and signed by your own inspector.">VigIA detecta corrosión, grietas, deterioro de pintura y deformación, los ubica sobre un gemelo digital 3D del activo y entrega el informe con el costo estimado de reparación bajo norma ISO — validado y firmado por tu inspector.</p>
-    <div class="chips">
-      <span class="chip" data-es="Sin andamios ni riesgo en altura" data-en="No scaffolding, no work at height">Sin andamios ni riesgo en altura</span>
-      <span class="chip" data-es="Sin detener la operación" data-en="No production downtime">Sin detener la operación</span>
-      <span class="chip" data-es="Informe validado en 7 días" data-en="Validated report in 7 days">Informe validado en 7 días</span>
+    <div class="rv">
+      <p class="kicker" data-k="hero.eyebrow">El copiloto de inspección estructural</p>
+      <h1><span data-k="hero.t1">Del dron al diagnóstico,</span><span class="b gt" data-k="hero.t2">tu experto al mando.</span></h1>
+      <p class="sub" data-k="hero.sub">VigIA detecta corrosión, grietas, deterioro de pintura y deformación y los ubica sobre un gemelo 3D. La IA propone el diagnóstico en minutos; tu inspector lo valida en un clic — y el sistema aprende de tu equipo.</p>
+      <div class="trust">
+        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-k="hero.c1">El experto valida y firma</span></span>
+        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-k="hero.c2">Sin andamios ni riesgo en altura</span></span>
+        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-k="hero.c3">Informe validado el mismo día</span></span>
+      </div>
+      <div class="cta">
+        <a class="btn" href="#contacto" data-k="hero.cta1">Solicitar piloto</a>
+        <a class="btn live" id="applink-hero" href="http://localhost:3000" target="_blank" rel="noopener">
+          <span class="dot"></span><span data-k="hero.cta3">Ver la app en vivo</span>
+        </a>
+        <a class="btn ghost" href="#material" data-k="hero.cta2">Descargar el deck</a>
+      </div>
     </div>
-    <div class="cta">
-      <a class="btn" href="#contacto" data-es="Agendar demo de 15 min" data-en="Book a 15-min demo">Agendar demo de 15 min</a>
-      <a class="btn ghost" href="#material" data-es="Descargar el deck" data-en="Download the deck">Descargar el deck</a>
+
+    <div class="rv mock">
+      <div class="mockmain">
+        <div class="fr">
+          <img src="img/hero-drone-roof.jpg" alt="Dron inspeccionando un techo industrial">
+          <div class="scan"></div>
+          <span class="retc tl"></span><span class="retc tr"></span><span class="retc bl"></span><span class="retc br"></span>
+          <span class="mocklbl" data-k="mock.overlay">Borrador IA · conf 0.91</span>
+          <span class="mockhud">ISO 4628-3 · Ri 3</span>
+        </div>
+      </div>
+      <div class="mockdet">
+        <div class="di">
+          <img src="img/corrosion.jpg" alt="Corrosión detectada por VigIA">
+          <div class="bx"><span class="bxl">corrosión · 0.91</span></div>
+          <span class="okp"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-k="mock.valid">Validado</span></span>
+        </div>
+        <div class="dfoot">
+          <span class="tagm" data-k="mock.diag">Diagnóstico (borrador)</span>
+          <span class="vd gt" data-k="mock.verdict">Moderado</span>
+        </div>
+      </div>
+      <div class="mockchip">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5.2v10.4L12 24l-9-5.4V8.2z"/><path d="m3 8.2 9 5.2 9-5.2M12 13.4V24"/></svg>
+        <span data-k="mock.chip">Ubicado en gemelo 3D</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- PROBLEMA -->
 <section id="problema">
   <div class="wrap">
-    <p class="kicker" data-es="El problema" data-en="The problem">El problema</p>
-    <h2 data-es="Inspeccionar hoy es caro, lento y peligroso" data-en="Inspection today is expensive, slow and dangerous">Inspeccionar hoy es caro, lento y peligroso</h2>
-    <p class="lead" data-es="Y por eso, en la práctica, muchos activos simplemente no se inspeccionan hasta que algo falla." data-en="Which is why, in practice, many assets simply are not inspected until something fails.">Y por eso, en la práctica, muchos activos simplemente no se inspeccionan hasta que algo falla.</p>
-    <div class="grid g3" style="margin-top:34px">
-      <div class="card">
-        <div class="stat" style="color:var(--severe)">US$ 15.000 – 40.000</div>
-        <p data-es="cuesta una inspección tradicional con andamios o acceso por cuerda sobre un activo industrial." data-en="is the cost of a traditional inspection using scaffolding or rope access on an industrial asset.">cuesta una inspección tradicional con andamios o acceso por cuerda sobre un activo industrial.</p>
-      </div>
-      <div class="card">
-        <div class="stat" style="color:var(--mod)" data-es="Días o semanas" data-en="Days or weeks">Días o semanas</div>
-        <p data-es="de permisos, montaje y trabajo en altura — muchas veces deteniendo la operación." data-en="of permits, rigging and work at height — often halting production.">de permisos, montaje y trabajo en altura — muchas veces deteniendo la operación.</p>
-      </div>
-      <div class="card">
-        <div class="stat" style="color:var(--signal)" data-es="Informe subjetivo" data-en="Subjective report">Informe subjetivo</div>
-        <p data-es="en papel o fotos sueltas: no es comparable entre años ni entre inspectores distintos." data-en="on paper or loose photos: not comparable year over year, nor between inspectors.">en papel o fotos sueltas: no es comparable entre años ni entre inspectores distintos.</p>
-      </div>
+    <div class="rv">
+      <p class="kicker" data-k="prob.kicker">El problema</p>
+      <h2 data-k="prob.title">Inspeccionar hoy es caro, lento y peligroso</h2>
+      <p class="lead" data-k="prob.lead">En la práctica, muchos activos no se inspeccionan hasta que algo falla.</p>
     </div>
-    <div class="card" style="margin-top:20px;background:var(--navy2)">
-      <h3 data-es="La filtración detiene la línea. La corrosión perfora el estanque." data-en="The leak stops the line. Corrosion punctures the tank.">La filtración detiene la línea. La corrosión perfora el estanque.</h3>
-      <p style="margin-top:8px" data-es="Cuando el daño se descubre, el costo ya es correctivo y no preventivo — entre 3 y 10 veces más caro. Ese sobrecosto no aparece en ninguna línea del presupuesto: aparece como una detención no planificada." data-en="By the time the damage surfaces, the cost is corrective rather than preventive — 3 to 10 times higher. That overrun never shows up as a budget line: it shows up as unplanned downtime.">Cuando el daño se descubre, el costo ya es correctivo y no preventivo — entre 3 y 10 veces más caro. Ese sobrecosto no aparece en ninguna línea del presupuesto: aparece como una detención no planificada.</p>
+    <div class="grid g3 rv" style="margin-top:34px">
+      <div class="card"><div class="stat" style="color:var(--severe)">US$ 15.000 – 40.000</div><p data-k="prob.1">por una inspección tradicional con andamios o acceso por cuerda.</p></div>
+      <div class="card"><div class="stat" style="color:var(--mod)" data-k="prob.2t">Días o semanas</div><p data-k="prob.2">de permisos, montaje y trabajo en altura, con la planta detenida.</p></div>
+      <div class="card"><div class="stat" style="color:var(--signal)" data-k="prob.3t">Informe subjetivo</div><p data-k="prob.3">fotos sueltas, no comparables entre años ni entre inspectores.</p></div>
+    </div>
+    <div class="card rv" style="margin-top:20px;background:linear-gradient(120deg,#112438,#0e1f30)">
+      <h3 data-k="prob.bt">La filtración detiene la línea. La corrosión perfora el estanque.</h3>
+      <p style="margin-top:8px" data-k="prob.bd">Cuando el daño aparece, reparar cuesta entre 3 y 10 veces más. Ese sobrecosto no está en ninguna línea del presupuesto: llega como detención no planificada.</p>
     </div>
   </div>
 </section>
 
-<!-- SOLUCION -->
-<section id="solucion">
+<section id="soluciones">
   <div class="wrap">
-    <p class="kicker" data-es="La solución" data-en="The solution">La solución</p>
-    <h2 data-es="Una foto entra. Un diagnóstico accionable sale." data-en="One photo in. An actionable diagnosis out.">Una foto entra. Un diagnóstico accionable sale.</h2>
-    <p class="lead" data-es="Tu equipo vuela, o volamos nosotros. El resto es automático hasta que tu inspector revisa y firma." data-en="Your team flies, or we do. Everything after that is automatic until your inspector reviews and signs.">Tu equipo vuela, o volamos nosotros. El resto es automático hasta que tu inspector revisa y firma.</p>
-    <div class="grid g4" style="margin-top:34px">
-      <div class="card"><div class="tagm">01</div><h3 data-es="Captura" data-en="Capture">Captura</h3><p data-es="Dron, celular o la cámara que ya usas. VigIA lee la geolocalización de cada imagen y la posición del vuelo." data-en="Drone, smartphone or the camera you already use. VigIA reads each image's geolocation and the flight pose.">Dron, celular o la cámara que ya usas. VigIA lee la geolocalización de cada imagen y la posición del vuelo.</p></div>
-      <div class="card"><div class="tagm">02</div><h3 data-es="Diagnóstico IA" data-en="AI diagnosis">Diagnóstico IA</h3><p data-es="Detecta y mide corrosión, grietas, deterioro de pintura y deformación, con severidad y nivel de confianza." data-en="Detects and measures corrosion, cracks, coating breakdown and deformation, with severity and confidence.">Detecta y mide corrosión, grietas, deterioro de pintura y deformación, con severidad y nivel de confianza.</p></div>
-      <div class="card"><div class="tagm">03</div><h3 data-es="Gemelo 3D" data-en="3D twin">Gemelo 3D</h3><p data-es="Cada hallazgo queda anclado al modelo 3D del activo, con fecha, severidad y evidencia fotográfica." data-en="Every finding is anchored to the asset's 3D model, with date, severity and photographic evidence.">Cada hallazgo queda anclado al modelo 3D del activo, con fecha, severidad y evidencia fotográfica.</p></div>
-      <div class="card"><div class="tagm">04</div><h3 data-es="Informe + costo" data-en="Report + cost">Informe + costo</h3><p data-es="Reporte priorizado por riesgo, con grado normativo ISO y costo estimado de reparación. Firmado por el inspector." data-en="Risk-prioritised report with ISO grading and an estimated repair cost. Signed by the inspector.">Reporte priorizado por riesgo, con grado normativo ISO y costo estimado de reparación. Firmado por el inspector.</p></div>
+    <div class="rv">
+      <p class="kicker" data-k="sol.kicker">Soluciones</p>
+      <h2 data-k="sol.title">Una plataforma que multiplica a tu equipo</h2>
     </div>
-    <div class="grid g4" style="margin-top:20px">
-      <div class="card"><div class="tagm" style="color:var(--mod)">ISO 4628-3 · Ri 0–Ri 5</div><h3 data-es="Corrosión" data-en="Corrosion">Corrosión</h3><p data-es="Porcentaje de área corroída, superficie en m² y grado de óxido." data-en="Percentage of corroded area, surface in m² and rust grade.">Porcentaje de área corroída, superficie en m² y grado de óxido.</p></div>
-      <div class="card"><div class="tagm" style="color:#0ea5c4">U-NET LOCAL · CUDA</div><h3 data-es="Grietas" data-en="Cracks">Grietas</h3><p data-es="Trazado de la fisura y severidad S1–S4 contra los umbrales admisibles." data-en="Crack tracing and S1–S4 severity against admissible thresholds.">Trazado de la fisura y severidad S1–S4 contra los umbrales admisibles.</p></div>
-      <div class="card"><div class="tagm" style="color:var(--signal)">ISO 4628-2/4/5</div><h3 data-es="Pintura y recubrimiento" data-en="Paint &amp; coating">Pintura y recubrimiento</h3><p data-es="Ampollamiento, agrietamiento y descamación graduados por norma." data-en="Blistering, cracking and flaking graded by standard.">Ampollamiento, agrietamiento y descamación graduados por norma.</p></div>
-      <div class="card"><div class="tagm" style="color:var(--teal)" data-es="FOTOGRAMETRÍA 3D" data-en="3D PHOTOGRAMMETRY">FOTOGRAMETRÍA 3D</div><h3 data-es="Deformación" data-en="Deformation">Deformación</h3><p data-es="Abolladuras y desviación geométrica contra el modelo 3D del activo." data-en="Dents and geometric deviation against the asset's 3D model.">Abolladuras y desviación geométrica contra el modelo 3D del activo.</p></div>
+    <div class="grid g4 rv" style="margin-top:34px">
+      <div class="icard"><div class="ph"><img src="img/drone-operator.jpg" alt=""><span class="n">01</span></div><div class="bd"><h3 data-k="sol.1t">Copiloto multi-defecto</h3><p data-k="sol.1d">La IA detecta corrosión, grietas, pintura y deformación y propone un borrador. Tu inspector confirma o corrige en un clic.</p></div></div>
+      <div class="icard"><div class="ph"><img src="img/twin-demo.jpg" alt=""><span class="n">02</span></div><div class="bd"><h3 data-k="sol.2t">Gemelo digital 3D</h3><p data-k="sol.2d">Cada defecto validado queda anclado al modelo georreferenciado, con historial comparable año a año.</p></div></div>
+      <div class="icard"><div class="ph"><img src="img/overlay-demo.jpg" alt=""><span class="n">03</span></div><div class="bd"><h3 data-k="sol.3t">Aprende de tu equipo</h3><p data-k="sol.3d">Cada validación reentrena la IA en TUS activos. La precisión sube mes a mes y queda demostrada en tu panel.</p></div></div>
+      <div class="icard"><div class="ph"><img src="img/warehouse-aerial.jpg" alt=""><span class="n">04</span></div><div class="bd"><h3 data-k="sol.4t">Reporte + pronóstico</h3><p data-k="sol.4d">Informe firmado por el inspector, costo estimado en rango preliminar y tendencia de degradación.</p></div></div>
     </div>
   </div>
 </section>
 
-<!-- ENTREGABLE -->
+<section id="proceso">
+  <div class="wrap">
+    <div class="rv">
+      <p class="kicker" data-k="proc.kicker">Cómo funciona</p>
+      <h2 data-k="proc.title">Una foto entra. Un diagnóstico accionable sale.</h2>
+    </div>
+    <div class="flow rv" style="margin-top:34px">
+      <div class="f"><span class="num">1</span><h3 data-k="proc.1t">Captura</h3><p data-k="proc.1d">Dron, celular o la cámara que ya usas. VigIA lee la geolocalización y endereza la imagen.</p></div>
+      <div class="f"><span class="num">2</span><h3 data-k="proc.2t">Diagnóstico IA</h3><p data-k="proc.2d">Detecta y mide corrosión, grietas, pintura y deformación, con severidad y confianza.</p></div>
+      <div class="f"><span class="num">3</span><h3 data-k="proc.3t">Gemelo 3D</h3><p data-k="proc.3d">Cada hallazgo validado queda anclado al modelo del activo, con fecha y evidencia.</p></div>
+      <div class="f"><span class="num">4</span><h3 data-k="proc.4t">Informe + costo</h3><p data-k="proc.4d">Priorizado por riesgo, con grado normativo ISO y el costo estimado de reparación.</p></div>
+    </div>
+    <div class="grid g4 rv" style="margin-top:20px">
+      <div class="card"><span class="tagm" style="color:var(--mod)">ISO 4628-3 · Ri 0–Ri 5</span><h3 data-k="det.1t">Corrosión</h3><p data-k="det.1d">Porcentaje de área corroída, superficie en m² y grado de óxido.</p></div>
+      <div class="card"><span class="tagm" style="color:var(--cyan)">U-NET LOCAL · CUDA</span><h3 data-k="det.2t">Grietas</h3><p data-k="det.2d">Trazado de la fisura y severidad S1–S4 contra el umbral admisible.</p></div>
+      <div class="card"><span class="tagm" style="color:var(--signal)">ISO 4628-2/4/5</span><h3 data-k="det.3t">Pintura y recubrimiento</h3><p data-k="det.3d">Ampollamiento, agrietamiento y descamación graduados por norma.</p></div>
+      <div class="card"><span class="tagm" style="color:var(--teal)">FOTOGRAMETRÍA 3D</span><h3 data-k="det.4t">Deformación</h3><p data-k="det.4d">Abolladuras y desviación geométrica sobre el modelo 3D del activo.</p></div>
+    </div>
+  </div>
+</section>
+
 <section id="entregable">
   <div class="wrap">
-    <p class="kicker" data-es="El entregable" data-en="The deliverable">El entregable</p>
-    <h2 data-es="Lo que recibes no es un PDF con fotos: es un presupuesto" data-en="What you get is not a PDF of photos: it is a budget">Lo que recibes no es un PDF con fotos: es un presupuesto</h2>
-    <div class="grid g2" style="margin-top:30px;align-items:start">
+    <div class="rv">
+      <p class="kicker" data-k="del.kicker">El entregable</p>
+      <h2 data-k="del.title">Lo que recibes no es un PDF con fotos: es un presupuesto</h2>
+    </div>
+    <div class="grid g2 rv" style="margin-top:30px;align-items:start">
       <div>
-        <img src="img/overlay-demo.jpg" alt="Visor 2D de VigIA con corrosión y grieta segmentadas y panel de diagnóstico ISO" style="border-radius:14px;border:1px solid var(--line)">
-        <p class="note" data-es="Visor 2D de VigIA: máscaras de corrosión y grieta con su panel de diagnóstico normativo." data-en="VigIA 2D viewer: corrosion and crack masks with the standards-based diagnosis panel.">Visor 2D de VigIA: máscaras de corrosión y grieta con su panel de diagnóstico normativo.</p>
+        <div class="shot">
+          <img src="img/overlay-demo.jpg" alt="Visor 2D de VigIA con corrosión y grieta segmentadas y panel de diagnóstico ISO">
+          <span class="sl">VigIA · visor 2D</span>
+        </div>
+        <p class="note" data-k="del.cap">Visor 2D de VigIA: máscaras de corrosión y grieta con su panel de diagnóstico normativo.</p>
       </div>
       <div class="chain">
-        <div class="step"><div class="n">1</div><div><h3 data-es="Grado de oxidación — ISO 4628-3" data-en="Rust grade — ISO 4628-3">Grado de oxidación — ISO 4628-3</h3><p data-es="El área corroída medida se clasifica en grado Ri 0 a Ri 5. Deja de ser criterio de una persona y pasa a ser norma." data-en="The measured corroded area is classified from Ri 0 to Ri 5. It stops being one person's judgement and becomes a standard.">El área corroída medida se clasifica en grado Ri 0 a Ri 5. Deja de ser criterio de una persona y pasa a ser norma.</p></div></div>
-        <div class="step"><div class="n">2</div><div><h3 data-es="Preparación de superficie — ISO 8501-1" data-en="Surface preparation — ISO 8501-1">Preparación de superficie — ISO 8501-1</h3><p data-es="Del grado se deriva el método exigido: limpieza mecánica St 2 / St 3, chorro comercial Sa 2 o metal casi blanco Sa 2½." data-en="The grade determines the required method: St 2 / St 3 power-tool cleaning, Sa 2 commercial blast or Sa 2½ near-white metal.">Del grado se deriva el método exigido: limpieza mecánica St 2 / St 3, chorro comercial Sa 2 o metal casi blanco Sa 2½.</p></div></div>
-        <div class="step"><div class="n">3</div><div><h3 data-es="Esquema de pintura y materiales — ISO 12944" data-en="Coating system &amp; materials — ISO 12944">Esquema de pintura y materiales — ISO 12944</h3><p data-es="Categoría de corrosividad C2 a C5-M, esquema mono, bi o tricapa, litros por capa, abrasivo y cuadrilla." data-en="Corrosivity category C2 to C5-M, single, double or triple-coat system, litres per coat, abrasive and crew.">Categoría de corrosividad C2 a C5-M, esquema mono, bi o tricapa, litros por capa, abrasivo y cuadrilla.</p></div></div>
-        <div class="out" data-es="Resultado: informe auditable + costo estimado de reparación, por activo" data-en="Result: an auditable report + estimated repair cost, per asset">Resultado: informe auditable + costo estimado de reparación, por activo</div>
+        <div class="step"><div class="n">1</div><div><h3 data-k="del.1t">Grado de oxidación — ISO 4628-3</h3><p data-k="del.1d">El área corroída medida se clasifica en grado Ri 0 a Ri 5. Deja de ser criterio de una persona y pasa a ser norma.</p></div></div>
+        <div class="step"><div class="n">2</div><div><h3 data-k="del.2t">Preparación de superficie — ISO 8501-1</h3><p data-k="del.2d">Del grado se deriva el método exigido: limpieza mecánica St 2 / St 3, chorro comercial Sa 2 o metal casi blanco Sa 2½.</p></div></div>
+        <div class="step"><div class="n">3</div><div><h3 data-k="del.3t">Esquema de pintura y materiales — ISO 12944</h3><p data-k="del.3d">Categoría de corrosividad C2 a C5-M, esquema mono, bi o tricapa, litros por capa, abrasivo y cuadrilla.</p></div></div>
+        <div class="out" data-k="del.out">Resultado: informe auditable + costo estimado de reparación, por activo</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- GEMELO -->
 <section id="gemelo">
   <div class="wrap">
-    <p class="kicker" data-es="El diferenciador" data-en="The differentiator">El diferenciador</p>
-    <h2 data-es="Los defectos, exactamente donde están — y cómo cambian" data-en="Defects, exactly where they are — and how they change">Los defectos, exactamente donde están — y cómo cambian</h2>
-    <div class="grid g2" style="margin-top:30px;align-items:center">
+    <div class="rv">
+      <p class="kicker" data-k="twin.kicker">El diferenciador</p>
+      <h2 data-k="twin.title">Los defectos, exactamente donde están — y cómo cambian</h2>
+    </div>
+    <div class="grid g2 rv" style="margin-top:30px;align-items:center">
       <div class="grid" style="gap:16px">
-        <div class="card"><h3 data-es="Un gemelo 3D de tu activo" data-en="A 3D twin of your asset">Un gemelo 3D de tu activo</h3><p data-es="Modelo fotorrealista generado desde el vuelo del dron, navegable en el navegador. Sin instalar nada." data-en="Photorealistic model built from the drone flight, navigable in the browser. Nothing to install.">Modelo fotorrealista generado desde el vuelo del dron, navegable en el navegador. Sin instalar nada.</p></div>
-        <div class="card"><h3 data-es="Cada defecto anclado al modelo" data-en="Every defect anchored to the model">Cada defecto anclado al modelo</h3><p data-es="Con fecha, severidad y evidencia. Un clic sobre el marcador abre el diagnóstico completo." data-en="With date, severity and evidence. One click on the marker opens the full diagnosis.">Con fecha, severidad y evidencia. Un clic sobre el marcador abre el diagnóstico completo.</p></div>
-        <div class="card"><h3 data-es="Historial comparable" data-en="Comparable history">Historial comparable</h3><p data-es="Cada inspección se compara contra la línea base: qué apareció, qué creció y qué está estable." data-en="Every inspection is compared against the baseline: what appeared, what grew and what is stable.">Cada inspección se compara contra la línea base: qué apareció, qué creció y qué está estable.</p></div>
+        <div class="card"><h3 data-k="twin.1t">Un gemelo 3D de tu activo</h3><p data-k="twin.1d">Modelo fotorrealista generado desde el vuelo del dron, navegable en el navegador. Sin instalar nada.</p></div>
+        <div class="card"><h3 data-k="twin.2t">Cada defecto anclado al modelo</h3><p data-k="twin.2d">Con fecha, severidad y evidencia. Un clic sobre el marcador abre el diagnóstico completo.</p></div>
+        <div class="card"><h3 data-k="twin.3t">Historial comparable</h3><p data-k="twin.3d">Qué apareció, qué creció y qué está estable, campaña contra campaña.</p></div>
       </div>
       <div>
-        <img src="img/twin-demo.jpg" alt="Gemelo digital 3D con marcadores de defectos geolocalizados" style="border-radius:14px;border:1px solid var(--line)">
-        <p class="note" data-es="Gemelo digital con hallazgos geolocalizados y su grado normativo." data-en="Digital twin with geolocated findings and their standards grade.">Gemelo digital con hallazgos geolocalizados y su grado normativo.</p>
+        <div class="shot">
+          <img src="img/twin-demo.jpg" alt="Gemelo digital 3D con marcadores de defectos geolocalizados">
+          <span class="sl">VigIA · gemelo 3D</span>
+        </div>
+        <p class="note" data-k="twin.cap">Gemelo digital con hallazgos geolocalizados y su grado normativo.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- COMPARATIVA -->
-<section id="comparativa">
+<section id="copiloto" class="band">
   <div class="wrap">
-    <p class="kicker" data-es="Por qué VigIA" data-en="Why VigIA">Por qué VigIA</p>
-    <h2 data-es="Lo que hay en el mercado — y qué le falta a cada opción" data-en="What the market offers — and what each option lacks">Lo que hay en el mercado — y qué le falta a cada opción</h2>
-    <p class="lead" data-es="Hay buenas empresas en este espacio. Ninguna cierra el camino completo desde la imagen hasta el presupuesto de reparación, en español y bajo la norma que te exige tu auditor." data-en="There are good companies in this space. None closes the full path from image to repair budget, in Spanish and under the standard your auditor demands.">Hay buenas empresas en este espacio. Ninguna cierra el camino completo desde la imagen hasta el presupuesto de reparación, en español y bajo la norma que te exige tu auditor.</p>
-    <div class="tblwrap" style="margin-top:30px">
-      <table class="tbl">
-        <thead><tr>
-          <th data-es="Categoría" data-en="Category">Categoría</th>
-          <th data-es="Ejemplos" data-en="Examples">Ejemplos</th>
-          <th class="me" data-es="Dónde entra VigIA" data-en="Where VigIA fits">Dónde entra VigIA</th>
-        </tr></thead>
-        <tbody>
-          <tr><td data-es="Fabricantes de sensores" data-en="Sensor manufacturers">Fabricantes de sensores</td><td>Qtechnology</td><td class="me" data-es="Te venden el sensor, no el diagnóstico: sin grado ISO, sin materiales, sin informe auditable. VigIA corre con la cámara que ya tienes." data-en="They sell you the sensor, not the diagnosis: no ISO grade, no materials, no auditable report. VigIA runs on the camera you already own.">Te venden el sensor, no el diagnóstico: sin grado ISO, sin materiales, sin informe auditable. VigIA corre con la cámara que ya tienes.</td></tr>
-          <tr><td data-es="Drones de acceso difícil" data-en="Confined-space drones">Drones de acceso difícil</td><td>Flyability</td><td class="me" data-es="Resuelven el acceso, no el diagnóstico. Son aliado natural: su dron vuela, VigIA analiza el video y emite el informe." data-en="They solve access, not diagnosis. A natural ally: their drone flies, VigIA analyses the footage and issues the report.">Resuelven el acceso, no el diagnóstico. Son aliado natural: su dron vuela, VigIA analiza el video y emite el informe.</td></tr>
-          <tr><td data-es="Soluciones atadas a un proveedor" data-en="Vendor-locked solutions">Soluciones atadas a un proveedor</td><td>Jotun Hull Skating Solutions</td><td class="me" data-es="Limpieza proactiva de casco amarrada al recubrimiento del propio fabricante. VigIA es independiente de la marca de pintura que uses." data-en="Proactive hull cleaning tied to the manufacturer's own coating. VigIA is independent of whichever paint brand you use.">Limpieza proactiva de casco amarrada al recubrimiento del propio fabricante. VigIA es independiente de la marca de pintura que uses.</td></tr>
-          <tr><td data-es="Especialistas en corrosión" data-en="Corrosion specialists">Especialistas en corrosión</td><td>InspecTerra</td><td class="me" data-es="Mapeo cuantitativo de corrosión con rigor, pero una sola familia de daño, sin gemelo 3D comparable, sin cotización y sin presencia local." data-en="Rigorous quantitative corrosion mapping, but a single damage family, no comparable 3D twin, no quoting and no local presence.">Mapeo cuantitativo de corrosión con rigor, pero una sola familia de daño, sin gemelo 3D comparable, sin cotización y sin presencia local.</td></tr>
-          <tr><td data-es="Verticales de renovables" data-en="Renewables verticals">Verticales de renovables</td><td>Nearthlab · INER</td><td class="me" data-es="Excelentes en aerogeneradores y solar, con vuelo autónomo y operación regional. Su modelo no cubre corrosión industrial pesada bajo ISO 12944." data-en="Excellent in wind and solar, with autonomous flight and regional operations. Their model does not cover heavy-industry corrosion under ISO 12944.">Excelentes en aerogeneradores y solar, con vuelo autónomo y operación regional. Su modelo no cubre corrosión industrial pesada bajo ISO 12944.</td></tr>
-          <tr><td data-es="Operadores de dron" data-en="Drone service operators">Operadores de dron</td><td data-es="Aerodronia y operadores locales" data-en="Aerodronia and local operators">Aerodronia y operadores locales</td><td class="me" data-es="Vuelan bien y entregan imágenes o un PDF básico. Para nosotros son canal, no competencia: ellos vuelan, VigIA diagnostica y reporta." data-en="They fly well and hand over images or a basic PDF. For us they are a channel, not a competitor: they fly, VigIA diagnoses and reports.">Vuelan bien y entregan imágenes o un PDF básico. Para nosotros son canal, no competencia: ellos vuelan, VigIA diagnostica y reporta.</td></tr>
-        </tbody>
-      </table>
+    <div class="rv">
+      <p class="kicker" data-k="cop.kicker">Cómo trabaja con tu equipo</p>
+      <h2 data-k="cop.title">La IA propone. Tu inspector decide y firma.</h2>
+      <p class="lead" data-k="cop.lead">VigIA no reemplaza el criterio experto: lo multiplica. Entrega un borrador de diagnóstico en minutos; tu especialista lo revisa, corrige o descarta con un clic. Todo informe sale validado por una persona.</p>
     </div>
-    <div class="out" style="margin-top:24px" data-es="VigIA: multi-defecto en un solo motor + cadena ISO hasta el presupuesto + gemelo 3D comparable + independiente del hardware + soporte local." data-en="VigIA: multi-defect in a single engine + ISO chain through to the budget + comparable 3D twin + hardware-independent + local support.">VigIA: multi-defecto en un solo motor + cadena ISO hasta el presupuesto + gemelo 3D comparable + independiente del hardware + soporte local.</div>
+    <div class="flow rv" style="margin-top:34px">
+      <div class="f"><span class="num">1</span><h3 data-k="cop.1t">IA detecta</h3><p data-k="cop.1d">Borrador con cada hallazgo, su severidad y su nivel de confianza.</p></div>
+      <div class="f"><span class="num">2</span><h3 data-k="cop.2t">Experto valida</h3><p data-k="cop.2d">Confirmar · Corregir · Descartar, en segundos por hallazgo.</p></div>
+      <div class="f"><span class="num">3</span><h3 data-k="cop.3t">Informe firmado</h3><p data-k="cop.3d">Sale con el nombre y la firma del inspector responsable.</p></div>
+      <div class="f"><span class="num">4</span><h3 data-k="cop.4t">VigIA aprende</h3><p data-k="cop.4d">Cada validación entrena la IA en tus activos: mejora cada mes.</p></div>
+    </div>
+    <p class="quote rv" data-k="cop.quote">“La precisión validada en tus activos sube mes a mes — y queda demostrada en tu panel.”</p>
   </div>
 </section>
 
-<!-- PLANES -->
+<section id="impacto">
+  <div class="wrap">
+    <div class="rv">
+      <p class="kicker" data-k="imp.kicker">Impacto</p>
+      <h2 data-k="imp.title">El experto al mando, potenciado por IA</h2>
+    </div>
+    <div class="metrics rv" style="margin-top:40px">
+      <div><div class="v gt" data-count="4">4</div><div class="l" data-k="imp.1">familias de defecto que la IA propone</div></div>
+      <div><div class="v gt" data-count="10" data-suffix="×">10×</div><div class="l" data-k="imp.2">más superficie revisada por inspector</div></div>
+      <div><div class="v gt">3D</div><div class="l" data-k="imp.3">gemelo georreferenciado por activo</div></div>
+      <div><div class="v gt" data-count="100" data-suffix="%">100%</div><div class="l" data-k="imp.4">trazabilidad, con firma del inspector</div></div>
+    </div>
+    <div class="rv">
+      <h3 style="margin:50px 0 16px" data-k="ind.title">Construido para activos críticos</h3>
+      <div class="pills">
+        <span class="pill" data-k="ind.1">Minería</span>
+        <span class="pill" data-k="ind.2">Puertos y astilleros</span>
+        <span class="pill" data-k="ind.3">Energía</span>
+        <span class="pill" data-k="ind.4">Petróleo y gas</span>
+        <span class="pill" data-k="ind.5">Infraestructura</span>
+        <span class="pill" data-k="ind.6">Concesiones viales</span>
+        <span class="pill" data-k="ind.7">Agua y sanitarias</span>
+        <span class="pill" data-k="ind.8">Celulosa y salmonicultura</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="planes">
   <div class="wrap">
-    <p class="kicker" data-es="Licencias anuales" data-en="Annual licences">Licencias anuales</p>
-    <h2 data-es="Contratas activos bajo monitoreo, no informes" data-en="You license assets under monitoring, not reports">Contratas activos bajo monitoreo, no informes</h2>
-    <p class="lead" data-es="Dentro de tu portafolio contratado generas todos los diagnósticos, informes y cotizaciones ISO que necesites. Sin costo por imagen procesada ni por PDF emitido." data-en="Within your licensed portfolio you generate every diagnosis, report and ISO quotation you need. No charge per processed image or per PDF issued.">Dentro de tu portafolio contratado generas todos los diagnósticos, informes y cotizaciones ISO que necesites. Sin costo por imagen procesada ni por PDF emitido.</p>
-    <div class="grid g3" style="margin-top:34px">
+    <div class="rv">
+      <p class="kicker" data-k="pl.kicker">Licencias anuales</p>
+      <h2 data-k="pl.title">Contratas activos bajo monitoreo, no informes</h2>
+      <p class="lead" data-k="pl.lead">Dentro de tu portafolio contratado generas todos los diagnósticos, informes y cotizaciones ISO que necesites. Sin costo por imagen procesada ni por PDF emitido.</p>
+    </div>
+    <div class="grid g3 rv" style="margin-top:34px">
       <div class="plan">
         <div class="tagm">STARTER</div>
-        <div class="price">US$ 3.600 <span style="font-size:15px;color:var(--muted);font-weight:400" data-es="/año" data-en="/year">/año</span></div>
-        <div class="permo" data-es="US$ 300 / mes" data-en="US$ 300 / month">US$ 300 / mes</div>
-        <div class="cap" data-es="Hasta 10 activos" data-en="Up to 10 assets">Hasta 10 activos</div>
+        <div class="price">US$ 3.600 <span style="font-size:15px;color:var(--muted);font-weight:400" data-k="pl.year">/año</span></div>
+        <div class="permo" data-k="pl.s.mo">US$ 300 / mes</div>
+        <div class="cap" data-k="pl.s.cap">Hasta 10 activos</div>
         <ul>
-          <li data-es="Inspectores, ingenierías y faenas pequeñas" data-en="Inspectors, engineering firms and small sites">Inspectores, ingenierías y faenas pequeñas</li>
-          <li data-es="Multi-defecto con severidad y grado ISO" data-en="Multi-defect with severity and ISO grade">Multi-defecto con severidad y grado ISO</li>
-          <li data-es="Informes y cotizaciones ilimitados" data-en="Unlimited reports and quotations">Informes y cotizaciones ilimitados</li>
-          <li data-es="Historial básico por activo" data-en="Basic history per asset">Historial básico por activo</li>
+          <li data-k="pl.s.1">Inspectores, ingenierías y faenas pequeñas</li>
+          <li data-k="pl.s.2">Multi-defecto con severidad y grado ISO</li>
+          <li data-k="pl.s.3">Informes y cotizaciones ilimitados</li>
+          <li data-k="pl.s.4">Historial básico por activo</li>
         </ul>
       </div>
       <div class="plan hl">
-        <div class="tagm" style="color:#fff">PROFESSIONAL<span class="badge" data-es="MÁS ELEGIDO" data-en="MOST CHOSEN">MÁS ELEGIDO</span></div>
-        <div class="price">US$ 24.000 <span style="font-size:15px;color:#f5e8dc;font-weight:400" data-es="/año" data-en="/year">/año</span></div>
-        <div class="permo" style="color:#e8cdb6" data-es="US$ 2.000 / mes" data-en="US$ 2,000 / month">US$ 2.000 / mes</div>
-        <div class="cap hl" data-es="Hasta 100 activos" data-en="Up to 100 assets">Hasta 100 activos</div>
+        <div class="tagm" style="color:#fff">PROFESSIONAL<span class="badge" data-k="pl.top">MÁS ELEGIDO</span></div>
+        <div class="price">US$ 24.000 <span style="font-size:15px;color:#f5e8dc;font-weight:400" data-k="pl.year2">/año</span></div>
+        <div class="permo" data-k="pl.p.mo">US$ 2.000 / mes</div>
+        <div class="cap hl" data-k="pl.p.cap">Hasta 100 activos</div>
         <ul>
-          <li data-es="Faena industrial, puerto o planta mediana" data-en="Industrial site, port or mid-size plant">Faena industrial, puerto o planta mediana</li>
-          <li data-es="Multi-sitio con historial comparable" data-en="Multi-site with comparable history">Multi-sitio con historial comparable</li>
-          <li data-es="Gemelo 3D y pronóstico de degradación" data-en="3D twin and degradation forecast">Gemelo 3D y pronóstico de degradación</li>
-          <li data-es="Onboarding US$ 3.000" data-en="Onboarding US$ 3,000">Onboarding US$ 3.000</li>
+          <li data-k="pl.p.1">Faena industrial, puerto o planta mediana</li>
+          <li data-k="pl.p.2">Multi-sitio con historial comparable</li>
+          <li data-k="pl.p.3">Gemelo 3D y pronóstico de degradación</li>
+          <li data-k="pl.p.4">Onboarding US$ 3.000</li>
         </ul>
       </div>
       <div class="plan">
         <div class="tagm">ENTERPRISE</div>
-        <div class="price" style="font-size:29px" data-es="Desde US$ 80.000" data-en="From US$ 80,000">Desde US$ 80.000</div>
-        <div class="permo" data-es="Al año, a medida según portafolio" data-en="Per year, tailored to the portfolio">Al año, a medida según portafolio</div>
-        <div class="cap" data-es="Portafolio ilimitado" data-en="Unlimited portfolio">Portafolio ilimitado</div>
+        <div class="price" style="font-size:28px" data-k="pl.e.price">Desde US$ 80.000</div>
+        <div class="permo" data-k="pl.e.mo">Al año, a medida según portafolio</div>
+        <div class="cap" data-k="pl.e.cap">Portafolio ilimitado</div>
         <ul>
-          <li data-es="Corporaciones, gran minería y flotas" data-en="Corporations, large mining and fleets">Corporaciones, gran minería y flotas</li>
-          <li data-es="API, integraciones CMMS y on-premise" data-en="API, CMMS integrations and on-premise">API, integraciones CMMS y on-premise</li>
-          <li data-es="SSO, SLA y soporte dedicado" data-en="SSO, SLA and dedicated support">SSO, SLA y soporte dedicado</li>
-          <li data-es="Onboarding US$ 15.000" data-en="Onboarding US$ 15,000">Onboarding US$ 15.000</li>
+          <li data-k="pl.e.1">Corporaciones, gran minería y flotas</li>
+          <li data-k="pl.e.2">API, integraciones CMMS y on-premise</li>
+          <li data-k="pl.e.3">SSO, SLA y soporte dedicado</li>
+          <li data-k="pl.e.4">Onboarding US$ 15.000</li>
         </ul>
       </div>
     </div>
 
-    <h3 style="margin:44px 0 18px;font-size:20px" data-es="Sin letra chica" data-en="No fine print">Sin letra chica</h3>
-    <div class="grid g3">
-      <div class="card">
-        <div class="tagm">01</div>
-        <h3 data-es="Cero cobro por informe o por foto" data-en="No charge per report or per photo">Cero cobro por informe o por foto</h3>
-        <p data-es="Generas todos los reportes, diagnósticos y cotizaciones ISO que necesites. No hay costo por imagen procesada ni por PDF emitido." data-en="Generate every report, diagnosis and ISO quotation you need. No cost per processed image or per PDF issued.">Generas todos los reportes, diagnósticos y cotizaciones ISO que necesites. No hay costo por imagen procesada ni por PDF emitido.</p>
-      </div>
-      <div class="card">
-        <div class="tagm" style="color:var(--teal)">02</div>
-        <h3 data-es="El activo manda" data-en="The asset is the unit">El activo manda</h3>
-        <p data-es="Un activo es un equipo, embarcación, estanque, puente o estructura física con identidad permanente en el sistema. Se cuenta una vez, no una vez por campaña." data-en="An asset is a piece of equipment, vessel, tank, bridge or structure with a permanent identity in the system. Counted once, not once per campaign.">Un activo es un equipo, embarcación, estanque, puente o estructura física con identidad permanente en el sistema. Se cuenta una vez, no una vez por campaña.</p>
-      </div>
-      <div class="card">
-        <div class="tagm" style="color:var(--signal)">03</div>
-        <h3 data-es="Repetir no cuesta más" data-en="Repeating costs nothing extra">Repetir no cuesta más</h3>
-        <p data-es="Las campañas sucesivas sobre el mismo activo durante el año no generan cobro adicional. Mientras más lo inspeccionas, más vale tu línea de tiempo." data-en="Successive campaigns on the same asset during the year carry no extra charge. The more you inspect it, the more your timeline is worth.">Las campañas sucesivas sobre el mismo activo durante el año no generan cobro adicional. Mientras más lo inspeccionas, más vale tu línea de tiempo.</p>
+    <div class="rv">
+      <h3 style="margin:46px 0 18px" data-k="rules.title">Sin letra chica</h3>
+      <div class="grid g3">
+        <div class="card"><span class="tagm">01</span><h3 data-k="rules.1t">Cero cobro por informe o por foto</h3><p data-k="rules.1d">Generas todos los reportes, diagnósticos y cotizaciones ISO que necesites. No hay costo por imagen procesada ni por PDF emitido.</p></div>
+        <div class="card"><span class="tagm" style="color:var(--teal)">02</span><h3 data-k="rules.2t">El activo manda</h3><p data-k="rules.2d">Un activo es un equipo, embarcación, estanque, puente o estructura física con identidad permanente en el sistema. Se cuenta una vez, no una vez por campaña.</p></div>
+        <div class="card"><span class="tagm" style="color:var(--signal)">03</span><h3 data-k="rules.3t">Repetir no cuesta más</h3><p data-k="rules.3d">Las campañas sucesivas sobre el mismo activo durante el año no generan cobro adicional. Mientras más lo inspeccionas, más vale tu línea de tiempo.</p></div>
       </div>
     </div>
 
-    <div class="card" style="margin-top:22px;background:var(--navy2)">
-      <p style="margin:0"><strong style="color:var(--copperB)" data-es="Antes del plan, el piloto:" data-en="Before any plan, the pilot:">Antes del plan, el piloto:</strong> <span data-es="un activo real, precio fijo acordado antes de volar, informe validado en 7 días — y si no encontramos hallazgos accionables, no lo pagas." data-en="one real asset, a fixed price agreed before we fly, a validated report in 7 days — and if we find nothing actionable, you don't pay for it.">un activo real, precio fijo acordado antes de volar, informe validado en 7 días — y si no encontramos hallazgos accionables, no lo pagas.</span></p>
+    <div class="card rv" style="margin-top:22px;background:linear-gradient(120deg,#112438,#0e1f30)">
+      <p style="margin:0"><strong style="color:var(--copperB)" data-k="pl.pilot.t">Antes del plan, el piloto:</strong> <span data-k="pl.pilot.d">un activo real, precio fijo acordado antes de volar, informe validado el mismo día — y si no encontramos hallazgos accionables, no lo pagas.</span></p>
     </div>
   </div>
 </section>
 
-<!-- MATERIAL -->
+<section id="demo" class="band">
+  <div class="wrap livegrid rv">
+    <div>
+      <p class="kicker" data-k="demo.kicker">Demo en vivo</p>
+      <h2 data-k="demo.title">Entra a la plataforma ahora mismo</h2>
+      <p class="lead" data-k="demo.lead">Durante la presentación la app corre en este mismo equipo. Un clic y estás dentro del panel real: carga una foto, mira la segmentación, valida un hallazgo y genera el informe ISO.</p>
+      <div class="grid" style="gap:12px;margin:26px 0 28px">
+        <div class="step"><div class="n">1</div><div><h3 data-k="demo.1t">Sube una foto real</h3><p data-k="demo.1d">Dron o celular. La IA segmenta corrosión, grieta, pintura y deformación en segundos.</p></div></div>
+        <div class="step"><div class="n">2</div><div><h3 data-k="demo.2t">Valida como inspector</h3><p data-k="demo.2d">Confirmar, corregir o descartar cada hallazgo, con severidad y confianza a la vista.</p></div></div>
+        <div class="step"><div class="n">3</div><div><h3 data-k="demo.3t">Genera el informe ISO</h3><p data-k="demo.3d">Grado Ri, preparación de superficie, esquema de pintura y costo estimado de reparación.</p></div></div>
+      </div>
+      <div class="cta">
+        <a class="btn live" id="applink-demo" href="http://localhost:3000" target="_blank" rel="noopener" style="font-size:15px;padding:13px 24px">
+          <span class="dot"></span><span data-k="demo.btn">Abrir la app</span>
+        </a>
+        <a class="btn ghost" href="#contacto" data-k="demo.btn2">Agendar una demo</a>
+      </div>
+      <p class="note" data-k="demo.note">La app se ejecuta localmente en el equipo de la demostración (http://localhost:3000). Si estás viendo este sitio desde otro computador, escríbenos y coordinamos una demo en vivo.</p>
+    </div>
+    <div class="term">
+      <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">vigia · localhost:3000</span></div>
+      <pre><span class="c">$</span> vigia serve
+<span class="k">✔</span> backend FastAPI      <span class="c">:8010</span>
+<span class="k">✔</span> U-Net grietas        <span class="c">CUDA · local</span>
+<span class="k">✔</span> detectores corrosión <span class="c">· pintura · deformación</span>
+<span class="k">✔</span> gemelo 3D WebODM     <span class="c">listo</span>
+<span class="k">✔</span> motor ISO 4628 / 8501 / 12944
+<span class="k">→</span> app lista en <span class="k">http://localhost:3000</span>
+</pre>
+    </div>
+  </div>
+</section>
+
 <section id="material">
   <div class="wrap">
-    <p class="kicker" data-es="Material" data-en="Materials">Material</p>
-    <h2 data-es="Deck de inversión y pitch comercial" data-en="Investor deck and commercial pitch">Deck de inversión y pitch comercial</h2>
-    <div class="dl" style="margin-top:30px">
+    <div class="rv">
+      <p class="kicker" data-k="mat.kicker">Material</p>
+      <h2 data-k="mat.title">Deck de inversión y pitch comercial</h2>
+    </div>
+    <div class="dl rv" style="margin-top:30px">
       <div class="dlcard">
-        <div class="t" data-es="Deck de inversión · Ronda semilla 2026" data-en="Investor deck · 2026 seed round">Deck de inversión · Ronda semilla 2026</div>
-        <div class="d" data-es="23 láminas: problema, producto, cadena normativa, mercado, panorama competitivo, modelo de ingresos, proyección financiera y la ronda." data-en="23 slides: problem, product, standards chain, market, competitive landscape, revenue model, financial projection and the round.">23 láminas: problema, producto, cadena normativa, mercado, panorama competitivo, modelo de ingresos, proyección financiera y la ronda.</div>
-        <a class="btn" href="VigIA_Deck_Inversion_2026.pdf" data-es="Descargar PDF" data-en="Download PDF">Descargar PDF</a>
+        <div class="t" data-k="mat.1t">Deck de inversión · Ronda semilla 2026</div>
+        <p class="d" data-k="mat.1d">23 láminas: problema, producto, cadena normativa, mercado, panorama competitivo, modelo de ingresos, proyección financiera y la ronda.</p>
+        <a class="btn" href="VigIA_Deck_Inversion_2026.pdf" data-k="mat.dl">Descargar PDF</a>
       </div>
       <div class="dlcard">
-        <div class="t" data-es="Pitch comercial · Cliente" data-en="Commercial pitch · Customer">Pitch comercial · Cliente</div>
-        <div class="d" data-es="13 láminas: dolor, solución, entregable, ROI comparado, comparativa de mercado, planes y cómo empieza el piloto." data-en="13 slides: pain, solution, deliverable, ROI comparison, market comparison, pricing and how the pilot starts.">13 láminas: dolor, solución, entregable, ROI comparado, comparativa de mercado, planes y cómo empieza el piloto.</div>
-        <a class="btn" href="VigIA_Pitch_Comercial_2026.pdf" data-es="Descargar PDF" data-en="Download PDF">Descargar PDF</a>
+        <div class="t" data-k="mat.2t">Pitch comercial · Cliente</div>
+        <p class="d" data-k="mat.2d">14 láminas: dolor, solución, entregable, ROI comparado, comparativa de mercado, planes y cómo empieza el piloto.</p>
+        <a class="btn" href="VigIA_Pitch_Comercial_2026.pdf" data-k="mat.dl2">Descargar PDF</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACTO -->
-<section id="contacto" style="background:linear-gradient(120deg,#0b1a2b,#16304a)">
-  <div class="wrap">
-    <p class="kicker" data-es="Siguiente paso" data-en="Next step">Siguiente paso</p>
-    <h2 data-es="15 minutos. Un resultado real sobre una planta como la tuya." data-en="15 minutes. A real result on a plant like yours.">15 minutos. Un resultado real sobre una planta como la tuya.</h2>
-    <p class="lead" data-es="Te mostramos el gemelo 3D y el informe completo de una inspección real — y definimos juntos cuál sería tu activo piloto." data-en="We'll walk you through the 3D twin and the full report of a real inspection — and together define which asset would be your pilot.">Te mostramos el gemelo 3D y el informe completo de una inspección real — y definimos juntos cuál sería tu activo piloto.</p>
+<section id="contacto" class="band">
+  <div class="wrap rv">
+    <p class="kicker" data-k="ct.kicker">Siguiente paso</p>
+    <h2 data-k="ct.title">15 minutos. Un resultado real sobre una planta como la tuya.</h2>
+    <p class="lead" data-k="ct.lead">Te mostramos el gemelo 3D y el informe completo de una inspección real — y definimos juntos cuál sería tu activo piloto.</p>
     <div class="cta" style="margin-top:28px">
-      <a class="btn" href="mailto:jespinozallanos@gmail.com?subject=Piloto%20VigIA" data-es="Escribir a Julio Espinoza" data-en="Email Julio Espinoza">Escribir a Julio Espinoza</a>
+      <a class="btn" href="mailto:jespinozallanos@gmail.com?subject=Piloto%20VigIA" data-k="ct.btn">Escribir a Julio Espinoza</a>
       <a class="btn ghost" href="tel:+56976357290">+56 9 7635 7290</a>
     </div>
     <p style="margin-top:22px;color:var(--muted);font-size:15px">
@@ -379,29 +602,346 @@
 
 <footer>
   <div class="wrap">
-    <div class="logo" style="margin-bottom:12px;font-size:24px"><svg class="mk" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 3.4 55.7 17.1v27.8L32 58.6 8.3 44.9V17.1z" stroke="#e08a4f" stroke-width="3.2" stroke-linejoin="round"/><circle cx="32" cy="31" r="12.4" stroke="#fff" stroke-width="2.6" opacity=".92"/><path d="M32 12.2v6.2M32 43.8V50M12.8 31h6.2M45 31h6.2" stroke="#e08a4f" stroke-width="2.6" stroke-linecap="round"/><path d="M25.2 31.4 30.2 36.4 39.4 25.8" stroke="#2f9b8f" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#fff">Vig</span><span>IA</span></div>
-    <p style="margin:0" data-es="Inspección estructural con inteligencia artificial · Chile → Latinoamérica" data-en="Structural inspection powered by artificial intelligence · Chile → Latin America">Inspección estructural con inteligencia artificial · Chile → Latinoamérica</p>
+    <div class="logo" style="margin-bottom:12px;font-size:24px">
+      <svg class="mk" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M32 3.4 55.7 17.1v27.8L32 58.6 8.3 44.9V17.1z" stroke="#e08a4f" stroke-width="3.2" stroke-linejoin="round"/>
+        <circle cx="32" cy="31" r="12.4" stroke="#fff" stroke-width="2.6" opacity=".92"/>
+        <path d="M32 12.2v6.2M32 43.8V50M12.8 31h6.2M45 31h6.2" stroke="#e08a4f" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M25.2 31.4 30.2 36.4 39.4 25.8" stroke="#2f9b8f" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg><span>Vig</span><span class="ia">IA</span>
+    </div>
+    <p style="margin:0 0 6px" data-k="ft.tag">Copiloto de inspección estructural con gemelo digital 3D. La IA propone, tu experto decide. Chile → Latinoamérica.</p>
     <p style="margin:0 0 6px"><strong style="color:#fff">Julio Espinoza Llanos</strong> · <a href="mailto:jespinozallanos@gmail.com">jespinozallanos@gmail.com</a> · <a href="tel:+56976357290">+56 9 7635 7290</a></p>
-    <p class="note" data-es="Los costos de reparación se entregan como rango preliminar de referencia. Todo informe es validado y firmado por un inspector responsable; VigIA es soporte a la decisión, no reemplazo del criterio experto." data-en="Repair costs are provided as a preliminary reference range. Every report is validated and signed by a responsible inspector; VigIA is decision support, not a replacement for expert judgement.">Los costos de reparación se entregan como rango preliminar de referencia. Todo informe es validado y firmado por un inspector responsable; VigIA es soporte a la decisión, no reemplazo del criterio experto.</p>
+    <p class="note" data-k="ft.note">Los costos de reparación se entregan como rango preliminar de referencia. Todo informe es validado y firmado por un inspector responsable; VigIA es soporte a la decisión, no reemplazo del criterio experto.</p>
   </div>
 </footer>
 
 <script>
+const DICT = {
+en:{
+"nav.app":"Open the app","hero.cta3":"See the live app",
+"mock.overlay":"AI draft \u00b7 conf 0.91","mock.valid":"Validated","mock.diag":"Diagnosis (draft)","mock.verdict":"Moderate","mock.chip":"Placed on the 3D twin",
+"demo.kicker":"Live demo","demo.title":"Step into the platform right now",
+"demo.lead":"During the presentation the app runs on this very machine. One click and you are inside the real dashboard: upload a photo, watch the segmentation, validate a finding and generate the ISO report.",
+"demo.1t":"Upload a real photo","demo.1d":"Drone or phone. The AI segments corrosion, cracks, paint and deformation in seconds.",
+"demo.2t":"Validate as the inspector","demo.2d":"Confirm, correct or discard each finding, with severity and confidence in plain view.",
+"demo.3t":"Generate the ISO report","demo.3d":"Ri grade, surface preparation, coating system and estimated repair cost.",
+"demo.btn":"Open the app","demo.btn2":"Book a demo",
+"demo.note":"The app runs locally on the demo machine (http://localhost:3000). If you are viewing this site from another computer, write to us and we will arrange a live demo.",
+"nav.sol":"Solutions","nav.deliv":"Deliverable","nav.cop":"Copilot","nav.comp":"Comparison","nav.plans":"Pricing","nav.cta":"Request a pilot",
+"hero.eyebrow":"The structural-inspection copilot","hero.t1":"From drone to diagnosis,","hero.t2":"your expert in command.",
+"hero.sub":"VigIA detects corrosion, cracks, paint degradation and deformation and places them on a 3D digital twin. The AI drafts the diagnosis in minutes; your inspector validates it in one click — and the system learns from your team.",
+"hero.c1":"The expert validates and signs","hero.c2":"No scaffolding, no work at height","hero.c3":"Report validated the same day","hero.cta1":"Request a pilot","hero.cta2":"Download the deck",
+"prob.kicker":"The problem","prob.title":"Inspection today is expensive, slow and dangerous","prob.lead":"In practice, many assets are not inspected until something fails.",
+"prob.1":"for a traditional inspection using scaffolding or rope access.","prob.2t":"Days or weeks","prob.2":"of permits, rigging and work at height, with production halted.","prob.3t":"Subjective report","prob.3":"loose photos, not comparable year over year nor between inspectors.",
+"prob.bt":"The leak stops the line. Corrosion punctures the tank.","prob.bd":"By the time damage surfaces, repair costs 3 to 10 times more. That overrun never shows up as a budget line: it shows up as unplanned downtime.",
+"sol.kicker":"Solutions","sol.title":"A platform that multiplies your team",
+"sol.1t":"Multi-defect copilot","sol.1d":"The AI detects corrosion, cracks, paint and deformation and proposes a draft. Your inspector confirms or corrects in one click.",
+"sol.2t":"3D digital twin","sol.2d":"Every validated defect is anchored to the georeferenced model, with history comparable year over year.",
+"sol.3t":"Learns from your team","sol.3d":"Every validation retrains the AI on YOUR assets. Accuracy rises month over month and is proven in your dashboard.",
+"sol.4t":"Report + forecast","sol.4d":"Inspector-signed report, a preliminary cost range and a degradation trend.",
+"proc.kicker":"How it works","proc.title":"One photo in. An actionable diagnosis out.",
+"proc.1t":"Capture","proc.1d":"Drone, smartphone or the camera you already use. VigIA reads the geolocation and straightens the image.",
+"proc.2t":"AI diagnosis","proc.2d":"Detects and measures corrosion, cracks, paint and deformation, with severity and confidence.",
+"proc.3t":"3D twin","proc.3d":"Every validated finding is anchored to the asset model, with date and evidence.",
+"proc.4t":"Report + cost","proc.4d":"Risk-prioritised, with ISO grading and the estimated repair cost.",
+"det.1t":"Corrosion","det.1d":"Percentage of corroded area, surface in m² and rust grade.",
+"det.2t":"Cracks","det.2d":"Crack tracing and S1–S4 severity against the admissible threshold.",
+"det.3t":"Paint & coating","det.3d":"Blistering, cracking and flaking graded by standard.",
+"det.4t":"Deformation","det.4d":"Dents and geometric deviation against the asset's 3D model.",
+"del.kicker":"The deliverable","del.title":"What you get is not a PDF of photos: it is a budget",
+"del.cap":"VigIA 2D viewer: corrosion and crack masks with the standards-based diagnosis panel.",
+"del.1t":"Rust grade — ISO 4628-3","del.1d":"The measured corroded area is classified from Ri 0 to Ri 5. It stops being one person's judgement and becomes a standard.",
+"del.2t":"Surface preparation — ISO 8501-1","del.2d":"The grade determines the required method: St 2 / St 3 power-tool cleaning, Sa 2 commercial blast or Sa 2½ near-white metal.",
+"del.3t":"Coating system & materials — ISO 12944","del.3d":"Corrosivity category C2 to C5-M, single, double or triple-coat system, litres per coat, abrasive and crew.",
+"del.out":"Result: an auditable report + estimated repair cost, per asset",
+"twin.kicker":"The differentiator","twin.title":"Defects, exactly where they are — and how they change",
+"twin.1t":"A 3D twin of your asset","twin.1d":"Photorealistic model built from the drone flight, navigable in the browser. Nothing to install.",
+"twin.2t":"Every defect anchored to the model","twin.2d":"With date, severity and evidence. One click on the marker opens the full diagnosis.",
+"twin.3t":"Comparable history","twin.3d":"What appeared, what grew and what is stable, campaign against campaign.",
+"twin.cap":"Digital twin with geolocated findings and their standards grade.",
+"cop.kicker":"How it works with your team","cop.title":"The AI proposes. Your inspector decides and signs.",
+"cop.lead":"VigIA doesn't replace expert judgement — it multiplies it. It delivers a draft diagnosis in minutes; your specialist reviews, corrects or discards it in one click. Every report ships validated by a person.",
+"cop.1t":"AI detects","cop.1d":"A draft with each finding, its severity and its confidence.",
+"cop.2t":"Expert validates","cop.2d":"Confirm · Correct · Discard, in seconds per finding.",
+"cop.3t":"Signed report","cop.3d":"It ships with the name and signature of the responsible inspector.",
+"cop.4t":"VigIA learns","cop.4d":"Every validation trains the AI on your assets: it improves every month.",
+"cop.quote":"“Validated accuracy on your own assets rises month over month — and is proven in your dashboard.”",
+"imp.kicker":"Impact","imp.title":"The expert in command, powered by AI",
+"imp.1":"defect families the AI proposes","imp.2":"more surface reviewed per inspector","imp.3":"georeferenced twin per asset","imp.4":"traceability, with the inspector's signature",
+"ind.title":"Built for critical assets",
+"ind.1":"Mining","ind.2":"Ports & shipyards","ind.3":"Energy","ind.4":"Oil & gas","ind.5":"Infrastructure","ind.6":"Toll roads","ind.7":"Water & utilities","ind.8":"Pulp & aquaculture",
+"comp.kicker":"Why VigIA","comp.title":"What the market offers — and what each option lacks",
+"comp.lead":"There are good companies in this space. None closes the full path from image to repair budget, in your language and under the standard your auditor demands.",
+"comp.h1":"Category","comp.h2":"Examples","comp.h3":"Where VigIA fits",
+"comp.r1a":"Sensor manufacturers","comp.r1b":"They sell you the sensor, not the diagnosis: no ISO grade, no materials, no auditable report. VigIA runs on the camera you already own.",
+"comp.r2a":"Confined-space drones","comp.r2b":"They solve access, not diagnosis. A natural ally: their drone flies, VigIA analyses the footage and issues the report.",
+"comp.r3a":"Vendor-locked solutions","comp.r3b":"Proactive hull cleaning tied to the manufacturer's own coating. VigIA is independent of whichever paint brand you use.",
+"comp.r4a":"Corrosion specialists","comp.r4b":"Rigorous quantitative corrosion mapping, but a single damage family, no comparable 3D twin and no quoting.",
+"comp.r5a":"Renewables verticals","comp.r5b":"Excellent in wind and solar, with autonomous flight and regional operations. Their model does not cover heavy-industry corrosion under ISO 12944.",
+"comp.r6a":"Drone service operators","comp.r6c":"Aerodronia and local operators","comp.r6b":"They fly well and hand over images or a basic PDF. For us they are a channel, not a competitor: they fly, VigIA diagnoses and reports.",
+"comp.out":"VigIA: multi-defect in a single engine + ISO chain through to the budget + comparable 3D twin + hardware-independent + local support.",
+"pl.kicker":"Annual licences","pl.title":"You license assets under monitoring, not reports",
+"pl.lead":"Within your licensed portfolio you generate every diagnosis, report and ISO quotation you need. No charge per processed image or per PDF issued.",
+"pl.year":"/year","pl.year2":"/year","pl.top":"MOST CHOSEN",
+"pl.s.mo":"US$ 300 / month","pl.s.cap":"Up to 10 assets","pl.s.1":"Inspectors, engineering firms and small sites","pl.s.2":"Multi-defect with severity and ISO grade","pl.s.3":"Unlimited reports and quotations","pl.s.4":"Basic history per asset",
+"pl.p.mo":"US$ 2,000 / month","pl.p.cap":"Up to 100 assets","pl.p.1":"Industrial site, port or mid-size plant","pl.p.2":"Multi-site with comparable history","pl.p.3":"3D twin and degradation forecast","pl.p.4":"US$ 3,000 onboarding",
+"pl.e.price":"From US$ 80,000","pl.e.mo":"Per year, tailored to the portfolio","pl.e.cap":"Unlimited portfolio","pl.e.1":"Corporations, large mining and fleets","pl.e.2":"API, CMMS integrations and on-premise","pl.e.3":"SSO, SLA and dedicated support","pl.e.4":"US$ 15,000 onboarding",
+"rules.title":"No fine print",
+"rules.1t":"No charge per report or per photo","rules.1d":"Generate every report, diagnosis and ISO quotation you need. No cost per processed image or per PDF issued.",
+"rules.2t":"The asset is the unit","rules.2d":"An asset is a piece of equipment, vessel, tank, bridge or structure with a permanent identity in the system. Counted once, not once per campaign.",
+"rules.3t":"Repeating costs nothing extra","rules.3d":"Successive campaigns on the same asset during the year carry no extra charge. The more you inspect it, the more your timeline is worth.",
+"pl.pilot.t":"Before any plan, the pilot:","pl.pilot.d":"one real asset, a fixed price agreed before we fly, a validated report the same day — and if we find nothing actionable, you don't pay for it.",
+"mat.kicker":"Materials","mat.title":"Investor deck and commercial pitch",
+"mat.1t":"Investor deck · 2026 seed round","mat.1d":"23 slides: problem, product, standards chain, market, competitive landscape, revenue model, financial projection and the round.",
+"mat.2t":"Commercial pitch · Customer","mat.2d":"14 slides: pain, solution, deliverable, ROI comparison, market comparison, pricing and how the pilot starts.",
+"mat.dl":"Download PDF","mat.dl2":"Download PDF",
+"ct.kicker":"Next step","ct.title":"15 minutes. A real result on a plant like yours.","ct.lead":"We'll walk you through the 3D twin and the full report of a real inspection — and together define which asset would be your pilot.","ct.btn":"Email Julio Espinoza",
+"ft.tag":"Structural-inspection copilot with a 3D digital twin. The AI proposes, your expert decides. Chile → Latin America.",
+"ft.note":"Repair costs are provided as a preliminary reference range. Every report is validated and signed by a responsible inspector; VigIA is decision support, not a replacement for expert judgement."
+},
+zh:{
+"nav.app":"\u6253\u5f00\u5e94\u7528","hero.cta3":"\u67e5\u770b\u5728\u7ebf\u5e94\u7528",
+"mock.overlay":"AI \u8349\u7a3f \u00b7 \u7f6e\u4fe1\u5ea6 0.91","mock.valid":"\u5df2\u786e\u8ba4","mock.diag":"\u8bca\u65ad\uff08\u8349\u7a3f\uff09","mock.verdict":"\u4e2d\u5ea6","mock.chip":"\u5df2\u5b9a\u4f4d\u5230\u4e09\u7ef4\u5b6a\u751f",
+"demo.kicker":"\u73b0\u573a\u6f14\u793a","demo.title":"\u73b0\u5728\u5c31\u8fdb\u5165\u5e73\u53f0",
+"demo.lead":"\u6f14\u793a\u671f\u95f4\uff0c\u5e94\u7528\u5c31\u8fd0\u884c\u5728\u8fd9\u53f0\u7535\u8111\u4e0a\u3002\u4e00\u952e\u5373\u53ef\u8fdb\u5165\u771f\u5b9e\u770b\u677f\uff1a\u4e0a\u4f20\u7167\u7247\u3001\u67e5\u770b\u5206\u5272\u7ed3\u679c\u3001\u786e\u8ba4\u53d1\u73b0\u5e76\u751f\u6210 ISO \u62a5\u544a\u3002",
+"demo.1t":"\u4e0a\u4f20\u4e00\u5f20\u771f\u5b9e\u7167\u7247","demo.1d":"\u65e0\u4eba\u673a\u6216\u624b\u673a\u62cd\u6444\u3002AI \u5728\u6570\u79d2\u5185\u5206\u5272\u8150\u8680\u3001\u88c2\u7f1d\u3001\u6d82\u5c42\u4e0e\u53d8\u5f62\u3002",
+"demo.2t":"\u4ee5\u68c0\u6d4b\u5458\u8eab\u4efd\u786e\u8ba4","demo.2d":"\u9010\u9879\u786e\u8ba4\u3001\u66f4\u6b63\u6216\u5254\u9664\uff0c\u4e25\u91cd\u5ea6\u4e0e\u7f6e\u4fe1\u5ea6\u4e00\u76ee\u4e86\u7136\u3002",
+"demo.3t":"\u751f\u6210 ISO \u62a5\u544a","demo.3d":"Ri \u7b49\u7ea7\u3001\u8868\u9762\u5904\u7406\u3001\u6d82\u88c5\u4f53\u7cfb\u4e0e\u9884\u4f30\u7ef4\u4fee\u6210\u672c\u3002",
+"demo.btn":"\u6253\u5f00\u5e94\u7528","demo.btn2":"\u9884\u7ea6\u6f14\u793a",
+"demo.note":"\u5e94\u7528\u5728\u6f14\u793a\u8bbe\u5907\u672c\u5730\u8fd0\u884c\uff08http://localhost:3000\uff09\u3002\u82e5\u4f60\u4ece\u5176\u4ed6\u7535\u8111\u8bbf\u95ee\u672c\u7ad9\uff0c\u8bf7\u8054\u7cfb\u6211\u4eec\u5b89\u6392\u73b0\u573a\u6f14\u793a\u3002",
+"nav.sol":"解决方案","nav.deliv":"交付物","nav.cop":"副驾驶","nav.comp":"对比","nav.plans":"价格","nav.cta":"申请试点",
+"hero.eyebrow":"结构检测副驾驶","hero.t1":"从无人机到诊断，","hero.t2":"由你的专家主导。",
+"hero.sub":"VigIA 检测腐蚀、裂缝、涂层劣化与变形，并定位到三维数字孪生上。AI 在数分钟内给出诊断草稿；你的检测员一键确认——系统也在向你的团队学习。",
+"hero.c1":"由专家确认并签署","hero.c2":"无需脚手架，无高空作业","hero.c3":"当天交付经验证报告","hero.cta1":"申请试点","hero.cta2":"下载资料",
+"prob.kicker":"问题","prob.title":"今天的检测昂贵、缓慢且危险","prob.lead":"实际上，许多资产直到出事才会被检测。",
+"prob.1":"一次使用脚手架或绳索作业的传统检测费用。","prob.2t":"数天或数周","prob.2":"用于许可、搭建与高空作业，往往还要停产。","prob.3t":"主观报告","prob.3":"零散照片，无法逐年对比，也无法在不同检测员之间对比。",
+"prob.bt":"渗漏让产线停摆。腐蚀击穿储罐。","prob.bd":"等损伤显现时，维修成本高出 3 到 10 倍。这笔超支不会出现在预算里，而是以非计划停机的形式出现。",
+"sol.kicker":"解决方案","sol.title":"一个放大你团队能力的平台",
+"sol.1t":"多缺陷副驾驶","sol.1d":"AI 检测腐蚀、裂缝、涂层与变形并给出草稿。你的检测员一键确认或更正。",
+"sol.2t":"三维数字孪生","sol.2d":"每个已确认的缺陷都锚定到带地理参考的模型上，可逐年对比历史。",
+"sol.3t":"向你的团队学习","sol.3d":"每次确认都会在你的资产上再训练 AI。精度逐月提升，并在看板中得到验证。",
+"sol.4t":"报告 + 预测","sol.4d":"由检测员签署的报告、初步成本区间与劣化趋势。",
+"proc.kicker":"工作原理","proc.title":"一张照片进入，一份可执行的诊断产出。",
+"proc.1t":"采集","proc.1d":"无人机、手机或你已有的相机。VigIA 读取地理位置并校正图像。",
+"proc.2t":"AI 诊断","proc.2d":"检测并量化腐蚀、裂缝、涂层与变形，附严重度与置信度。",
+"proc.3t":"三维孪生","proc.3d":"每个已确认的发现都锚定到资产模型，附日期与证据。",
+"proc.4t":"报告 + 成本","proc.4d":"按风险排序，附 ISO 等级与预估维修成本。",
+"det.1t":"腐蚀","det.1d":"腐蚀面积百分比、平方米面积与锈蚀等级。",
+"det.2t":"裂缝","det.2d":"裂缝走向与 S1–S4 严重度，对照允许阈值。",
+"det.3t":"涂层与油漆","det.3d":"起泡、开裂与剥落，按标准分级。",
+"det.4t":"变形","det.4d":"凹陷与几何偏差，对照资产的三维模型。",
+"del.kicker":"交付物","del.title":"你拿到的不是一份照片 PDF，而是一份预算",
+"del.cap":"VigIA 二维视图：腐蚀与裂缝掩膜及其规范诊断面板。",
+"del.1t":"锈蚀等级 — ISO 4628-3","del.1d":"实测腐蚀面积被划分为 Ri 0 至 Ri 5 等级。不再是个人判断，而是标准。",
+"del.2t":"表面处理 — ISO 8501-1","del.2d":"等级决定所需方法：St 2 / St 3 动力工具清理、Sa 2 商业级喷砂或 Sa 2½ 近白金属级。",
+"del.3t":"涂装体系与材料 — ISO 12944","del.3d":"腐蚀等级 C2 至 C5-M，单层、双层或三层体系，每层升数、磨料与施工班组。",
+"del.out":"结果：可审计的报告 + 每个资产的预估维修成本",
+"twin.kicker":"差异化","twin.title":"缺陷的准确位置，以及它们如何变化",
+"twin.1t":"你资产的三维孪生","twin.1d":"由无人机飞行生成的照片级模型，可在浏览器中浏览，无需安装。",
+"twin.2t":"每个缺陷锚定到模型","twin.2d":"附日期、严重度与证据。点击标记即可打开完整诊断。",
+"twin.3t":"可对比的历史","twin.3d":"逐次对比：出现了什么、扩大了什么、保持稳定的是什么。",
+"twin.cap":"带地理定位发现与规范等级的数字孪生。",
+"cop.kicker":"如何与你的团队协作","cop.title":"AI 提出建议，检测员决定并签署。",
+"cop.lead":"VigIA 不取代专家判断，而是放大它。它在数分钟内给出诊断草稿；你的专家一键复核、更正或剔除。每份报告都由真人确认后发出。",
+"cop.1t":"AI 检测","cop.1d":"包含每个发现、严重度与置信度的草稿。",
+"cop.2t":"专家确认","cop.2d":"确认 · 更正 · 剔除，每项仅需数秒。",
+"cop.3t":"签署报告","cop.3d":"附上负责检测员的姓名与签名。",
+"cop.4t":"VigIA 学习","cop.4d":"每次确认都会在你的资产上训练 AI：逐月改进。",
+"cop.quote":"“你资产上的已验证精度逐月提升——并在看板中得到证明。”",
+"imp.kicker":"成效","imp.title":"专家主导，由 AI 赋能",
+"imp.1":"AI 提出的缺陷类别","imp.2":"每位检测员复核的面积倍数","imp.3":"每个资产的地理参考孪生","imp.4":"可追溯性，含检测员签署",
+"ind.title":"为关键资产而打造",
+"ind.1":"矿业","ind.2":"港口与船厂","ind.3":"能源","ind.4":"石油与天然气","ind.5":"基础设施","ind.6":"收费公路","ind.7":"供水与市政","ind.8":"制浆与水产养殖",
+"comp.kicker":"为何选择 VigIA","comp.title":"市场上有什么——以及每种方案缺什么",
+"comp.lead":"这个领域有不少优秀公司。但没有一家能打通从图像到维修预算的完整路径，并符合审计方要求的规范。",
+"comp.h1":"类别","comp.h2":"代表","comp.h3":"VigIA 的位置",
+"comp.r1a":"传感器厂商","comp.r1b":"他们卖的是传感器，不是诊断：没有 ISO 等级、没有材料清单、没有可审计报告。VigIA 用你已有的相机就能运行。",
+"comp.r2a":"受限空间无人机","comp.r2b":"他们解决进入问题，不解决诊断。天然的合作伙伴：他们飞，VigIA 分析影像并出具报告。",
+"comp.r3a":"绑定单一供应商的方案","comp.r3b":"主动式船体清洗绑定厂商自家涂料。VigIA 与你使用的涂料品牌无关。",
+"comp.r4a":"腐蚀专家","comp.r4b":"定量腐蚀测绘严谨，但仅覆盖一类损伤，没有可对比的三维孪生，也不出报价。",
+"comp.r5a":"新能源垂直领域","comp.r5b":"在风电与光伏领域出色，具备自主飞行与区域化运营。其模型不覆盖 ISO 12944 下的重工业腐蚀。",
+"comp.r6a":"无人机服务商","comp.r6c":"Aerodronia 及本地运营商","comp.r6b":"飞得好，交付图像或基础 PDF。对我们而言他们是渠道而非竞争者：他们飞，VigIA 诊断并出报告。",
+"comp.out":"VigIA：单一引擎多缺陷 + 直达预算的 ISO 链路 + 可对比三维孪生 + 不绑定硬件 + 本地支持。",
+"pl.kicker":"年度许可","pl.title":"你购买的是纳入监测的资产，而不是报告",
+"pl.lead":"在你签约的资产组合内，你可以生成所需的全部诊断、报告与 ISO 报价。不按处理图像数计费，也不按出具的 PDF 计费。",
+"pl.year":"/年","pl.year2":"/年","pl.top":"最多人选择",
+"pl.s.mo":"300 美元 / 月","pl.s.cap":"最多 10 个资产","pl.s.1":"检测员、工程公司与小型作业面","pl.s.2":"多缺陷，含严重度与 ISO 等级","pl.s.3":"报告与报价不限量","pl.s.4":"每个资产的基础历史",
+"pl.p.mo":"2,000 美元 / 月","pl.p.cap":"最多 100 个资产","pl.p.1":"工业作业面、港口或中型工厂","pl.p.2":"多站点，含可对比历史","pl.p.3":"三维孪生与劣化预测","pl.p.4":"启用服务 3,000 美元",
+"pl.e.price":"80,000 美元起","pl.e.mo":"每年，按资产组合定制","pl.e.cap":"资产组合不限","pl.e.1":"集团客户、大型矿业与船队","pl.e.2":"API、CMMS 集成与本地部署","pl.e.3":"SSO、SLA 与专属支持","pl.e.4":"启用服务 15,000 美元",
+"rules.title":"没有隐藏条款",
+"rules.1t":"不按报告或照片收费","rules.1d":"生成你需要的全部报告、诊断与 ISO 报价。不按处理图像数计费，也不按出具的 PDF 计费。",
+"rules.2t":"以资产为计量单位","rules.2d":"资产指在系统中具有永久标识的设备、船舶、储罐、桥梁或结构。只计一次，而非每次作业计一次。",
+"rules.3t":"重复检测不额外收费","rules.3d":"同一资产在年度内的后续作业不产生额外费用。检测得越多，你的时间线越有价值。",
+"pl.pilot.t":"签约前先做试点：","pl.pilot.d":"一个真实资产，飞行前约定固定价格，当天交付经验证的报告——若未发现可行动项，则不收费。",
+"mat.kicker":"资料","mat.title":"投资材料与商务提案",
+"mat.1t":"投资材料 · 2026 种子轮","mat.1d":"23 页：问题、产品、规范链路、市场、竞争格局、收入模式、财务预测与本轮融资。",
+"mat.2t":"商务提案 · 客户","mat.2d":"14 页：痛点、方案、交付物、ROI 对比、市场对比、价格与试点如何开始。",
+"mat.dl":"下载 PDF","mat.dl2":"下载 PDF",
+"ct.kicker":"下一步","ct.title":"15 分钟。在与你相似的工厂上看到真实结果。","ct.lead":"我们会带你看一次真实检测的三维孪生与完整报告——并共同确定你的试点资产。","ct.btn":"联系 Julio Espinoza",
+"ft.tag":"配三维数字孪生的结构检测副驾驶。AI 提出建议，专家做决定。智利 → 拉丁美洲。",
+"ft.note":"维修成本以初步参考区间形式提供。每份报告均由负责检测员确认并签署；VigIA 是决策支持，而非专家判断的替代。"
+},
+fr:{
+"nav.app":"Ouvrir l\u2019app","hero.cta3":"Voir l\u2019app en direct",
+"mock.overlay":"Brouillon IA \u00b7 conf 0.91","mock.valid":"Valid\u00e9","mock.diag":"Diagnostic (brouillon)","mock.verdict":"Mod\u00e9r\u00e9","mock.chip":"Plac\u00e9 sur le jumeau 3D",
+"demo.kicker":"D\u00e9mo en direct","demo.title":"Entrez dans la plateforme d\u00e8s maintenant",
+"demo.lead":"Pendant la pr\u00e9sentation, l\u2019application tourne sur cette machine. Un clic et vous \u00eates dans le tableau de bord r\u00e9el : chargez une photo, observez la segmentation, validez un constat et g\u00e9n\u00e9rez le rapport ISO.",
+"demo.1t":"Chargez une photo r\u00e9elle","demo.1d":"Drone ou smartphone. L\u2019IA segmente corrosion, fissures, peinture et d\u00e9formation en quelques secondes.",
+"demo.2t":"Validez comme inspecteur","demo.2d":"Confirmer, corriger ou \u00e9carter chaque constat, s\u00e9v\u00e9rit\u00e9 et confiance \u00e0 l\u2019\u00e9cran.",
+"demo.3t":"G\u00e9n\u00e9rez le rapport ISO","demo.3d":"Grade Ri, pr\u00e9paration de surface, syst\u00e8me de peinture et co\u00fbt de r\u00e9paration estim\u00e9.",
+"demo.btn":"Ouvrir l\u2019app","demo.btn2":"Planifier une d\u00e9mo",
+"demo.note":"L\u2019application s\u2019ex\u00e9cute localement sur la machine de d\u00e9monstration (http://localhost:3000). Si vous consultez ce site depuis un autre ordinateur, \u00e9crivez-nous et nous organiserons une d\u00e9mo en direct.",
+"nav.sol":"Solutions","nav.deliv":"Livrable","nav.cop":"Copilote","nav.comp":"Comparatif","nav.plans":"Tarifs","nav.cta":"Demander un pilote",
+"hero.eyebrow":"Le copilote d'inspection structurelle","hero.t1":"Du drone au diagnostic,","hero.t2":"votre expert aux commandes.",
+"hero.sub":"VigIA détecte la corrosion, les fissures, la dégradation de peinture et la déformation et les place sur un jumeau numérique 3D. L'IA propose le diagnostic en minutes ; votre inspecteur le valide en un clic — et le système apprend de votre équipe.",
+"hero.c1":"L'expert valide et signe","hero.c2":"Sans échafaudage ni travail en hauteur","hero.c3":"Rapport validé le jour même","hero.cta1":"Demander un pilote","hero.cta2":"Télécharger le dossier",
+"prob.kicker":"Le problème","prob.title":"Inspecter aujourd'hui coûte cher, prend du temps et reste dangereux","prob.lead":"En pratique, beaucoup d'actifs ne sont pas inspectés avant qu'une défaillance survienne.",
+"prob.1":"pour une inspection traditionnelle avec échafaudage ou accès sur corde.","prob.2t":"Des jours ou des semaines","prob.2":"de permis, de montage et de travail en hauteur, souvent avec la production à l'arrêt.","prob.3t":"Rapport subjectif","prob.3":"des photos éparses, non comparables d'une année à l'autre ni entre inspecteurs.",
+"prob.bt":"La fuite arrête la ligne. La corrosion perce la cuve.","prob.bd":"Quand le dommage apparaît, réparer coûte 3 à 10 fois plus cher. Ce surcoût n'apparaît sur aucune ligne budgétaire : il arrive sous forme d'arrêt non planifié.",
+"sol.kicker":"Solutions","sol.title":"Une plateforme qui démultiplie votre équipe",
+"sol.1t":"Copilote multi-défauts","sol.1d":"L'IA détecte corrosion, fissures, peinture et déformation et propose un brouillon. Votre inspecteur confirme ou corrige en un clic.",
+"sol.2t":"Jumeau numérique 3D","sol.2d":"Chaque défaut validé est ancré au modèle géoréférencé, avec un historique comparable d'année en année.",
+"sol.3t":"Apprend de votre équipe","sol.3d":"Chaque validation réentraîne l'IA sur VOS actifs. La précision augmente mois après mois et se prouve dans votre tableau de bord.",
+"sol.4t":"Rapport + prévision","sol.4d":"Rapport signé par l'inspecteur, fourchette de coût préliminaire et tendance de dégradation.",
+"proc.kicker":"Fonctionnement","proc.title":"Une photo entre. Un diagnostic exploitable sort.",
+"proc.1t":"Capture","proc.1d":"Drone, smartphone ou la caméra que vous utilisez déjà. VigIA lit la géolocalisation et redresse l'image.",
+"proc.2t":"Diagnostic IA","proc.2d":"Détecte et mesure corrosion, fissures, peinture et déformation, avec sévérité et confiance.",
+"proc.3t":"Jumeau 3D","proc.3d":"Chaque constat validé est ancré au modèle de l'actif, avec date et preuve.",
+"proc.4t":"Rapport + coût","proc.4d":"Priorisé par risque, avec grade ISO et coût de réparation estimé.",
+"det.1t":"Corrosion","det.1d":"Pourcentage de surface corrodée, surface en m² et grade de rouille.",
+"det.2t":"Fissures","det.2d":"Tracé de la fissure et sévérité S1–S4 face au seuil admissible.",
+"det.3t":"Peinture et revêtement","det.3d":"Cloquage, faïençage et écaillage gradués par la norme.",
+"det.4t":"Déformation","det.4d":"Bosses et écart géométrique face au modèle 3D de l'actif.",
+"del.kicker":"Le livrable","del.title":"Ce que vous recevez n'est pas un PDF de photos : c'est un budget",
+"del.cap":"Visionneuse 2D de VigIA : masques de corrosion et de fissure avec le panneau de diagnostic normatif.",
+"del.1t":"Grade de rouille — ISO 4628-3","del.1d":"La surface corrodée mesurée est classée de Ri 0 à Ri 5. Ce n'est plus le jugement d'une personne, c'est une norme.",
+"del.2t":"Préparation de surface — ISO 8501-1","del.2d":"Le grade détermine la méthode exigée : nettoyage mécanique St 2 / St 3, décapage commercial Sa 2 ou métal presque blanc Sa 2½.",
+"del.3t":"Système de peinture et matériaux — ISO 12944","del.3d":"Catégorie de corrosivité C2 à C5-M, système mono, bi ou tricouche, litres par couche, abrasif et équipe.",
+"del.out":"Résultat : un rapport auditable + le coût de réparation estimé, par actif",
+"twin.kicker":"Le différenciateur","twin.title":"Les défauts, exactement où ils sont — et comment ils évoluent",
+"twin.1t":"Un jumeau 3D de votre actif","twin.1d":"Modèle photoréaliste généré depuis le vol du drone, navigable dans le navigateur. Rien à installer.",
+"twin.2t":"Chaque défaut ancré au modèle","twin.2d":"Avec date, sévérité et preuve. Un clic sur le marqueur ouvre le diagnostic complet.",
+"twin.3t":"Historique comparable","twin.3d":"Ce qui est apparu, ce qui a grandi et ce qui est stable, campagne après campagne.",
+"twin.cap":"Jumeau numérique avec constats géolocalisés et leur grade normatif.",
+"cop.kicker":"Comment ça marche avec votre équipe","cop.title":"L'IA propose. Votre inspecteur décide et signe.",
+"cop.lead":"VigIA ne remplace pas le jugement expert : il le démultiplie. Il livre un brouillon de diagnostic en minutes ; votre spécialiste le révise, corrige ou écarte en un clic. Chaque rapport part validé par une personne.",
+"cop.1t":"L'IA détecte","cop.1d":"Un brouillon avec chaque constat, sa sévérité et sa confiance.",
+"cop.2t":"L'expert valide","cop.2d":"Confirmer · Corriger · Écarter, en quelques secondes par constat.",
+"cop.3t":"Rapport signé","cop.3d":"Il part avec le nom et la signature de l'inspecteur responsable.",
+"cop.4t":"VigIA apprend","cop.4d":"Chaque validation entraîne l'IA sur vos actifs : elle s'améliore chaque mois.",
+"cop.quote":"« La précision validée sur vos propres actifs augmente mois après mois — et se prouve dans votre tableau de bord. »",
+"imp.kicker":"Impact","imp.title":"L'expert aux commandes, augmenté par l'IA",
+"imp.1":"familles de défauts proposées par l'IA","imp.2":"plus de surface revue par inspecteur","imp.3":"jumeau géoréférencé par actif","imp.4":"traçabilité, avec la signature de l'inspecteur",
+"ind.title":"Conçu pour les actifs critiques",
+"ind.1":"Mines","ind.2":"Ports et chantiers navals","ind.3":"Énergie","ind.4":"Pétrole et gaz","ind.5":"Infrastructures","ind.6":"Concessions autoroutières","ind.7":"Eau et services publics","ind.8":"Pâte à papier et aquaculture",
+"comp.kicker":"Pourquoi VigIA","comp.title":"Ce que propose le marché — et ce qui manque à chaque option",
+"comp.lead":"Il y a de bonnes entreprises dans ce domaine. Aucune ne boucle le chemin complet de l'image au budget de réparation, dans votre langue et selon la norme qu'exige votre auditeur.",
+"comp.h1":"Catégorie","comp.h2":"Exemples","comp.h3":"Où se place VigIA",
+"comp.r1a":"Fabricants de capteurs","comp.r1b":"Ils vendent le capteur, pas le diagnostic : pas de grade ISO, pas de matériaux, pas de rapport auditable. VigIA fonctionne avec la caméra que vous avez déjà.",
+"comp.r2a":"Drones d'espaces confinés","comp.r2b":"Ils résolvent l'accès, pas le diagnostic. Un allié naturel : leur drone vole, VigIA analyse la vidéo et émet le rapport.",
+"comp.r3a":"Solutions liées à un fournisseur","comp.r3b":"Nettoyage proactif de coque lié au revêtement du fabricant lui-même. VigIA est indépendant de la marque de peinture utilisée.",
+"comp.r4a":"Spécialistes de la corrosion","comp.r4b":"Cartographie quantitative rigoureuse, mais une seule famille de dommage, sans jumeau 3D comparable et sans chiffrage.",
+"comp.r5a":"Verticales des renouvelables","comp.r5b":"Excellents en éolien et solaire, avec vol autonome et opération régionale. Leur modèle ne couvre pas la corrosion industrielle lourde selon ISO 12944.",
+"comp.r6a":"Opérateurs de drones","comp.r6c":"Aerodronia et opérateurs locaux","comp.r6b":"Ils volent bien et livrent des images ou un PDF basique. Pour nous ce sont des canaux, pas des concurrents : ils volent, VigIA diagnostique et rapporte.",
+"comp.out":"VigIA : multi-défauts dans un seul moteur + chaîne ISO jusqu'au budget + jumeau 3D comparable + indépendant du matériel + support local.",
+"pl.kicker":"Licences annuelles","pl.title":"Vous licenciez des actifs sous surveillance, pas des rapports",
+"pl.lead":"Dans votre portefeuille sous licence, vous générez tous les diagnostics, rapports et devis ISO nécessaires. Aucun frais par image traitée ni par PDF émis.",
+"pl.year":"/an","pl.year2":"/an","pl.top":"LE PLUS CHOISI",
+"pl.s.mo":"300 US$ / mois","pl.s.cap":"Jusqu'à 10 actifs","pl.s.1":"Inspecteurs, bureaux d'études et petits sites","pl.s.2":"Multi-défauts avec sévérité et grade ISO","pl.s.3":"Rapports et devis illimités","pl.s.4":"Historique de base par actif",
+"pl.p.mo":"2 000 US$ / mois","pl.p.cap":"Jusqu'à 100 actifs","pl.p.1":"Site industriel, port ou usine moyenne","pl.p.2":"Multi-sites avec historique comparable","pl.p.3":"Jumeau 3D et prévision de dégradation","pl.p.4":"Intégration 3 000 US$",
+"pl.e.price":"À partir de 80 000 US$","pl.e.mo":"Par an, sur mesure selon le portefeuille","pl.e.cap":"Portefeuille illimité","pl.e.1":"Grands groupes, mines et flottes","pl.e.2":"API, intégrations GMAO et sur site","pl.e.3":"SSO, SLA et support dédié","pl.e.4":"Intégration 15 000 US$",
+"rules.title":"Sans petits caractères",
+"rules.1t":"Aucun frais par rapport ou par photo","rules.1d":"Générez tous les rapports, diagnostics et devis ISO nécessaires. Aucun coût par image traitée ni par PDF émis.",
+"rules.2t":"L'actif est l'unité","rules.2d":"Un actif est un équipement, navire, réservoir, pont ou structure avec une identité permanente dans le système. Compté une fois, pas une fois par campagne.",
+"rules.3t":"Répéter ne coûte rien de plus","rules.3d":"Les campagnes successives sur le même actif pendant l'année n'entraînent aucun frais supplémentaire. Plus vous l'inspectez, plus votre historique a de valeur.",
+"pl.pilot.t":"Avant le forfait, le pilote :","pl.pilot.d":"un actif réel, un prix fixe convenu avant le vol, un rapport validé le jour même — et si nous ne trouvons rien d'exploitable, vous ne payez pas.",
+"mat.kicker":"Documents","mat.title":"Dossier d'investissement et présentation commerciale",
+"mat.1t":"Dossier d'investissement · Amorçage 2026","mat.1d":"23 diapositives : problème, produit, chaîne normative, marché, paysage concurrentiel, modèle de revenus, projection financière et la levée.",
+"mat.2t":"Présentation commerciale · Client","mat.2d":"14 diapositives : douleur, solution, livrable, comparatif de ROI, comparatif de marché, tarifs et démarrage du pilote.",
+"mat.dl":"Télécharger le PDF","mat.dl2":"Télécharger le PDF",
+"ct.kicker":"Prochaine étape","ct.title":"15 minutes. Un résultat réel sur une usine comme la vôtre.","ct.lead":"Nous vous montrons le jumeau 3D et le rapport complet d'une inspection réelle — et nous définissons ensemble votre actif pilote.","ct.btn":"Écrire à Julio Espinoza",
+"ft.tag":"Copilote d'inspection structurelle avec jumeau numérique 3D. L'IA propose, votre expert décide. Chili → Amérique latine.",
+"ft.note":"Les coûts de réparation sont fournis comme fourchette préliminaire de référence. Chaque rapport est validé et signé par un inspecteur responsable ; VigIA est une aide à la décision, pas un remplacement du jugement expert."
+}
+};
+
 (function(){
-  var es=document.getElementById('btn-es'), en=document.getElementById('btn-en');
-  function set(lang){
-    document.documentElement.lang=lang;
-    document.querySelectorAll('[data-'+lang+']').forEach(function(el){
-      el.textContent=el.getAttribute('data-'+lang);
+  /* ---------- i18n ---------- */
+  const nodes = Array.prototype.slice.call(document.querySelectorAll("[data-k]"));
+  const ES = {};
+  nodes.forEach(function(n){ ES[n.getAttribute("data-k")] = n.textContent; });
+
+  function apply(lang){
+    const d = lang === "es" ? ES : DICT[lang];
+    if (!d) return;
+    nodes.forEach(function(n){
+      const k = n.getAttribute("data-k");
+      const v = d[k] !== undefined ? d[k] : ES[k];
+      if (v !== undefined) n.textContent = v;
     });
-    es.classList.toggle('on',lang==='es');
-    en.classList.toggle('on',lang==='en');
-    try{localStorage.setItem('vigia-lang',lang);}catch(e){}
+    document.documentElement.lang = lang;
+    document.querySelectorAll(".langbtn").forEach(function(b){
+      b.classList.toggle("on", b.getAttribute("data-lang") === lang);
+    });
+    try { localStorage.setItem("vigia-lang", lang); } catch (e) {}
   }
-  es.addEventListener('click',function(){set('es');});
-  en.addEventListener('click',function(){set('en');});
-  var saved=null; try{saved=localStorage.getItem('vigia-lang');}catch(e){}
-  if(saved==='en') set('en');
+  document.querySelectorAll(".langbtn").forEach(function(b){
+    b.addEventListener("click", function(){ apply(b.getAttribute("data-lang")); });
+  });
+  let saved = null;
+  try { saved = localStorage.getItem("vigia-lang"); } catch (e) {}
+  if (saved && saved !== "es") apply(saved);
+
+  /* ---------- app URL (?app=http://192.168.1.20:3000 overrides & persists) ---------- */
+  const DEFAULT_APP = "http://localhost:3000";
+  let appUrl = DEFAULT_APP;
+  try {
+    const q = new URLSearchParams(location.search).get("app");
+    if (q) { appUrl = q; localStorage.setItem("vigia-app-url", q); }
+    else { appUrl = localStorage.getItem("vigia-app-url") || DEFAULT_APP; }
+  } catch (e) {}
+  document.querySelectorAll('a[id^="applink-"]').forEach(function(a){ a.href = appUrl; });
+
+  /* ---------- scroll reveal ---------- */
+  const rv = Array.prototype.slice.call(document.querySelectorAll(".rv"));
+  if (!("IntersectionObserver" in window)) {
+    rv.forEach(function(el){ el.classList.add("in"); });
+  } else {
+    const io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -60px 0px" });
+    rv.forEach(function(el){ io.observe(el); });
+    // hero visible immediately
+    setTimeout(function(){
+      document.querySelectorAll(".hero .rv").forEach(function(el){ el.classList.add("in"); });
+    }, 60);
+  }
+
+  /* ---------- count-up metrics ---------- */
+  const counters = Array.prototype.slice.call(document.querySelectorAll("[data-count]"));
+  function run(el){
+    const target = parseFloat(el.getAttribute("data-count"));
+    const suffix = el.getAttribute("data-suffix") || "";
+    const dur = 1100, t0 = performance.now();
+    function tick(t){
+      const p = Math.min(1, (t - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * e) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  if ("IntersectionObserver" in window && counters.length) {
+    const io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) { run(en.target); io2.unobserve(en.target); }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function(el){ io2.observe(el); });
+  }
 })();
 </script>
 </body>
