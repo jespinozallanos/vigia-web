@@ -37,7 +37,7 @@
   :root{
     --sans:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
     --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
-    --maxw:1320px;--ease:cubic-bezier(.16,1,.3,1);
+    --maxw:1160px;--ease:cubic-bezier(.16,1,.3,1);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -46,7 +46,7 @@
   a{color:var(--accent-text);text-decoration:none}
   a:hover{text-decoration:underline;text-underline-offset:3px}
   :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,4vw,40px)}
   h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;font-variation-settings:"wdth" 112}
   h2{font-size:clamp(28px,3.6vw,44px);font-weight:780;letter-spacing:-.02em;margin-bottom:14px;max-width:24ch}
   h3{font-size:18px;font-weight:700;letter-spacing:-.005em;line-height:1.25}
@@ -75,6 +75,9 @@
   header{position:sticky;top:0;z-index:60;background:var(--header);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
   .nav{display:flex;align-items:center;gap:22px;height:70px}
   .logo{display:flex;align-items:center}
+  .jv{display:flex;flex-direction:column;justify-content:center;gap:3px;padding-left:14px;margin-left:-8px;border-left:1px solid var(--line);height:36px}
+  .jvlbl{font-size:10.5px;line-height:1;color:var(--faint);white-space:nowrap}
+  .jv .lg{height:22px}
   .logo .brand{display:block;height:52px;aspect-ratio:245/120;background:url(data:image/png;base64,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) left center/contain no-repeat}
   [data-theme=light] .logo .brand{filter:url(#logo-on-light)}
   footer .logo .brand{height:72px}
@@ -85,6 +88,10 @@
   .btn:hover{background:var(--accent-hover);text-decoration:none}
   .btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
   .btn.ghost:hover{border-color:var(--accent);background:transparent}
+  .langsel{appearance:none;-webkit-appearance:none;background:transparent url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M1 1l4 4 4-4%27 fill=%27none%27 stroke=%27%238197ad%27 stroke-width=%271.5%27/%3E%3C/svg%3E") no-repeat right 12px center;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:8px 30px 8px 14px;font:600 13px var(--sans);cursor:pointer}
+  .langsel:hover{border-color:var(--accent)}
+  .langsel option{color:#002645;background:#fff}
+  .langs[hidden]{display:none}
   .langs{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px}
   .langbtn{background:transparent;border:0;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:600;padding:5px 10px;border-radius:999px;cursor:pointer}
   .langbtn:hover{color:var(--text)}
@@ -224,7 +231,8 @@
     .mock{margin-bottom:26px}
     .press,.backing .backgrid{grid-template-columns:1fr}
   }
-  @media(max-width:1100px){.navlinks{gap:16px}.nav a.link{font-size:14px}}
+  @media(max-width:1240px){.navlinks{gap:16px}.nav a.link{font-size:14px}.nav{gap:16px}}
+  @media(max-width:1180px){.navlinks{order:10;width:100%;overflow-x:auto;gap:20px;padding:0 0 4px;scrollbar-width:none}}
   @media(max-width:980px){
     .navlinks{order:10;width:100%;overflow-x:auto;gap:20px;padding:0 0 4px;scrollbar-width:none}
     .navlinks::-webkit-scrollbar{display:none}
@@ -242,6 +250,9 @@
     .nav{gap:10px}
     .nav>.btn{display:none}
     .logo .brand{height:44px}
+    .jvlbl{display:none}
+    .jv{padding-left:10px;height:28px}
+    .jv .lg{height:18px}
     .langbtn{padding:5px 7px}
     .g4,.flow{grid-template-columns:1fr}
     .flow .f+.f{border-left:0;border-top:1px solid var(--line)}
@@ -257,6 +268,7 @@
 <header>
   <div class="wrap nav">
     <a class="logo" href="#inicio" aria-label="Vig-IA Tech"><span class="brand"></span></a>
+    <span class="jv"><span class="jvlbl" data-k="ft.partner">Joint venture</span><span class="lg lg-dit" role="img" aria-label="DITNOVA"></span></span>
     <nav class="navlinks" aria-label="Main">
       <a class="link" href="#solucion" data-view-link data-k="nav.sol">Soluciones</a>
       <a class="link" href="#entregable" data-view-link data-k="nav.deliv">Entregable</a>
@@ -266,7 +278,8 @@
       <a class="link" href="#contacto" data-view-link data-k="nav.contact">Contacto</a>
     </nav>
     <span class="spacer"></span>
-    <div class="langs">
+    <select class="langsel" id="langsel" aria-label="Language" onchange="var b=document.querySelector('.langbtn[data-lang='+this.value+']');if(b)b.click()"><option value="es">ES</option><option value="en">EN</option><option value="zh">中文</option><option value="fr">FR</option></select>
+    <div class="langs" hidden>
       <button class="langbtn on" data-lang="es">ES</button>
       <button class="langbtn" data-lang="en">EN</button>
       <button class="langbtn" data-lang="zh">中文</button>
@@ -813,6 +826,7 @@ fr:{
     document.querySelectorAll(".langbtn").forEach(function(b){
       b.classList.toggle("on", b.getAttribute("data-lang") === lang);
     });
+    const ls = document.getElementById("langsel"); if (ls) ls.value = lang;
     try { localStorage.setItem("vigia-lang", lang); } catch (e) {}
   }
   document.querySelectorAll(".langbtn").forEach(function(b){
