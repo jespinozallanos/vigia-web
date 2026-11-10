@@ -17,4 +17,4 @@ Este repositorio es un espejo público de la carpeta `docs/` del repositorio
 privado del producto. No se edita aquí: los cambios se hacen allá y se
 sincronizan con `git subtree push`.
 
-**Contacto** — Julio Espinoza Llanos · jespinozallanos@gmail.com · +56 9 7635 7290
+**Contacto** — Julio Espinoza Llanos, CEO · ceo@vig-iatech.com

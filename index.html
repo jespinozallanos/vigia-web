@@ -203,21 +203,17 @@
   .tbl td.me{color:#fff;font-weight:600;background:rgba(154,80,38,.34)}
   .tblwrap{overflow-x:auto;border-radius:16px}
 
-  .dl{display:flex;gap:16px;flex-wrap:wrap}
-  .dlcard{flex:1 1 300px;background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;transition:transform .35s var(--ease),border-color .35s}
-  .dlcard:hover{transform:translateY(-5px);border-color:rgba(224,138,79,.6)}
-  .dlcard .t{font-weight:700;font-size:17px}
-  .dlcard .d{color:var(--muted);font-size:14px;flex:1;margin:0}
 
   /* ---- live demo ---- */
-  .livegrid{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
-  .term{background:#07121d;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
-  .term .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0d1d2e;border-bottom:1px solid var(--line)}
-  .term .bar i{width:10px;height:10px;border-radius:50%;display:block}
-  .term .bar .u{margin-left:10px;font-family:var(--mono);font-size:11px;color:var(--muted2)}
-  .term pre{margin:0;padding:18px 20px;font-family:var(--mono);font-size:12.5px;line-height:1.85;color:#bfe9e0;white-space:pre-wrap}
-  .term pre .c{color:var(--muted2)}
-  .term pre .k{color:var(--copperB)}
+  .press{display:grid;grid-template-columns:.9fr 1.1fr;background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:transform .38s var(--ease),border-color .38s}
+  .press:hover{transform:translateY(-5px);border-color:rgba(224,138,79,.6)}
+  .press .pimg{position:relative;min-height:260px}
+  .press .pimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .press .pbd{padding:30px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+  .press .src{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--copperB)}
+  .press h3{margin:0;font-size:22px;line-height:1.3}
+  .press .by{color:var(--muted2);font-size:13.5px;margin:0}
+  .press p.d{color:var(--muted);font-size:15px;margin:0 0 6px}
 
   footer{padding:48px 0;border-top:1px solid rgba(255,255,255,.07);color:var(--muted2);font-size:13.5px}
   .note{color:var(--muted2);font-size:12.5px;font-style:italic;margin-top:18px}
@@ -225,7 +221,7 @@
   @media(max-width:1000px){
     .hero .wrap{grid-template-columns:1fr;gap:76px;padding-bottom:70px}
     .mock{margin-bottom:26px}
-    .livegrid{grid-template-columns:1fr}
+    .press{grid-template-columns:1fr}
   }
   @media(max-width:980px){
     .g4,.flow,.metrics{grid-template-columns:repeat(2,1fr)}
@@ -257,7 +253,7 @@
     <a class="link" href="#soluciones" data-k="nav.sol">Soluciones</a>
     <a class="link" href="#entregable" data-k="nav.deliv">Entregable</a>
     <a class="link" href="#copiloto" data-k="nav.cop">Copiloto</a>
-    <a class="link" href="#planes" data-k="nav.plans">Planes</a>
+    <a class="link" href="#prensa" data-k="nav.press">Prensa</a>
     <span class="spacer"></span>
     <div class="langs">
       <button class="langbtn on" data-lang="es">ES</button>
@@ -265,9 +261,6 @@
       <button class="langbtn" data-lang="zh">中文</button>
       <button class="langbtn" data-lang="fr">FR</button>
     </div>
-    <a class="btn live" id="applink-nav" href="http://localhost:3000" target="_blank" rel="noopener">
-      <span class="dot"></span><span data-k="nav.app">Abrir la app</span>
-    </a>
     <a class="btn" href="#contacto" data-k="nav.cta">Solicitar piloto</a>
   </div>
 </header>
@@ -287,10 +280,7 @@
       </div>
       <div class="cta">
         <a class="btn" href="#contacto" data-k="hero.cta1">Solicitar piloto</a>
-        <a class="btn live" id="applink-hero" href="http://localhost:3000" target="_blank" rel="noopener">
-          <span class="dot"></span><span data-k="hero.cta3">Ver la app en vivo</span>
-        </a>
-        <a class="btn ghost" href="#material" data-k="hero.cta2">Descargar el deck</a>
+        <a class="btn ghost" href="#soluciones" data-k="hero.cta2">Conoce la plataforma</a>
       </div>
     </div>
 
@@ -470,118 +460,22 @@
   </div>
 </section>
 
-<section id="planes">
+<section id="prensa">
   <div class="wrap">
     <div class="rv">
-      <p class="kicker" data-k="pl.kicker">Licencias anuales</p>
-      <h2 data-k="pl.title">Contratas activos bajo monitoreo, no informes</h2>
-      <p class="lead" data-k="pl.lead">Dentro de tu portafolio contratado generas todos los diagnósticos, informes y cotizaciones ISO que necesites. Sin costo por imagen procesada ni por PDF emitido.</p>
+      <p class="kicker" data-k="press.kicker">En los medios</p>
+      <h2 data-k="press.title">VigIA en la prensa</h2>
     </div>
-    <div class="grid g3 rv" style="margin-top:34px">
-      <div class="plan">
-        <div class="tagm">STARTER</div>
-        <div class="price">US$ 3.600 <span style="font-size:15px;color:var(--muted);font-weight:400" data-k="pl.year">/año</span></div>
-        <div class="permo" data-k="pl.s.mo">US$ 300 / mes</div>
-        <div class="cap" data-k="pl.s.cap">Hasta 10 activos</div>
-        <ul>
-          <li data-k="pl.s.1">Inspectores, ingenierías y faenas pequeñas</li>
-          <li data-k="pl.s.2">Multi-defecto con severidad y grado ISO</li>
-          <li data-k="pl.s.3">Informes y cotizaciones ilimitados</li>
-          <li data-k="pl.s.4">Historial básico por activo</li>
-        </ul>
+    <article class="press rv" style="margin-top:30px">
+      <div class="pimg"><img src="img/drone-sky.jpg" alt="Dron de inspección en vuelo"></div>
+      <div class="pbd">
+        <span class="src" data-k="press.src">Revista Sabes · 9 nov 2026</span>
+        <h3>Vig-IA Tech: La startup del Biobío que usa inteligencia artificial para inspeccionar la corrosión</h3>
+        <p class="by" data-k="press.by">Por Ariela Ramírez</p>
+        <p class="d" data-k="press.d">Sabes cuenta cómo nació VigIA a partir de una tesis doctoral en la Universidad de Concepción y cómo usa imágenes de dron o celular para detectar y clasificar corrosión, daño de pintura y grietas en minería, puertos, energía e infraestructura, apoyando el trabajo de los inspectores.</p>
+        <a class="btn" href="https://sabes.cl/2026/11/09/vig-ia-tech-la-startup-del-biobio-que-usa-inteligencia-artificial-para-inspeccionar-la-corrosion/" target="_blank" rel="noopener" data-k="press.btn">Leer el artículo</a>
       </div>
-      <div class="plan hl">
-        <div class="tagm" style="color:#fff">PROFESSIONAL<span class="badge" data-k="pl.top">MÁS ELEGIDO</span></div>
-        <div class="price">US$ 24.000 <span style="font-size:15px;color:#f5e8dc;font-weight:400" data-k="pl.year2">/año</span></div>
-        <div class="permo" data-k="pl.p.mo">US$ 2.000 / mes</div>
-        <div class="cap hl" data-k="pl.p.cap">Hasta 100 activos</div>
-        <ul>
-          <li data-k="pl.p.1">Faena industrial, puerto o planta mediana</li>
-          <li data-k="pl.p.2">Multi-sitio con historial comparable</li>
-          <li data-k="pl.p.3">Gemelo 3D y pronóstico de degradación</li>
-          <li data-k="pl.p.4">Onboarding US$ 3.000</li>
-        </ul>
-      </div>
-      <div class="plan">
-        <div class="tagm">ENTERPRISE</div>
-        <div class="price" style="font-size:28px" data-k="pl.e.price">Desde US$ 80.000</div>
-        <div class="permo" data-k="pl.e.mo">Al año, a medida según portafolio</div>
-        <div class="cap" data-k="pl.e.cap">Portafolio ilimitado</div>
-        <ul>
-          <li data-k="pl.e.1">Corporaciones, gran minería y flotas</li>
-          <li data-k="pl.e.2">API, integraciones CMMS y on-premise</li>
-          <li data-k="pl.e.3">SSO, SLA y soporte dedicado</li>
-          <li data-k="pl.e.4">Onboarding US$ 15.000</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="rv">
-      <h3 style="margin:46px 0 18px" data-k="rules.title">Sin letra chica</h3>
-      <div class="grid g3">
-        <div class="card"><span class="tagm">01</span><h3 data-k="rules.1t">Cero cobro por informe o por foto</h3><p data-k="rules.1d">Generas todos los reportes, diagnósticos y cotizaciones ISO que necesites. No hay costo por imagen procesada ni por PDF emitido.</p></div>
-        <div class="card"><span class="tagm" style="color:var(--teal)">02</span><h3 data-k="rules.2t">El activo manda</h3><p data-k="rules.2d">Un activo es un equipo, embarcación, estanque, puente o estructura física con identidad permanente en el sistema. Se cuenta una vez, no una vez por campaña.</p></div>
-        <div class="card"><span class="tagm" style="color:var(--signal)">03</span><h3 data-k="rules.3t">Repetir no cuesta más</h3><p data-k="rules.3d">Las campañas sucesivas sobre el mismo activo durante el año no generan cobro adicional. Mientras más lo inspeccionas, más vale tu línea de tiempo.</p></div>
-      </div>
-    </div>
-
-    <div class="card rv" style="margin-top:22px;background:linear-gradient(120deg,#112438,#0e1f30)">
-      <p style="margin:0"><strong style="color:var(--copperB)" data-k="pl.pilot.t">Antes del plan, el piloto:</strong> <span data-k="pl.pilot.d">un activo real, precio fijo acordado antes de volar, informe validado el mismo día — y si no encontramos hallazgos accionables, no lo pagas.</span></p>
-    </div>
-  </div>
-</section>
-
-<section id="demo" class="band">
-  <div class="wrap livegrid rv">
-    <div>
-      <p class="kicker" data-k="demo.kicker">Demo en vivo</p>
-      <h2 data-k="demo.title">Entra a la plataforma ahora mismo</h2>
-      <p class="lead" data-k="demo.lead">Durante la presentación la app corre en este mismo equipo. Un clic y estás dentro del panel real: carga una foto, mira la segmentación, valida un hallazgo y genera el informe ISO.</p>
-      <div class="grid" style="gap:12px;margin:26px 0 28px">
-        <div class="step"><div class="n">1</div><div><h3 data-k="demo.1t">Sube una foto real</h3><p data-k="demo.1d">Dron o celular. La IA segmenta corrosión, grieta, pintura y deformación en segundos.</p></div></div>
-        <div class="step"><div class="n">2</div><div><h3 data-k="demo.2t">Valida como inspector</h3><p data-k="demo.2d">Confirmar, corregir o descartar cada hallazgo, con severidad y confianza a la vista.</p></div></div>
-        <div class="step"><div class="n">3</div><div><h3 data-k="demo.3t">Genera el informe ISO</h3><p data-k="demo.3d">Grado Ri, preparación de superficie, esquema de pintura y costo estimado de reparación.</p></div></div>
-      </div>
-      <div class="cta">
-        <a class="btn live" id="applink-demo" href="http://localhost:3000" target="_blank" rel="noopener" style="font-size:15px;padding:13px 24px">
-          <span class="dot"></span><span data-k="demo.btn">Abrir la app</span>
-        </a>
-        <a class="btn ghost" href="#contacto" data-k="demo.btn2">Agendar una demo</a>
-      </div>
-      <p class="note" data-k="demo.note">La app se ejecuta localmente en el equipo de la demostración (http://localhost:3000). Si estás viendo este sitio desde otro computador, escríbenos y coordinamos una demo en vivo.</p>
-    </div>
-    <div class="term">
-      <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">vigia · localhost:3000</span></div>
-      <pre><span class="c">$</span> vigia serve
-<span class="k">✔</span> backend FastAPI      <span class="c">:8010</span>
-<span class="k">✔</span> U-Net grietas        <span class="c">CUDA · local</span>
-<span class="k">✔</span> detectores corrosión <span class="c">· pintura · deformación</span>
-<span class="k">✔</span> gemelo 3D WebODM     <span class="c">listo</span>
-<span class="k">✔</span> motor ISO 4628 / 8501 / 12944
-<span class="k">→</span> app lista en <span class="k">http://localhost:3000</span>
-</pre>
-    </div>
-  </div>
-</section>
-
-<section id="material">
-  <div class="wrap">
-    <div class="rv">
-      <p class="kicker" data-k="mat.kicker">Material</p>
-      <h2 data-k="mat.title">Deck de inversión y pitch comercial</h2>
-    </div>
-    <div class="dl rv" style="margin-top:30px">
-      <div class="dlcard">
-        <div class="t" data-k="mat.1t">Deck de inversión · Ronda semilla 2026</div>
-        <p class="d" data-k="mat.1d">23 láminas: problema, producto, cadena normativa, mercado, panorama competitivo, modelo de ingresos, proyección financiera y la ronda.</p>
-        <a class="btn" href="VigIA_Deck_Inversion_2026.pdf" data-k="mat.dl">Descargar PDF</a>
-      </div>
-      <div class="dlcard">
-        <div class="t" data-k="mat.2t">Pitch comercial · Cliente</div>
-        <p class="d" data-k="mat.2d">14 láminas: dolor, solución, entregable, ROI comparado, comparativa de mercado, planes y cómo empieza el piloto.</p>
-        <a class="btn" href="VigIA_Pitch_Comercial_2026.pdf" data-k="mat.dl2">Descargar PDF</a>
-      </div>
-    </div>
+    </article>
   </div>
 </section>
 
@@ -591,11 +485,11 @@
     <h2 data-k="ct.title">15 minutos. Un resultado real sobre una planta como la tuya.</h2>
     <p class="lead" data-k="ct.lead">Te mostramos el gemelo 3D y el informe completo de una inspección real — y definimos juntos cuál sería tu activo piloto.</p>
     <div class="cta" style="margin-top:28px">
-      <a class="btn" href="mailto:jespinozallanos@gmail.com?subject=Piloto%20VigIA" data-k="ct.btn">Escribir a Julio Espinoza</a>
-      <a class="btn ghost" href="tel:+56976357290">+56 9 7635 7290</a>
+      <a class="btn" href="mailto:ceo@vig-iatech.com?subject=Piloto%20VigIA" data-k="ct.btn">Solicitar piloto</a>
+      <a class="btn ghost" href="mailto:ceo@vig-iatech.com?subject=Demo%20VigIA" data-k="ct.btn2">Agendar una demo</a>
     </div>
     <p style="margin-top:22px;color:var(--muted);font-size:15px">
-      <strong style="color:#fff">Julio Espinoza Llanos</strong> · <a href="mailto:jespinozallanos@gmail.com">jespinozallanos@gmail.com</a> · <a href="tel:+56976357290">+56 9 7635 7290</a>
+      <strong style="color:#fff">Julio Espinoza Llanos</strong> · CEO · <a href="mailto:ceo@vig-iatech.com">ceo@vig-iatech.com</a>
     </p>
   </div>
 </section>
@@ -611,7 +505,7 @@
       </svg><span>Vig</span><span class="ia">IA</span>
     </div>
     <p style="margin:0 0 6px" data-k="ft.tag">Copiloto de inspección estructural con gemelo digital 3D. La IA propone, tu experto decide. Chile → Latinoamérica.</p>
-    <p style="margin:0 0 6px"><strong style="color:#fff">Julio Espinoza Llanos</strong> · <a href="mailto:jespinozallanos@gmail.com">jespinozallanos@gmail.com</a> · <a href="tel:+56976357290">+56 9 7635 7290</a></p>
+    <p style="margin:0 0 6px"><strong style="color:#fff">Julio Espinoza Llanos</strong> · CEO · <a href="mailto:ceo@vig-iatech.com">ceo@vig-iatech.com</a></p>
     <p class="note" data-k="ft.note">Los costos de reparación se entregan como rango preliminar de referencia. Todo informe es validado y firmado por un inspector responsable; VigIA es soporte a la decisión, no reemplazo del criterio experto.</p>
   </div>
 </footer>
@@ -619,19 +513,12 @@
 <script>
 const DICT = {
 en:{
-"nav.app":"Open the app","hero.cta3":"See the live app",
+"nav.press":"Press","hero.cta2":"Explore the platform","press.kicker":"In the media","press.title":"VigIA in the press","press.src":"Sabes magazine · Nov 9, 2026","press.by":"By Ariela Ramírez","press.d":"Sabes tells how VigIA grew out of a doctoral thesis at the University of Concepción and how it uses drone or phone images to detect and classify corrosion, paint damage and cracks in mining, ports, energy and infrastructure, supporting inspectors in their work.","press.btn":"Read the article","ct.btn":"Request a pilot","ct.btn2":"Book a demo",
 "mock.overlay":"AI draft \u00b7 conf 0.91","mock.valid":"Validated","mock.diag":"Diagnosis (draft)","mock.verdict":"Moderate","mock.chip":"Placed on the 3D twin",
-"demo.kicker":"Live demo","demo.title":"Step into the platform right now",
-"demo.lead":"During the presentation the app runs on this very machine. One click and you are inside the real dashboard: upload a photo, watch the segmentation, validate a finding and generate the ISO report.",
-"demo.1t":"Upload a real photo","demo.1d":"Drone or phone. The AI segments corrosion, cracks, paint and deformation in seconds.",
-"demo.2t":"Validate as the inspector","demo.2d":"Confirm, correct or discard each finding, with severity and confidence in plain view.",
-"demo.3t":"Generate the ISO report","demo.3d":"Ri grade, surface preparation, coating system and estimated repair cost.",
-"demo.btn":"Open the app","demo.btn2":"Book a demo",
-"demo.note":"The app runs locally on the demo machine (http://localhost:3000). If you are viewing this site from another computer, write to us and we will arrange a live demo.",
-"nav.sol":"Solutions","nav.deliv":"Deliverable","nav.cop":"Copilot","nav.comp":"Comparison","nav.plans":"Pricing","nav.cta":"Request a pilot",
+"nav.sol":"Solutions","nav.deliv":"Deliverable","nav.cop":"Copilot","nav.comp":"Comparison","nav.cta":"Request a pilot",
 "hero.eyebrow":"The structural-inspection copilot","hero.t1":"From drone to diagnosis,","hero.t2":"your expert in command.",
 "hero.sub":"VigIA detects corrosion, cracks, paint degradation and deformation and places them on a 3D digital twin. The AI drafts the diagnosis in minutes; your inspector validates it in one click — and the system learns from your team.",
-"hero.c1":"The expert validates and signs","hero.c2":"No scaffolding, no work at height","hero.c3":"Report validated the same day","hero.cta1":"Request a pilot","hero.cta2":"Download the deck",
+"hero.c1":"The expert validates and signs","hero.c2":"No scaffolding, no work at height","hero.c3":"Report validated the same day","hero.cta1":"Request a pilot",
 "prob.kicker":"The problem","prob.title":"Inspection today is expensive, slow and dangerous","prob.lead":"In practice, many assets are not inspected until something fails.",
 "prob.1":"for a traditional inspection using scaffolding or rope access.","prob.2t":"Days or weeks","prob.2":"of permits, rigging and work at height, with production halted.","prob.3t":"Subjective report","prob.3":"loose photos, not comparable year over year nor between inspectors.",
 "prob.bt":"The leak stops the line. Corrosion punctures the tank.","prob.bd":"By the time damage surfaces, repair costs 3 to 10 times more. That overrun never shows up as a budget line: it shows up as unplanned downtime.",
@@ -681,39 +568,17 @@ en:{
 "comp.r5a":"Renewables verticals","comp.r5b":"Excellent in wind and solar, with autonomous flight and regional operations. Their model does not cover heavy-industry corrosion under ISO 12944.",
 "comp.r6a":"Drone service operators","comp.r6c":"Aerodronia and local operators","comp.r6b":"They fly well and hand over images or a basic PDF. For us they are a channel, not a competitor: they fly, VigIA diagnoses and reports.",
 "comp.out":"VigIA: multi-defect in a single engine + ISO chain through to the budget + comparable 3D twin + hardware-independent + local support.",
-"pl.kicker":"Annual licences","pl.title":"You license assets under monitoring, not reports",
-"pl.lead":"Within your licensed portfolio you generate every diagnosis, report and ISO quotation you need. No charge per processed image or per PDF issued.",
-"pl.year":"/year","pl.year2":"/year","pl.top":"MOST CHOSEN",
-"pl.s.mo":"US$ 300 / month","pl.s.cap":"Up to 10 assets","pl.s.1":"Inspectors, engineering firms and small sites","pl.s.2":"Multi-defect with severity and ISO grade","pl.s.3":"Unlimited reports and quotations","pl.s.4":"Basic history per asset",
-"pl.p.mo":"US$ 2,000 / month","pl.p.cap":"Up to 100 assets","pl.p.1":"Industrial site, port or mid-size plant","pl.p.2":"Multi-site with comparable history","pl.p.3":"3D twin and degradation forecast","pl.p.4":"US$ 3,000 onboarding",
-"pl.e.price":"From US$ 80,000","pl.e.mo":"Per year, tailored to the portfolio","pl.e.cap":"Unlimited portfolio","pl.e.1":"Corporations, large mining and fleets","pl.e.2":"API, CMMS integrations and on-premise","pl.e.3":"SSO, SLA and dedicated support","pl.e.4":"US$ 15,000 onboarding",
-"rules.title":"No fine print",
-"rules.1t":"No charge per report or per photo","rules.1d":"Generate every report, diagnosis and ISO quotation you need. No cost per processed image or per PDF issued.",
-"rules.2t":"The asset is the unit","rules.2d":"An asset is a piece of equipment, vessel, tank, bridge or structure with a permanent identity in the system. Counted once, not once per campaign.",
-"rules.3t":"Repeating costs nothing extra","rules.3d":"Successive campaigns on the same asset during the year carry no extra charge. The more you inspect it, the more your timeline is worth.",
-"pl.pilot.t":"Before any plan, the pilot:","pl.pilot.d":"one real asset, a fixed price agreed before we fly, a validated report the same day — and if we find nothing actionable, you don't pay for it.",
-"mat.kicker":"Materials","mat.title":"Investor deck and commercial pitch",
-"mat.1t":"Investor deck · 2026 seed round","mat.1d":"23 slides: problem, product, standards chain, market, competitive landscape, revenue model, financial projection and the round.",
-"mat.2t":"Commercial pitch · Customer","mat.2d":"14 slides: pain, solution, deliverable, ROI comparison, market comparison, pricing and how the pilot starts.",
-"mat.dl":"Download PDF","mat.dl2":"Download PDF",
-"ct.kicker":"Next step","ct.title":"15 minutes. A real result on a plant like yours.","ct.lead":"We'll walk you through the 3D twin and the full report of a real inspection — and together define which asset would be your pilot.","ct.btn":"Email Julio Espinoza",
+"ct.kicker":"Next step","ct.title":"15 minutes. A real result on a plant like yours.","ct.lead":"We'll walk you through the 3D twin and the full report of a real inspection — and together define which asset would be your pilot.",
 "ft.tag":"Structural-inspection copilot with a 3D digital twin. The AI proposes, your expert decides. Chile → Latin America.",
 "ft.note":"Repair costs are provided as a preliminary reference range. Every report is validated and signed by a responsible inspector; VigIA is decision support, not a replacement for expert judgement."
 },
 zh:{
-"nav.app":"\u6253\u5f00\u5e94\u7528","hero.cta3":"\u67e5\u770b\u5728\u7ebf\u5e94\u7528",
+"nav.press":"媒体报道","hero.cta2":"了解平台","press.kicker":"媒体报道","press.title":"媒体上的 VigIA","press.src":"Sabes 杂志 · 2026年11月9日","press.by":"作者：Ariela Ramírez","press.d":"Sabes 介绍了 VigIA 如何源自康塞普西翁大学的一篇博士论文，以及它如何利用无人机或手机图像，在采矿、港口、能源和基础设施领域检测并分级腐蚀、涂层损伤和裂缝，为检测人员提供支持。","press.btn":"阅读文章","ct.btn":"申请试点","ct.btn2":"预约演示",
 "mock.overlay":"AI \u8349\u7a3f \u00b7 \u7f6e\u4fe1\u5ea6 0.91","mock.valid":"\u5df2\u786e\u8ba4","mock.diag":"\u8bca\u65ad\uff08\u8349\u7a3f\uff09","mock.verdict":"\u4e2d\u5ea6","mock.chip":"\u5df2\u5b9a\u4f4d\u5230\u4e09\u7ef4\u5b6a\u751f",
-"demo.kicker":"\u73b0\u573a\u6f14\u793a","demo.title":"\u73b0\u5728\u5c31\u8fdb\u5165\u5e73\u53f0",
-"demo.lead":"\u6f14\u793a\u671f\u95f4\uff0c\u5e94\u7528\u5c31\u8fd0\u884c\u5728\u8fd9\u53f0\u7535\u8111\u4e0a\u3002\u4e00\u952e\u5373\u53ef\u8fdb\u5165\u771f\u5b9e\u770b\u677f\uff1a\u4e0a\u4f20\u7167\u7247\u3001\u67e5\u770b\u5206\u5272\u7ed3\u679c\u3001\u786e\u8ba4\u53d1\u73b0\u5e76\u751f\u6210 ISO \u62a5\u544a\u3002",
-"demo.1t":"\u4e0a\u4f20\u4e00\u5f20\u771f\u5b9e\u7167\u7247","demo.1d":"\u65e0\u4eba\u673a\u6216\u624b\u673a\u62cd\u6444\u3002AI \u5728\u6570\u79d2\u5185\u5206\u5272\u8150\u8680\u3001\u88c2\u7f1d\u3001\u6d82\u5c42\u4e0e\u53d8\u5f62\u3002",
-"demo.2t":"\u4ee5\u68c0\u6d4b\u5458\u8eab\u4efd\u786e\u8ba4","demo.2d":"\u9010\u9879\u786e\u8ba4\u3001\u66f4\u6b63\u6216\u5254\u9664\uff0c\u4e25\u91cd\u5ea6\u4e0e\u7f6e\u4fe1\u5ea6\u4e00\u76ee\u4e86\u7136\u3002",
-"demo.3t":"\u751f\u6210 ISO \u62a5\u544a","demo.3d":"Ri \u7b49\u7ea7\u3001\u8868\u9762\u5904\u7406\u3001\u6d82\u88c5\u4f53\u7cfb\u4e0e\u9884\u4f30\u7ef4\u4fee\u6210\u672c\u3002",
-"demo.btn":"\u6253\u5f00\u5e94\u7528","demo.btn2":"\u9884\u7ea6\u6f14\u793a",
-"demo.note":"\u5e94\u7528\u5728\u6f14\u793a\u8bbe\u5907\u672c\u5730\u8fd0\u884c\uff08http://localhost:3000\uff09\u3002\u82e5\u4f60\u4ece\u5176\u4ed6\u7535\u8111\u8bbf\u95ee\u672c\u7ad9\uff0c\u8bf7\u8054\u7cfb\u6211\u4eec\u5b89\u6392\u73b0\u573a\u6f14\u793a\u3002",
-"nav.sol":"解决方案","nav.deliv":"交付物","nav.cop":"副驾驶","nav.comp":"对比","nav.plans":"价格","nav.cta":"申请试点",
+"nav.sol":"解决方案","nav.deliv":"交付物","nav.cop":"副驾驶","nav.comp":"对比","nav.cta":"申请试点",
 "hero.eyebrow":"结构检测副驾驶","hero.t1":"从无人机到诊断，","hero.t2":"由你的专家主导。",
 "hero.sub":"VigIA 检测腐蚀、裂缝、涂层劣化与变形，并定位到三维数字孪生上。AI 在数分钟内给出诊断草稿；你的检测员一键确认——系统也在向你的团队学习。",
-"hero.c1":"由专家确认并签署","hero.c2":"无需脚手架，无高空作业","hero.c3":"当天交付经验证报告","hero.cta1":"申请试点","hero.cta2":"下载资料",
+"hero.c1":"由专家确认并签署","hero.c2":"无需脚手架，无高空作业","hero.c3":"当天交付经验证报告","hero.cta1":"申请试点",
 "prob.kicker":"问题","prob.title":"今天的检测昂贵、缓慢且危险","prob.lead":"实际上，许多资产直到出事才会被检测。",
 "prob.1":"一次使用脚手架或绳索作业的传统检测费用。","prob.2t":"数天或数周","prob.2":"用于许可、搭建与高空作业，往往还要停产。","prob.3t":"主观报告","prob.3":"零散照片，无法逐年对比，也无法在不同检测员之间对比。",
 "prob.bt":"渗漏让产线停摆。腐蚀击穿储罐。","prob.bd":"等损伤显现时，维修成本高出 3 到 10 倍。这笔超支不会出现在预算里，而是以非计划停机的形式出现。",
@@ -763,39 +628,17 @@ zh:{
 "comp.r5a":"新能源垂直领域","comp.r5b":"在风电与光伏领域出色，具备自主飞行与区域化运营。其模型不覆盖 ISO 12944 下的重工业腐蚀。",
 "comp.r6a":"无人机服务商","comp.r6c":"Aerodronia 及本地运营商","comp.r6b":"飞得好，交付图像或基础 PDF。对我们而言他们是渠道而非竞争者：他们飞，VigIA 诊断并出报告。",
 "comp.out":"VigIA：单一引擎多缺陷 + 直达预算的 ISO 链路 + 可对比三维孪生 + 不绑定硬件 + 本地支持。",
-"pl.kicker":"年度许可","pl.title":"你购买的是纳入监测的资产，而不是报告",
-"pl.lead":"在你签约的资产组合内，你可以生成所需的全部诊断、报告与 ISO 报价。不按处理图像数计费，也不按出具的 PDF 计费。",
-"pl.year":"/年","pl.year2":"/年","pl.top":"最多人选择",
-"pl.s.mo":"300 美元 / 月","pl.s.cap":"最多 10 个资产","pl.s.1":"检测员、工程公司与小型作业面","pl.s.2":"多缺陷，含严重度与 ISO 等级","pl.s.3":"报告与报价不限量","pl.s.4":"每个资产的基础历史",
-"pl.p.mo":"2,000 美元 / 月","pl.p.cap":"最多 100 个资产","pl.p.1":"工业作业面、港口或中型工厂","pl.p.2":"多站点，含可对比历史","pl.p.3":"三维孪生与劣化预测","pl.p.4":"启用服务 3,000 美元",
-"pl.e.price":"80,000 美元起","pl.e.mo":"每年，按资产组合定制","pl.e.cap":"资产组合不限","pl.e.1":"集团客户、大型矿业与船队","pl.e.2":"API、CMMS 集成与本地部署","pl.e.3":"SSO、SLA 与专属支持","pl.e.4":"启用服务 15,000 美元",
-"rules.title":"没有隐藏条款",
-"rules.1t":"不按报告或照片收费","rules.1d":"生成你需要的全部报告、诊断与 ISO 报价。不按处理图像数计费，也不按出具的 PDF 计费。",
-"rules.2t":"以资产为计量单位","rules.2d":"资产指在系统中具有永久标识的设备、船舶、储罐、桥梁或结构。只计一次，而非每次作业计一次。",
-"rules.3t":"重复检测不额外收费","rules.3d":"同一资产在年度内的后续作业不产生额外费用。检测得越多，你的时间线越有价值。",
-"pl.pilot.t":"签约前先做试点：","pl.pilot.d":"一个真实资产，飞行前约定固定价格，当天交付经验证的报告——若未发现可行动项，则不收费。",
-"mat.kicker":"资料","mat.title":"投资材料与商务提案",
-"mat.1t":"投资材料 · 2026 种子轮","mat.1d":"23 页：问题、产品、规范链路、市场、竞争格局、收入模式、财务预测与本轮融资。",
-"mat.2t":"商务提案 · 客户","mat.2d":"14 页：痛点、方案、交付物、ROI 对比、市场对比、价格与试点如何开始。",
-"mat.dl":"下载 PDF","mat.dl2":"下载 PDF",
-"ct.kicker":"下一步","ct.title":"15 分钟。在与你相似的工厂上看到真实结果。","ct.lead":"我们会带你看一次真实检测的三维孪生与完整报告——并共同确定你的试点资产。","ct.btn":"联系 Julio Espinoza",
+"ct.kicker":"下一步","ct.title":"15 分钟。在与你相似的工厂上看到真实结果。","ct.lead":"我们会带你看一次真实检测的三维孪生与完整报告——并共同确定你的试点资产。",
 "ft.tag":"配三维数字孪生的结构检测副驾驶。AI 提出建议，专家做决定。智利 → 拉丁美洲。",
 "ft.note":"维修成本以初步参考区间形式提供。每份报告均由负责检测员确认并签署；VigIA 是决策支持，而非专家判断的替代。"
 },
 fr:{
-"nav.app":"Ouvrir l\u2019app","hero.cta3":"Voir l\u2019app en direct",
+"nav.press":"Presse","hero.cta2":"Découvrir la plateforme","press.kicker":"Dans les médias","press.title":"VigIA dans la presse","press.src":"Magazine Sabes · 9 nov. 2026","press.by":"Par Ariela Ramírez","press.d":"Sabes raconte comment VigIA est née d'une thèse de doctorat à l'Université de Concepción et comment elle utilise des images de drone ou de téléphone pour détecter et classer la corrosion, les dégâts de peinture et les fissures dans les mines, les ports, l'énergie et les infrastructures, en appui aux inspecteurs.","press.btn":"Lire l'article","ct.btn":"Demander un pilote","ct.btn2":"Réserver une démo",
 "mock.overlay":"Brouillon IA \u00b7 conf 0.91","mock.valid":"Valid\u00e9","mock.diag":"Diagnostic (brouillon)","mock.verdict":"Mod\u00e9r\u00e9","mock.chip":"Plac\u00e9 sur le jumeau 3D",
-"demo.kicker":"D\u00e9mo en direct","demo.title":"Entrez dans la plateforme d\u00e8s maintenant",
-"demo.lead":"Pendant la pr\u00e9sentation, l\u2019application tourne sur cette machine. Un clic et vous \u00eates dans le tableau de bord r\u00e9el : chargez une photo, observez la segmentation, validez un constat et g\u00e9n\u00e9rez le rapport ISO.",
-"demo.1t":"Chargez une photo r\u00e9elle","demo.1d":"Drone ou smartphone. L\u2019IA segmente corrosion, fissures, peinture et d\u00e9formation en quelques secondes.",
-"demo.2t":"Validez comme inspecteur","demo.2d":"Confirmer, corriger ou \u00e9carter chaque constat, s\u00e9v\u00e9rit\u00e9 et confiance \u00e0 l\u2019\u00e9cran.",
-"demo.3t":"G\u00e9n\u00e9rez le rapport ISO","demo.3d":"Grade Ri, pr\u00e9paration de surface, syst\u00e8me de peinture et co\u00fbt de r\u00e9paration estim\u00e9.",
-"demo.btn":"Ouvrir l\u2019app","demo.btn2":"Planifier une d\u00e9mo",
-"demo.note":"L\u2019application s\u2019ex\u00e9cute localement sur la machine de d\u00e9monstration (http://localhost:3000). Si vous consultez ce site depuis un autre ordinateur, \u00e9crivez-nous et nous organiserons une d\u00e9mo en direct.",
-"nav.sol":"Solutions","nav.deliv":"Livrable","nav.cop":"Copilote","nav.comp":"Comparatif","nav.plans":"Tarifs","nav.cta":"Demander un pilote",
+"nav.sol":"Solutions","nav.deliv":"Livrable","nav.cop":"Copilote","nav.comp":"Comparatif","nav.cta":"Demander un pilote",
 "hero.eyebrow":"Le copilote d'inspection structurelle","hero.t1":"Du drone au diagnostic,","hero.t2":"votre expert aux commandes.",
 "hero.sub":"VigIA détecte la corrosion, les fissures, la dégradation de peinture et la déformation et les place sur un jumeau numérique 3D. L'IA propose le diagnostic en minutes ; votre inspecteur le valide en un clic — et le système apprend de votre équipe.",
-"hero.c1":"L'expert valide et signe","hero.c2":"Sans échafaudage ni travail en hauteur","hero.c3":"Rapport validé le jour même","hero.cta1":"Demander un pilote","hero.cta2":"Télécharger le dossier",
+"hero.c1":"L'expert valide et signe","hero.c2":"Sans échafaudage ni travail en hauteur","hero.c3":"Rapport validé le jour même","hero.cta1":"Demander un pilote",
 "prob.kicker":"Le problème","prob.title":"Inspecter aujourd'hui coûte cher, prend du temps et reste dangereux","prob.lead":"En pratique, beaucoup d'actifs ne sont pas inspectés avant qu'une défaillance survienne.",
 "prob.1":"pour une inspection traditionnelle avec échafaudage ou accès sur corde.","prob.2t":"Des jours ou des semaines","prob.2":"de permis, de montage et de travail en hauteur, souvent avec la production à l'arrêt.","prob.3t":"Rapport subjectif","prob.3":"des photos éparses, non comparables d'une année à l'autre ni entre inspecteurs.",
 "prob.bt":"La fuite arrête la ligne. La corrosion perce la cuve.","prob.bd":"Quand le dommage apparaît, réparer coûte 3 à 10 fois plus cher. Ce surcoût n'apparaît sur aucune ligne budgétaire : il arrive sous forme d'arrêt non planifié.",
@@ -845,22 +688,7 @@ fr:{
 "comp.r5a":"Verticales des renouvelables","comp.r5b":"Excellents en éolien et solaire, avec vol autonome et opération régionale. Leur modèle ne couvre pas la corrosion industrielle lourde selon ISO 12944.",
 "comp.r6a":"Opérateurs de drones","comp.r6c":"Aerodronia et opérateurs locaux","comp.r6b":"Ils volent bien et livrent des images ou un PDF basique. Pour nous ce sont des canaux, pas des concurrents : ils volent, VigIA diagnostique et rapporte.",
 "comp.out":"VigIA : multi-défauts dans un seul moteur + chaîne ISO jusqu'au budget + jumeau 3D comparable + indépendant du matériel + support local.",
-"pl.kicker":"Licences annuelles","pl.title":"Vous licenciez des actifs sous surveillance, pas des rapports",
-"pl.lead":"Dans votre portefeuille sous licence, vous générez tous les diagnostics, rapports et devis ISO nécessaires. Aucun frais par image traitée ni par PDF émis.",
-"pl.year":"/an","pl.year2":"/an","pl.top":"LE PLUS CHOISI",
-"pl.s.mo":"300 US$ / mois","pl.s.cap":"Jusqu'à 10 actifs","pl.s.1":"Inspecteurs, bureaux d'études et petits sites","pl.s.2":"Multi-défauts avec sévérité et grade ISO","pl.s.3":"Rapports et devis illimités","pl.s.4":"Historique de base par actif",
-"pl.p.mo":"2 000 US$ / mois","pl.p.cap":"Jusqu'à 100 actifs","pl.p.1":"Site industriel, port ou usine moyenne","pl.p.2":"Multi-sites avec historique comparable","pl.p.3":"Jumeau 3D et prévision de dégradation","pl.p.4":"Intégration 3 000 US$",
-"pl.e.price":"À partir de 80 000 US$","pl.e.mo":"Par an, sur mesure selon le portefeuille","pl.e.cap":"Portefeuille illimité","pl.e.1":"Grands groupes, mines et flottes","pl.e.2":"API, intégrations GMAO et sur site","pl.e.3":"SSO, SLA et support dédié","pl.e.4":"Intégration 15 000 US$",
-"rules.title":"Sans petits caractères",
-"rules.1t":"Aucun frais par rapport ou par photo","rules.1d":"Générez tous les rapports, diagnostics et devis ISO nécessaires. Aucun coût par image traitée ni par PDF émis.",
-"rules.2t":"L'actif est l'unité","rules.2d":"Un actif est un équipement, navire, réservoir, pont ou structure avec une identité permanente dans le système. Compté une fois, pas une fois par campagne.",
-"rules.3t":"Répéter ne coûte rien de plus","rules.3d":"Les campagnes successives sur le même actif pendant l'année n'entraînent aucun frais supplémentaire. Plus vous l'inspectez, plus votre historique a de valeur.",
-"pl.pilot.t":"Avant le forfait, le pilote :","pl.pilot.d":"un actif réel, un prix fixe convenu avant le vol, un rapport validé le jour même — et si nous ne trouvons rien d'exploitable, vous ne payez pas.",
-"mat.kicker":"Documents","mat.title":"Dossier d'investissement et présentation commerciale",
-"mat.1t":"Dossier d'investissement · Amorçage 2026","mat.1d":"23 diapositives : problème, produit, chaîne normative, marché, paysage concurrentiel, modèle de revenus, projection financière et la levée.",
-"mat.2t":"Présentation commerciale · Client","mat.2d":"14 diapositives : douleur, solution, livrable, comparatif de ROI, comparatif de marché, tarifs et démarrage du pilote.",
-"mat.dl":"Télécharger le PDF","mat.dl2":"Télécharger le PDF",
-"ct.kicker":"Prochaine étape","ct.title":"15 minutes. Un résultat réel sur une usine comme la vôtre.","ct.lead":"Nous vous montrons le jumeau 3D et le rapport complet d'une inspection réelle — et nous définissons ensemble votre actif pilote.","ct.btn":"Écrire à Julio Espinoza",
+"ct.kicker":"Prochaine étape","ct.title":"15 minutes. Un résultat réel sur une usine comme la vôtre.","ct.lead":"Nous vous montrons le jumeau 3D et le rapport complet d'une inspection réelle — et nous définissons ensemble votre actif pilote.",
 "ft.tag":"Copilote d'inspection structurelle avec jumeau numérique 3D. L'IA propose, votre expert décide. Chili → Amérique latine.",
 "ft.note":"Les coûts de réparation sont fournis comme fourchette préliminaire de référence. Chaque rapport est validé et signé par un inspecteur responsable ; VigIA est une aide à la décision, pas un remplacement du jugement expert."
 }
@@ -893,15 +721,6 @@ fr:{
   try { saved = localStorage.getItem("vigia-lang"); } catch (e) {}
   if (saved && saved !== "es") apply(saved);
 
-  /* ---------- app URL (?app=http://192.168.1.20:3000 overrides & persists) ---------- */
-  const DEFAULT_APP = "http://localhost:3000";
-  let appUrl = DEFAULT_APP;
-  try {
-    const q = new URLSearchParams(location.search).get("app");
-    if (q) { appUrl = q; localStorage.setItem("vigia-app-url", q); }
-    else { appUrl = localStorage.getItem("vigia-app-url") || DEFAULT_APP; }
-  } catch (e) {}
-  document.querySelectorAll('a[id^="applink-"]').forEach(function(a){ a.href = appUrl; });
 
   /* ---------- scroll reveal ---------- */
   const rv = Array.prototype.slice.call(document.querySelectorAll(".rv"));
