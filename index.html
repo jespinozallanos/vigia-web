@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,247 +7,251 @@
 <meta name="description" content="VigIA convierte una foto de dron o celular en un diagnóstico de integridad estructural: corrosión, grietas, recubrimiento y deformación, geolocalizados sobre un gemelo 3D y cotizados bajo norma ISO. La IA propone, tu inspector firma.">
 <meta property="og:title" content="VigIA — Inspección estructural con IA">
 <meta property="og:description" content="Del dron al diagnóstico, tu experto al mando. Informe normativo con costo estimado de reparación, validado por tu inspector.">
-<meta property="og:image" content="img/overlay-demo.jpg">
+<meta property="og:image" content="https://vig-iatech.com/img/overlay-demo.jpg">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='13' fill='%230b1a2b'/><path d='M32 8 51 19v22L32 52 13 41V19z' fill='none' stroke='%23e08a4f' stroke-width='4'/><path d='M24 31l6 6 11-12' fill='none' stroke='%232f9b8f' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<meta name="theme-color" content="#061a2e">
+<script>(function(){var t;try{t=localStorage.getItem("vigia-theme")}catch(e){}if(t!=="light"&&t!=="dark"){t=window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.setAttribute("data-theme",t)})();</script>
 <style>
+  [data-theme=dark],:root{
+    --bg:#061a2e;--bg2:#0a2239;--surface:#0d2741;--surface2:#112f4d;--line:#1f4163;
+    --text:#eaf1f7;--muted:#a8b9cb;--faint:#8197ad;
+    --accent:#fd6b03;--accent-hover:#ff8128;--accent-text:#ff8a3d;--on-accent:#061a2e;
+    --header:rgba(6,26,46,.84);--plate:#ffffff;
+    --severe:#ef5a5f;--mod:#f2811d;--signal:#e8a93a;--cyan:#33b3d6;--teal:#34b3a4;
+    --shadow:0 30px 60px -36px rgba(0,0,0,.9);
+    color-scheme:dark;
+  }
+  [data-theme=light]{
+    --bg:#f4f7fa;--bg2:#e9eff5;--surface:#ffffff;--surface2:#f7f9fb;--line:#d5dfe8;
+    --text:#002645;--muted:#46596e;--faint:#5f7287;
+    --accent:#fd6b03;--accent-hover:#ff7d1f;--accent-text:#bf4c00;--on-accent:#002645;
+    --header:rgba(244,247,250,.86);
+    --severe:#d42f35;--mod:#c95a06;--signal:#a8700f;--cyan:#0d7f9f;--teal:#147f73;
+    --shadow:0 26px 50px -36px rgba(0,38,69,.45);
+    color-scheme:light;
+  }
   :root{
-    --navy:#0b1a2b; --navy2:#112438; --card:#16304a; --card2:#1b3a58; --line:#2a4a6b;
-    --copper:#c9743f; --copperB:#e08a4f; --copperD:#9a5026;
-    --teal:#2f9b8f; --signal:#e3a53c; --severe:#e11d48; --mod:#ea580c; --cyan:#0ea5c4;
-    --white:#fff; --muted:#9baac0; --muted2:#6f8299;
-    --mono:"SFMono-Regular",Menlo,Consolas,"Courier New",monospace;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,
-           "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
-    --maxw:1200px;
-    --shadow:0 24px 60px -34px rgba(0,0,0,.95);
-    --ease:cubic-bezier(.16,1,.3,1);
+    --sans:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+    --maxw:1320px;--ease:cubic-bezier(.16,1,.3,1);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;background:var(--navy);color:var(--white);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background-color .3s,color .3s}
   img{max-width:100%;display:block}
-  a{color:var(--copperB);text-decoration:none}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  .kicker{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--copperB);margin:0 0 16px}
-  .kicker:before{content:"";width:26px;height:2px;background:var(--copperB);border-radius:2px}
-  h1,h2,h3{margin:0;line-height:1.15;letter-spacing:-.015em;text-wrap:balance}
-  h2{font-size:clamp(27px,3.5vw,42px);font-weight:800;margin-bottom:14px}
-  h3{font-size:18px;font-weight:700}
+  a{color:var(--accent-text);text-decoration:none}
+  a:hover{text-decoration:underline;text-underline-offset:3px}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+  h1,h2,h3{margin:0;line-height:1.1;text-wrap:balance;font-variation-settings:"wdth" 112}
+  h2{font-size:clamp(28px,3.6vw,44px);font-weight:780;letter-spacing:-.02em;margin-bottom:14px;max-width:24ch}
+  h3{font-size:18px;font-weight:700;letter-spacing:-.005em;line-height:1.25}
   p{margin:0 0 14px}
-  .lead{color:var(--muted);font-size:17px;max-width:830px}
-  section{padding:88px 0;position:relative}
-  section+section{border-top:1px solid rgba(255,255,255,.06)}
-  .grid{display:grid;gap:20px}
+  .lead{color:var(--muted);font-size:18px;max-width:62ch}
+  .kicker{color:var(--accent-text);font-weight:600;font-size:15px;margin:0 0 14px}
+  section:not(.hero) .kicker{display:none}
+  section{padding:clamp(64px,8vw,112px) 0;position:relative}
+  section+section{border-top:1px solid var(--line)}
+  .grid{display:grid;gap:24px}
   .g2{grid-template-columns:repeat(2,1fr)}
   .g3{grid-template-columns:repeat(3,1fr)}
   .g4{grid-template-columns:repeat(4,1fr)}
-  .gt{background:linear-gradient(96deg,#e08a4f 0%,#f2b98a 55%,#e3a53c 100%);
-      -webkit-background-clip:text;background-clip:text;color:transparent}
-  .card{background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
-  .card:hover{transform:translateY(-4px);border-color:rgba(224,138,79,.55)}
+  .gt{color:var(--accent-text)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
   .card h3{margin-bottom:8px}
-  .card p{color:var(--muted);font-size:14.5px;margin:0}
-  .stat{font-size:clamp(24px,2.8vw,32px);font-weight:800;line-height:1.1;margin-bottom:10px}
-  .tagm{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--copperB);display:block;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:15px;margin:0}
+  .stat{font-size:clamp(24px,2.8vw,32px);font-weight:800;line-height:1.1;margin-bottom:10px;font-variation-settings:"wdth" 108}
+  .tagm{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--accent-text);display:block;margin-bottom:10px}
+  .rv{opacity:1}
+  .hero .rv{animation:rise .9s var(--ease) both}
+  .hero .rv+.rv{animation-delay:.12s}
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.hero .rv,.scan{animation:none!important}html{scroll-behavior:auto}}
 
-  /* ---- reveal ---- */
-  .rv{opacity:0;transform:translateY(26px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
-  .rv.in{opacity:1;transform:none}
-  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
-
-  /* ---- header ---- */
-  header{position:sticky;top:0;z-index:60;background:rgba(11,26,43,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07)}
-  .nav{display:flex;align-items:center;gap:20px;height:66px}
-  .logo{display:flex;align-items:center;font-weight:800;font-size:21px;letter-spacing:-.02em;color:#fff}
+  header{position:sticky;top:0;z-index:60;background:var(--header);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;gap:22px;height:70px}
+  .logo{display:flex;align-items:center}
   .logo .brand{display:block;height:52px;aspect-ratio:245/120;background:url(data:image/png;base64,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) left center/contain no-repeat}
+  [data-theme=light] .logo .brand{filter:url(#logo-on-light)}
   footer .logo .brand{height:72px}
-  .nav a.link{color:var(--muted);font-size:14px;white-space:nowrap;position:relative;transition:color .25s}
-  .nav a.link:after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:2px;background:var(--copperB);transition:right .3s var(--ease)}
-  .nav a.link:hover{color:#fff}
-  .nav a.link:hover:after{right:0}
+  .nav a.link{color:var(--muted);font-size:15px;font-weight:500;white-space:nowrap}
+  .nav a.link:hover{color:var(--text);text-decoration:none}
   .nav .spacer{flex:1}
-  .btn{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;background:var(--copperB);color:#0b1a2b !important;font-weight:700;font-size:14px;padding:11px 20px;border-radius:999px;border:0;cursor:pointer;font-family:inherit;transition:transform .25s var(--ease),box-shadow .25s,background .25s}
-  .btn:hover{background:#efa068;transform:translateY(-2px);box-shadow:0 12px 28px -14px rgba(224,138,79,.9)}
-  .btn.ghost{background:transparent;color:#fff !important;border:1px solid var(--line)}
-  .btn.ghost:hover{border-color:var(--copperB);background:rgba(224,138,79,.1)}
-  .btn.live{background:transparent;color:#7fe0d3 !important;border:1px solid rgba(47,155,143,.6)}
-  .btn.live:hover{background:rgba(47,155,143,.16);border-color:var(--teal);box-shadow:0 12px 28px -16px rgba(47,155,143,.9)}
-  .dot{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#39d3bf;box-shadow:0 0 0 0 rgba(57,211,191,.7);animation:pulse 2s infinite}
-  @keyframes pulse{70%{box-shadow:0 0 0 8px rgba(57,211,191,0)}100%{box-shadow:0 0 0 0 rgba(57,211,191,0)}}
-  .langs{display:flex;gap:4px}
-  .langbtn{background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:10.5px;font-weight:700;padding:5px 8px;border-radius:7px;cursor:pointer;transition:.25s}
-  .langbtn:hover{color:#fff;border-color:var(--copperB)}
-  .langbtn.on{border-color:var(--copperB);color:var(--copperB);background:rgba(224,138,79,.12)}
+  .btn{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;padding:12px 22px;border-radius:999px;border:1px solid transparent;cursor:pointer;font-family:inherit;transition:background-color .2s}
+  .btn:hover{background:var(--accent-hover);text-decoration:none}
+  .btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+  .btn.ghost:hover{border-color:var(--accent);background:transparent}
+  .langs{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px}
+  .langbtn{background:transparent;border:0;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:600;padding:5px 10px;border-radius:999px;cursor:pointer}
+  .langbtn:hover{color:var(--text)}
+  .langbtn.on{background:var(--surface2);color:var(--text)}
+  .themebtn{display:grid;place-items:center;width:38px;height:38px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+  .themebtn:hover{border-color:var(--accent)}
+  .themebtn svg{width:18px;height:18px}
+  [data-theme=light] .themebtn .i-sun,[data-theme=dark] .themebtn .i-moon{display:none}
 
-  /* ---- hero ---- */
-  .hero{padding:0;overflow:hidden;position:relative;border-top:0}
-  .hero .glow{position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(900px 480px at 78% 8%,rgba(224,138,79,.20),transparent 62%),
-               radial-gradient(700px 420px at 6% 86%,rgba(47,155,143,.16),transparent 60%)}
-  .hero .mesh{position:absolute;inset:0;pointer-events:none;opacity:.28;
-    background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
-                     linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
-    background-size:64px 64px;
-    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000,transparent 75%);
-            mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000,transparent 75%)}
-  .hero .wrap{position:relative;display:grid;grid-template-columns:1.02fr .98fr;gap:60px;align-items:center;padding-top:74px;padding-bottom:92px}
-  .hero h1{font-size:clamp(34px,4.9vw,55px);font-weight:800;max-width:15ch;margin-bottom:20px}
+  .hero{padding:0;overflow:hidden;border-top:0}
+  .hero .glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(760px 420px at 82% 18%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 65%)}
+  .hero .mesh{display:none}
+  .hero .wrap{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(48px,6vw,96px);align-items:center;padding-top:clamp(56px,7vw,96px);padding-bottom:clamp(72px,8vw,120px)}
+  .hero h1{font-size:clamp(38px,5.4vw,66px);font-weight:820;letter-spacing:-.03em;line-height:1.02;max-width:14ch;margin-bottom:24px;font-variation-settings:"wdth" 118}
   .hero h1 .b{display:block}
-  .hero .sub{color:#cfdae8;font-size:17.5px;max-width:560px}
-  .trust{display:flex;flex-wrap:wrap;gap:8px 22px;margin:26px 0 30px;color:#b7c5d6;font-size:14px}
+  .hero h1 .gt{color:inherit}
+  .hero .sub{color:var(--muted);font-size:18.5px;max-width:54ch}
+  .trust{display:flex;flex-wrap:wrap;gap:8px 22px;margin:26px 0 32px;color:var(--muted);font-size:15px}
   .trust span{display:inline-flex;align-items:center;gap:7px}
   .trust svg{color:var(--teal);flex:0 0 auto}
   .cta{display:flex;flex-wrap:wrap;gap:12px}
 
-  /* ---- hero mock ---- */
   .mock{position:relative;padding:0 8px}
-  .mockmain{background:rgba(22,48,74,.75);border:1px solid var(--line);border-radius:20px;padding:9px;box-shadow:0 40px 80px -40px rgba(0,0,0,1);backdrop-filter:blur(6px)}
-  .mockmain .fr{position:relative;aspect-ratio:4/3;border-radius:13px;overflow:hidden;background:#0f1420}
+  .mockmain{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:8px;box-shadow:var(--shadow)}
+  .mockmain .fr{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:#0f1420}
   .mockmain img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .scan{position:absolute;left:0;right:0;height:2px;background:var(--copperB);box-shadow:0 0 20px 3px rgba(224,138,79,.9);animation:sweep 4s ease-in-out infinite}
+  .scan{position:absolute;left:0;right:0;height:2px;background:var(--accent);box-shadow:0 0 18px 3px rgba(253,107,3,.8);animation:sweep 4.5s ease-in-out infinite}
   @keyframes sweep{0%{top:5%}50%{top:93%}100%{top:5%}}
-  .mocklbl{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.9);background:rgba(0,0,0,.5);padding:4px 8px;border-radius:6px}
-  .mockhud{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:#0b1a2b;background:var(--signal);padding:4px 8px;border-radius:6px;font-weight:700}
-  .retc{position:absolute;width:16px;height:16px;border:2px solid rgba(224,138,79,.85);opacity:.9}
+  .mocklbl{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:11px;color:#fff;background:rgba(0,0,0,.55);padding:4px 8px;border-radius:6px}
+  .mockhud{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:11px;color:#061a2e;background:#e8a93a;padding:4px 8px;border-radius:6px;font-weight:700}
+  .retc{position:absolute;width:16px;height:16px;border:2px solid rgba(253,107,3,.9)}
   .retc.tl{top:14px;left:14px;border-right:0;border-bottom:0}
   .retc.tr{top:14px;right:14px;border-left:0;border-bottom:0}
   .retc.bl{bottom:14px;left:14px;border-right:0;border-top:0}
   .retc.br{bottom:14px;right:14px;border-left:0;border-top:0}
-  .mockdet{position:absolute;bottom:-36px;left:-14px;width:60%;max-width:262px;background:linear-gradient(160deg,#1a3category,#16304a);background:linear-gradient(160deg,#1b3a58,#16304a);border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:0 30px 60px -28px rgba(0,0,0,1);animation:floatA 7s ease-in-out infinite}
-  .mockdet .di{position:relative;aspect-ratio:5/4;border-radius:11px;overflow:hidden;margin-bottom:11px}
+  .mockdet{position:absolute;bottom:-36px;left:-14px;width:60%;max-width:262px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px;box-shadow:var(--shadow)}
+  .mockdet .di{position:relative;aspect-ratio:5/4;border-radius:9px;overflow:hidden;margin-bottom:10px}
   .mockdet .di img{width:100%;height:100%;object-fit:cover}
-  .mockdet .bx{position:absolute;left:25%;top:21%;width:45%;height:49%;border:2px solid var(--severe);border-radius:5px}
-  .mockdet .bxl{position:absolute;top:-16px;left:-2px;font-family:var(--mono);font-size:8px;font-weight:700;color:#fff;background:var(--severe);padding:2px 5px;border-radius:4px;white-space:nowrap}
-  .okp{position:absolute;bottom:7px;left:7px;display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:800;color:#fff;background:var(--teal);padding:3px 7px;border-radius:999px}
+  .mockdet .bx{position:absolute;left:25%;top:21%;width:45%;height:49%;border:2px solid #ef5a5f;border-radius:5px}
+  .mockdet .bxl{position:absolute;top:-17px;left:-2px;font-family:var(--mono);font-size:9px;font-weight:700;color:#fff;background:#d42f35;padding:2px 5px;border-radius:4px;white-space:nowrap}
+  .okp{position:absolute;bottom:7px;left:7px;display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:700;color:#fff;background:#147f73;padding:3px 8px;border-radius:999px}
   .dfoot{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .dfoot .tagm{margin:0;font-size:9px}
+  .dfoot .tagm{margin:0;font-family:var(--sans);font-size:12px;color:var(--muted)}
   .dfoot .vd{font-size:18px;font-weight:800}
-  .mockchip{position:absolute;top:-20px;right:-6px;display:inline-flex;align-items:center;gap:8px;background:linear-gradient(160deg,#1b3a58,#16304a);border:1px solid var(--line);border-radius:12px;padding:9px 13px;font-size:12px;font-weight:700;box-shadow:0 24px 48px -26px rgba(0,0,0,1);animation:floatB 8s ease-in-out infinite}
-  .mockchip svg{color:var(--copperB)}
-  @keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-  @keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+  .mockchip{position:absolute;top:-18px;right:-4px;display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 13px;font-size:13px;font-weight:600;box-shadow:var(--shadow)}
+  .mockchip svg{color:var(--accent-text)}
 
-  /* ---- image cards ---- */
-  .icard{display:flex;flex-direction:column;background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:transform .38s var(--ease),border-color .38s}
-  .icard:hover{transform:translateY(-6px);border-color:rgba(224,138,79,.6)}
-  .icard .ph{position:relative;height:154px;overflow:hidden}
-  .icard .ph img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
-  .icard:hover .ph img{transform:scale(1.08)}
-  .icard .ph:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(11,26,43,.92),rgba(11,26,43,.05) 62%)}
-  .icard .ph .n{position:absolute;left:14px;bottom:11px;z-index:2;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.12em;color:var(--copperB)}
+  .icard{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .icard .ph{position:relative;height:160px;overflow:hidden}
+  .icard .ph img{width:100%;height:100%;object-fit:cover}
+  .icard .ph .n{display:none}
   .icard .bd{padding:20px 22px 24px}
   .icard .bd h3{margin-bottom:8px}
-  .icard .bd p{color:var(--muted);font-size:14px;margin:0}
+  .icard .bd p{color:var(--muted);font-size:15px;margin:0}
 
-  /* ---- flow ---- */
-  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;position:relative}
-  .flow .f{background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:16px;padding:22px;position:relative;transition:transform .35s var(--ease),border-color .35s}
-  .flow .f:hover{transform:translateY(-4px);border-color:rgba(224,138,79,.55)}
-  .flow .num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:linear-gradient(140deg,var(--copperB),var(--copperD));color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;margin-bottom:13px;box-shadow:0 10px 20px -12px rgba(224,138,79,.9)}
-  .flow p{color:var(--muted);font-size:13.5px;margin:6px 0 0}
-  .flow .f:not(:last-child):after{content:"";position:absolute;top:38px;right:-11px;width:14px;height:2px;background:linear-gradient(90deg,var(--copperB),transparent);z-index:2}
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+  .flow .f{padding:24px;position:relative}
+  .flow .f+.f{border-left:1px solid var(--line)}
+  .flow .num{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:999px;border:1.5px solid var(--accent);color:var(--accent-text);font-size:13px;font-weight:700;margin-bottom:14px}
+  .flow p{color:var(--muted);font-size:14.5px;margin:6px 0 0}
 
-  /* ---- chain ---- */
-  .chain{display:grid;gap:14px}
-  .step{background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:15px;padding:20px 22px;display:flex;gap:18px;align-items:flex-start;transition:transform .35s var(--ease),border-color .35s}
-  .step:hover{transform:translateX(5px);border-color:rgba(224,138,79,.55)}
-  .step .n{flex:0 0 auto;width:34px;height:34px;border-radius:11px;background:linear-gradient(140deg,var(--copperB),var(--copperD));color:#fff;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:700}
-  .step p{color:var(--muted);font-size:14.5px;margin:6px 0 0}
-  .out{background:linear-gradient(100deg,var(--copperD),var(--copper));border:0;border-radius:15px;padding:18px 22px;font-weight:700;box-shadow:0 22px 44px -26px rgba(224,138,79,.9)}
+  .chain{display:grid;gap:12px}
+  .step{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:flex;gap:18px;align-items:flex-start}
+  .step .n{flex:0 0 auto;width:32px;height:32px;border-radius:999px;border:1.5px solid var(--accent);color:var(--accent-text);display:grid;place-items:center;font-size:13px;font-weight:700}
+  .step p{color:var(--muted);font-size:15px;margin:6px 0 0}
+  .out{background:var(--accent);color:var(--on-accent);border-radius:14px;padding:18px 22px;font-weight:700}
 
-  .shot{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
-  .shot img{transition:transform .8s var(--ease)}
-  .shot:hover img{transform:scale(1.035)}
-  .shot .sl{position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;background:rgba(0,0,0,.55);color:#fff;padding:5px 10px;border-radius:7px}
-
-  .quote{background:rgba(255,255,255,.04);border-left:3px solid var(--copperB);border-radius:0 14px 14px 0;padding:20px 24px;font-size:17px;font-style:italic;color:#fff;margin-top:24px}
+  .shot{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .shot .sl{position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:11px;background:rgba(0,0,0,.6);color:#fff;padding:5px 10px;border-radius:7px}
+  .note{color:var(--faint);font-size:14px;margin-top:14px}
+  .quote{border-left:3px solid var(--accent);padding:6px 0 6px 22px;font-size:clamp(19px,2vw,23px);font-weight:600;line-height:1.4;color:var(--text);margin-top:36px;max-width:40ch;font-variation-settings:"wdth" 106}
 
   .pills{display:flex;flex-wrap:wrap;gap:10px}
-  .pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:10px 18px;font-size:14px;font-weight:600;color:#fff;transition:.3s var(--ease)}
-  .pill:hover{border-color:var(--copperB);color:var(--copperB);transform:translateY(-2px)}
+  .pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 17px;font-size:15px;font-weight:500;color:var(--text)}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .metrics>div{border-top:2px solid var(--accent);padding-top:18px}
+  .metrics .v{font-size:clamp(40px,5vw,60px);font-weight:820;line-height:1;letter-spacing:-.03em;font-variation-settings:"wdth" 118}
+  .metrics .l{color:var(--muted);font-size:15px;margin-top:10px}
 
-  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
-  .metrics .v{font-size:clamp(36px,4.6vw,54px);font-weight:800;line-height:1}
-  .metrics .l{color:var(--muted);font-size:13.5px;margin-top:10px}
-
-  /* ---- dark band ---- */
-  .band{background:linear-gradient(120deg,#08131f 0%,#0f2438 55%,#123049 100%);position:relative;overflow:hidden}
-  .band:before{content:"";position:absolute;inset:0;background:radial-gradient(600px 320px at 88% 12%,rgba(224,138,79,.16),transparent 62%)}
+  .band{background:var(--bg2)}
   .band .wrap{position:relative}
 
-  /* ---- plans ---- */
-  .plan{background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:18px;padding:28px;transition:transform .38s var(--ease),border-color .38s}
-  .plan:hover{transform:translateY(-6px);border-color:rgba(224,138,79,.6)}
-  .plan.hl{background:linear-gradient(155deg,#a9572a,#8a4622);border-color:var(--copperB);box-shadow:0 34px 66px -34px rgba(224,138,79,.75)}
-  .plan .price{font-size:33px;font-weight:800;margin:10px 0 2px}
-  .plan .permo{font-size:13.5px;color:var(--muted2);margin-bottom:14px}
-  .plan.hl .permo{color:#e8cdb6}
-  .plan .cap{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--copperB);background:rgba(11,26,43,.55);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
-  .plan .cap.hl{color:#0b1a2b;background:var(--copperB);border-color:var(--copperB)}
-  .plan ul{list-style:none;padding:0;margin:18px 0 0}
-  .plan li{color:var(--muted);font-size:14px;padding:7px 0 7px 20px;position:relative}
-  .plan.hl li{color:#f7ece2}
-  .plan li:before{content:"";position:absolute;left:0;top:14px;width:9px;height:2px;background:var(--copperB);border-radius:2px}
-  .plan.hl li:before{background:#fff}
-  .badge{display:inline-block;background:#fff;color:#8a4622;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.08em;padding:4px 9px;border-radius:999px;margin-left:10px;vertical-align:middle}
-
-  .tbl{width:100%;border-collapse:collapse;font-size:14.5px}
-  .tbl th{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);text-align:left;padding:0 16px 12px;font-weight:700}
-  .tbl th.me{color:var(--copperB)}
-  .tbl td{padding:15px 16px;border-top:1px solid rgba(255,255,255,.07);color:var(--muted);vertical-align:top}
-  .tbl tr{transition:background .3s}
-  .tbl tbody tr:hover{background:rgba(255,255,255,.03)}
-  .tbl td:first-child{color:#fff;font-weight:700}
-  .tbl td.me{color:#fff;font-weight:600;background:rgba(154,80,38,.34)}
-  .tblwrap{overflow-x:auto;border-radius:16px}
-
-
-  /* ---- live demo ---- */
-  .press{display:grid;grid-template-columns:.9fr 1.1fr;background:linear-gradient(160deg,var(--card),#143049);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:transform .38s var(--ease),border-color .38s}
-  .press:hover{transform:translateY(-5px);border-color:rgba(224,138,79,.6)}
-  .press .pimg{position:relative;min-height:260px}
+  .press{display:grid;grid-template-columns:.9fr 1.1fr;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .press .pimg{position:relative;min-height:280px}
   .press .pimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .press .pbd{padding:30px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-  .press .src{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--copperB)}
-  .press h3{margin:0;font-size:22px;line-height:1.3}
-  .press .by{color:var(--muted2);font-size:13.5px;margin:0}
-  .press p.d{color:var(--muted);font-size:15px;margin:0 0 6px}
+  .press .pbd{padding:32px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+  .press .src{font-size:14px;font-weight:600;color:var(--accent-text)}
+  .press h3{margin:0;font-size:24px;line-height:1.25}
+  .press .by{color:var(--faint);font-size:14px;margin:0}
+  .press p.d{color:var(--muted);font-size:16px;margin:0 0 6px;max-width:60ch}
 
-  footer{padding:48px 0;border-top:1px solid rgba(255,255,255,.07);color:var(--muted2);font-size:13.5px}
-  .note{color:var(--muted2);font-size:12.5px;font-style:italic;margin-top:18px}
+  .backing .backgrid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+  .partners{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .partner{margin:0}
+  .plogo{height:112px;border-radius:14px;background:var(--plate);border:1px solid var(--line);display:grid;place-items:center;padding:18px}
+  .plogo img{max-height:76px;width:auto;object-fit:contain}
+  .plogo .wm{font-weight:800;font-size:24px;letter-spacing:.02em;color:#002645;font-variation-settings:"wdth" 115}
+  .partner figcaption{color:var(--muted);font-size:14px;margin-top:10px}
+
+  .nav{flex-wrap:wrap;height:auto;min-height:70px}
+  .navlinks{display:flex;gap:22px;align-items:center}
+  .nav a.link{padding:6px 0;border-bottom:2px solid transparent}
+  .nav a.link[aria-current=page]{color:var(--text);border-bottom-color:var(--accent)}
+  .view>section:first-child{border-top:0}
+  .view:not([hidden]){animation:viewin .35s ease both}
+  @keyframes viewin{from{opacity:0}to{opacity:1}}
+  .about{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+  .proj{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+  .proj .card{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+  .proj .card p{flex:1}
+  .proj .meta{font-size:14px;font-weight:600;color:var(--accent-text)}
+  .proj .card h3{margin:0}
+  .explore{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .xcard{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;color:var(--text);transition:border-color .2s}
+  .xcard:hover{border-color:var(--accent);text-decoration:none}
+  .xcard p{color:var(--muted);font-size:15px;margin:0}
+  .xcard .go{margin-top:auto;padding-top:10px;color:var(--accent-text);font-weight:600;font-size:14px}
+  #explorar{padding-top:0;border-top:0!important}
+  .backing{padding-top:0;border-top:0!important}
+  footer{padding:52px 0;border-top:1px solid var(--line);color:var(--faint);font-size:14.5px}
+  footer strong,#contacto strong{color:var(--text)}
 
   @media(max-width:1000px){
-    .hero .wrap{grid-template-columns:1fr;gap:76px;padding-bottom:70px}
+    .hero .wrap{grid-template-columns:1fr;gap:76px;padding-bottom:76px}
     .mock{margin-bottom:26px}
-    .press{grid-template-columns:1fr}
+    .press,.backing .backgrid{grid-template-columns:1fr}
   }
+  @media(max-width:1100px){.navlinks{gap:16px}.nav a.link{font-size:14px}}
   @media(max-width:980px){
-    .g4,.flow,.metrics{grid-template-columns:repeat(2,1fr)}
+    .navlinks{order:10;width:100%;overflow-x:auto;gap:20px;padding:0 0 4px;scrollbar-width:none}
+    .navlinks::-webkit-scrollbar{display:none}
+    .about,.proj{grid-template-columns:1fr}
+    .explore{grid-template-columns:repeat(2,1fr)}
+    .g4,.metrics{grid-template-columns:repeat(2,1fr)}
+    .flow{grid-template-columns:repeat(2,1fr)}
+    .flow .f:nth-child(3){border-left:0}
+    .flow .f:nth-child(n+3){border-top:1px solid var(--line)}
     .g3,.g2{grid-template-columns:1fr}
-    .nav a.link{display:none}
-    .flow .f:after{display:none}
-    section{padding:58px 0}
+    section{padding:64px 0}
   }
-  @media(max-width:560px){
-    .metrics{grid-template-columns:repeat(2,1fr)}
-    .g4{grid-template-columns:1fr}
+  @media(max-width:620px){
+    .nav{gap:10px}
+    .nav>.btn{display:none}
+    .logo .brand{height:44px}
+    .langbtn{padding:5px 7px}
+    .g4,.flow{grid-template-columns:1fr}
+    .flow .f+.f{border-left:0;border-top:1px solid var(--line)}
     .mockdet{width:66%;left:-6px}
-    .mockchip{font-size:11px;right:0}
+    .mockchip{font-size:12px;right:0}
+    .partners{grid-template-columns:1fr 1fr}
   }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="logo-on-light" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 -1.004 0 1.004  0 0 -0.2743 0 0.4233  0 0 0.2622 0 0.0089  0 0 0 1 0"/></filter></svg>
 
 <header>
   <div class="wrap nav">
-    <div class="logo">
-      <span class="brand" role="img" aria-label="Vig-IA Tech"></span>
-    </div>
-    <a class="link" href="#soluciones" data-k="nav.sol">Soluciones</a>
-    <a class="link" href="#entregable" data-k="nav.deliv">Entregable</a>
-    <a class="link" href="#copiloto" data-k="nav.cop">Copiloto</a>
-    <a class="link" href="#prensa" data-k="nav.press">Prensa</a>
+    <a class="logo" href="#inicio" aria-label="Vig-IA Tech"><span class="brand"></span></a>
+    <nav class="navlinks" aria-label="Main">
+      <a class="link" href="#solucion" data-view-link data-k="nav.sol">Soluciones</a>
+      <a class="link" href="#entregable" data-view-link data-k="nav.deliv">Entregable</a>
+      <a class="link" href="#nosotros" data-view-link data-k="nav.about">Quiénes somos</a>
+      <a class="link" href="#proyectos" data-view-link data-k="nav.proj">Proyectos</a>
+      <a class="link" href="#noticias" data-view-link data-k="nav.news">Noticias</a>
+      <a class="link" href="#contacto" data-view-link data-k="nav.contact">Contacto</a>
+    </nav>
     <span class="spacer"></span>
     <div class="langs">
       <button class="langbtn on" data-lang="es">ES</button>
@@ -255,10 +259,13 @@
       <button class="langbtn" data-lang="zh">中文</button>
       <button class="langbtn" data-lang="fr">FR</button>
     </div>
+    <button class="themebtn" id="themebtn" type="button" aria-label="Switch light/dark theme" title="Light / dark"><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg></button>
     <a class="btn" href="mailto:ceo@vig-iatech.com?subject=Piloto%20VigIA" data-k="nav.cta">Solicitar piloto</a>
   </div>
 </header>
 
+<main id="main">
+<div class="view" data-view="inicio">
 <section class="hero">
   <div class="glow"></div>
   <div class="mesh"></div>
@@ -273,8 +280,7 @@
         <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-k="hero.c3">Informe validado el mismo día</span></span>
       </div>
       <div class="cta">
-        <a class="btn" href="mailto:ceo@vig-iatech.com?subject=Piloto%20VigIA" data-k="hero.cta1">Solicitar piloto</a>
-        <a class="btn ghost" href="#soluciones" data-k="hero.cta2">Conoce la plataforma</a>
+        <a class="btn" href="#solucion" data-k="hero.cta2">Conoce la plataforma</a>
       </div>
     </div>
 
@@ -307,6 +313,46 @@
   </div>
 </section>
 
+<section id="explorar">
+  <div class="wrap">
+    <div class="explore">
+      <a class="xcard" href="#solucion"><h3 data-k="nav.sol">Soluciones</h3><p data-k="x.sol">Cómo VigIA detecta y diagnostica defectos.</p><span class="go" data-k="x.go">Ver sección</span></a>
+      <a class="xcard" href="#entregable"><h3 data-k="nav.deliv">Entregable</h3><p data-k="x.deliv">El informe ISO y el gemelo 3D que recibes.</p><span class="go" data-k="x.go">Ver sección</span></a>
+      <a class="xcard" href="#nosotros"><h3 data-k="nav.about">Quiénes somos</h3><p data-k="x.about">La startup, el equipo y quienes nos respaldan.</p><span class="go" data-k="x.go">Ver sección</span></a>
+      <a class="xcard" href="#noticias"><h3 data-k="nav.news">Noticias</h3><p data-k="x.news">Vig-IA en Revista Sabes, noviembre 2026.</p><span class="go" data-k="x.go">Ver sección</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="impacto">
+  <div class="wrap">
+    <div class="rv">
+      <p class="kicker" data-k="imp.kicker">Impacto</p>
+      <h2 data-k="imp.title">El experto al mando, potenciado por IA</h2>
+    </div>
+    <div class="metrics rv" style="margin-top:40px">
+      <div><div class="v gt" data-count="4">4</div><div class="l" data-k="imp.1">familias de defecto que la IA propone</div></div>
+      <div><div class="v gt" data-count="10" data-suffix="×">10×</div><div class="l" data-k="imp.2">más superficie revisada por inspector</div></div>
+      <div><div class="v gt">3D</div><div class="l" data-k="imp.3">gemelo georreferenciado por activo</div></div>
+      <div><div class="v gt" data-count="100" data-suffix="%">100%</div><div class="l" data-k="imp.4">trazabilidad, con firma del inspector</div></div>
+    </div>
+    <div class="rv">
+      <h3 style="margin:50px 0 16px" data-k="ind.title">Construido para activos críticos</h3>
+      <div class="pills">
+        <span class="pill" data-k="ind.1">Minería</span>
+        <span class="pill" data-k="ind.2">Puertos y astilleros</span>
+        <span class="pill" data-k="ind.3">Energía</span>
+        <span class="pill" data-k="ind.4">Petróleo y gas</span>
+        <span class="pill" data-k="ind.5">Infraestructura</span>
+        <span class="pill" data-k="ind.6">Concesiones viales</span>
+        <span class="pill" data-k="ind.7">Agua y sanitarias</span>
+        <span class="pill" data-k="ind.8">Celulosa y salmonicultura</span>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+<div class="view" data-view="solucion">
 <section id="problema">
   <div class="wrap">
     <div class="rv">
@@ -319,7 +365,7 @@
       <div class="card"><div class="stat" style="color:var(--mod)" data-k="prob.2t">Días o semanas</div><p data-k="prob.2">de permisos, montaje y trabajo en altura, con la planta detenida.</p></div>
       <div class="card"><div class="stat" style="color:var(--signal)" data-k="prob.3t">Informe subjetivo</div><p data-k="prob.3">fotos sueltas, no comparables entre años ni entre inspectores.</p></div>
     </div>
-    <div class="card rv" style="margin-top:20px;background:linear-gradient(120deg,#112438,#0e1f30)">
+    <div class="card rv" style="margin-top:20px">
       <h3 data-k="prob.bt">La filtración detiene la línea. La corrosión perfora el estanque.</h3>
       <p style="margin-top:8px" data-k="prob.bd">Cuando el daño aparece, reparar cuesta entre 3 y 10 veces más. Ese sobrecosto no está en ninguna línea del presupuesto: llega como detención no planificada.</p>
     </div>
@@ -362,6 +408,24 @@
   </div>
 </section>
 
+<section id="copiloto" class="band">
+  <div class="wrap">
+    <div class="rv">
+      <p class="kicker" data-k="cop.kicker">Cómo trabaja con tu equipo</p>
+      <h2 data-k="cop.title">La IA propone. Tu inspector decide y firma.</h2>
+      <p class="lead" data-k="cop.lead">VigIA no reemplaza el criterio experto: lo multiplica. Entrega un borrador de diagnóstico en minutos; tu especialista lo revisa, corrige o descarta con un clic. Todo informe sale validado por una persona.</p>
+    </div>
+    <div class="flow rv" style="margin-top:34px">
+      <div class="f"><span class="num">1</span><h3 data-k="cop.1t">IA detecta</h3><p data-k="cop.1d">Borrador con cada hallazgo, su severidad y su nivel de confianza.</p></div>
+      <div class="f"><span class="num">2</span><h3 data-k="cop.2t">Experto valida</h3><p data-k="cop.2d">Confirmar · Corregir · Descartar, en segundos por hallazgo.</p></div>
+      <div class="f"><span class="num">3</span><h3 data-k="cop.3t">Informe firmado</h3><p data-k="cop.3d">Sale con el nombre y la firma del inspector responsable.</p></div>
+      <div class="f"><span class="num">4</span><h3 data-k="cop.4t">VigIA aprende</h3><p data-k="cop.4d">Cada validación entrena la IA en tus activos: mejora cada mes.</p></div>
+    </div>
+    <p class="quote rv" data-k="cop.quote">“La precisión validada en tus activos sube mes a mes — y queda demostrada en tu panel.”</p>
+  </div>
+</section>
+</div>
+<div class="view" data-view="entregable">
 <section id="entregable">
   <div class="wrap">
     <div class="rv">
@@ -408,52 +472,47 @@
     </div>
   </div>
 </section>
-
-<section id="copiloto" class="band">
+</div>
+<div class="view" data-view="nosotros">
+<section id="quienes">
   <div class="wrap">
-    <div class="rv">
-      <p class="kicker" data-k="cop.kicker">Cómo trabaja con tu equipo</p>
-      <h2 data-k="cop.title">La IA propone. Tu inspector decide y firma.</h2>
-      <p class="lead" data-k="cop.lead">VigIA no reemplaza el criterio experto: lo multiplica. Entrega un borrador de diagnóstico en minutos; tu especialista lo revisa, corrige o descarta con un clic. Todo informe sale validado por una persona.</p>
-    </div>
-    <div class="flow rv" style="margin-top:34px">
-      <div class="f"><span class="num">1</span><h3 data-k="cop.1t">IA detecta</h3><p data-k="cop.1d">Borrador con cada hallazgo, su severidad y su nivel de confianza.</p></div>
-      <div class="f"><span class="num">2</span><h3 data-k="cop.2t">Experto valida</h3><p data-k="cop.2d">Confirmar · Corregir · Descartar, en segundos por hallazgo.</p></div>
-      <div class="f"><span class="num">3</span><h3 data-k="cop.3t">Informe firmado</h3><p data-k="cop.3d">Sale con el nombre y la firma del inspector responsable.</p></div>
-      <div class="f"><span class="num">4</span><h3 data-k="cop.4t">VigIA aprende</h3><p data-k="cop.4d">Cada validación entrena la IA en tus activos: mejora cada mes.</p></div>
-    </div>
-    <p class="quote rv" data-k="cop.quote">“La precisión validada en tus activos sube mes a mes — y queda demostrada en tu panel.”</p>
-  </div>
-</section>
-
-<section id="impacto">
-  <div class="wrap">
-    <div class="rv">
-      <p class="kicker" data-k="imp.kicker">Impacto</p>
-      <h2 data-k="imp.title">El experto al mando, potenciado por IA</h2>
-    </div>
-    <div class="metrics rv" style="margin-top:40px">
-      <div><div class="v gt" data-count="4">4</div><div class="l" data-k="imp.1">familias de defecto que la IA propone</div></div>
-      <div><div class="v gt" data-count="10" data-suffix="×">10×</div><div class="l" data-k="imp.2">más superficie revisada por inspector</div></div>
-      <div><div class="v gt">3D</div><div class="l" data-k="imp.3">gemelo georreferenciado por activo</div></div>
-      <div><div class="v gt" data-count="100" data-suffix="%">100%</div><div class="l" data-k="imp.4">trazabilidad, con firma del inspector</div></div>
-    </div>
-    <div class="rv">
-      <h3 style="margin:50px 0 16px" data-k="ind.title">Construido para activos críticos</h3>
-      <div class="pills">
-        <span class="pill" data-k="ind.1">Minería</span>
-        <span class="pill" data-k="ind.2">Puertos y astilleros</span>
-        <span class="pill" data-k="ind.3">Energía</span>
-        <span class="pill" data-k="ind.4">Petróleo y gas</span>
-        <span class="pill" data-k="ind.5">Infraestructura</span>
-        <span class="pill" data-k="ind.6">Concesiones viales</span>
-        <span class="pill" data-k="ind.7">Agua y sanitarias</span>
-        <span class="pill" data-k="ind.8">Celulosa y salmonicultura</span>
-      </div>
+    <h2 data-k="about.title">Quiénes somos</h2>
+    <p class="lead" data-k="about.lead">Vig-IA Tech es una startup de la Región del Biobío que desarrolla inteligencia artificial para inspeccionar corrosión, recubrimientos y grietas en activos industriales. Nació de una tesis doctoral en la Universidad de Concepción y trabaja junto a la empresa DITNOVA.</p>
+    <div class="about">
+      <div class="card"><h3 data-k="about.1t">Nuestra misión</h3><p data-k="about.1d">Que cada inspector revise más superficie, con menos riesgo y con criterios comparables en el tiempo. La IA propone; el experto decide y firma.</p></div>
+      <div class="card"><h3 data-k="about.2t">Equipo</h3><p><strong>Julio Espinoza Llanos</strong><br><span data-k="about.2d">CEO y fundador. Autor de la tesis doctoral de la Universidad de Concepción que dio origen a Vig-IA.</span></p></div>
+      <div class="card"><h3 data-k="about.3t">Dónde trabajamos</h3><p data-k="about.3d">Desde el Biobío, Chile, para minería, puertos y astilleros, energía e infraestructura.</p></div>
     </div>
   </div>
 </section>
 
+<section id="respaldo" class="backing">
+  <div class="wrap backgrid">
+    <div>
+      <h2 data-k="back.title">Desarrollado con el respaldo de ANID y DITNOVA</h2>
+      <p class="lead" data-k="back.d">Vig-IA nace de una tesis doctoral de la Universidad de Concepción, financiada por ANID a través del concurso Tesis de Doctorado en el Sector Productivo 2024 (proyecto 88240004) y desarrollada junto a DITNOVA, empresa asociada a la startup.</p>
+    </div>
+    <div class="partners">
+      <figure class="partner"><div class="plogo" role="img" aria-label="ANID"><span class="wm">ANID</span></div><figcaption data-k="back.anid">Financiamiento del proyecto</figcaption></figure>
+      <figure class="partner"><div class="plogo" role="img" aria-label="DITNOVA"><img src="data:image/png;base64,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" alt="DITNOVA" width="273" height="90"></div><figcaption data-k="back.dit">Empresa asociada</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+<div class="view" data-view="proyectos">
+<section id="proyectos-s">
+  <div class="wrap">
+    <h2 data-k="proj.title">Proyectos</h2>
+    <p class="lead" data-k="proj.lead">La tecnología de Vig-IA se desarrolla con investigación aplicada y se valida en activos reales.</p>
+    <div class="proj">
+      <div class="card"><span class="meta" data-k="proj.1m">ANID, convocatoria 2024</span><h3 data-k="proj.1t">Tesis de Doctorado en el Sector Productivo (proyecto 88240004)</h3><p data-k="proj.1d">Proyecto financiado por ANID que dio origen a Vig-IA: investigación doctoral de la Universidad de Concepción desarrollada junto a DITNOVA para llevar la inspección de corrosión con IA a la industria.</p></div>
+      <div class="card"><span class="meta" data-k="proj.2m">Validación en terreno</span><h3 data-k="proj.2t">Buques, estructuras de acero y puentes</h3><p data-k="proj.2d">La tecnología se ha probado en cascos de buques, estructuras de acero y puentes. Según Revista Sabes, uno de sus algoritmos reduce cerca de un 10% el error frente al método estándar.</p></div>
+      <div class="card"><span class="meta" data-k="proj.3m">Abierto</span><h3 data-k="proj.3t">Pilotos con empresas</h3><p data-k="proj.3d">Buscamos activos piloto en minería, puertos, energía e infraestructura: un activo real, un informe validado y resultados medibles.</p></div>
+    </div>
+  </div>
+</section>
+</div>
+<div class="view" data-view="noticias">
 <section id="prensa">
   <div class="wrap">
     <div class="rv">
@@ -472,21 +531,23 @@
     </article>
   </div>
 </section>
-
+</div>
+<div class="view" data-view="contacto">
 <section id="contacto" class="band">
   <div class="wrap rv">
     <p class="kicker" data-k="ct.kicker">Siguiente paso</p>
     <h2 data-k="ct.title">15 minutos. Un resultado real sobre una planta como la tuya.</h2>
     <p class="lead" data-k="ct.lead">Te mostramos el gemelo 3D y el informe completo de una inspección real — y definimos juntos cuál sería tu activo piloto.</p>
     <div class="cta" style="margin-top:28px">
-      <a class="btn" href="mailto:ceo@vig-iatech.com?subject=Piloto%20VigIA" data-k="ct.btn">Solicitar piloto</a>
-      <a class="btn ghost" href="mailto:ceo@vig-iatech.com?subject=Demo%20VigIA" data-k="ct.btn2">Agendar una demo</a>
+      <a class="btn" href="mailto:ceo@vig-iatech.com?subject=Demo%20VigIA" data-k="ct.btn2">Agendar una demo</a>
     </div>
     <p style="margin-top:22px;color:var(--muted);font-size:15px">
-      <strong style="color:#fff">Julio Espinoza Llanos</strong> · CEO · <a href="mailto:ceo@vig-iatech.com">ceo@vig-iatech.com</a>
+      <strong>Julio Espinoza Llanos</strong> · CEO · <a href="mailto:ceo@vig-iatech.com">ceo@vig-iatech.com</a>
     </p>
   </div>
 </section>
+</div>
+</main>
 
 <footer>
   <div class="wrap">
@@ -494,13 +555,16 @@
       <span class="brand" role="img" aria-label="Vig-IA Tech"></span>
     </div>
     <p style="margin:0 0 6px" data-k="ft.tag">Copiloto de inspección estructural con gemelo digital 3D. La IA propone, tu experto decide. Chile → Latinoamérica.</p>
-    <p style="margin:0 0 6px"><strong style="color:#fff">Julio Espinoza Llanos</strong> · CEO · <a href="mailto:ceo@vig-iatech.com">ceo@vig-iatech.com</a></p>
+    <p style="margin:0 0 6px"><strong>Julio Espinoza Llanos</strong> · CEO · <a href="mailto:ceo@vig-iatech.com">ceo@vig-iatech.com</a></p>
   </div>
 </footer>
 
 <script>
 const DICT = {
 en:{
+"x.sol":"How VigIA detects and diagnoses defects.","x.deliv":"The ISO report and 3D twin you receive.","x.about":"The startup, the team and our backers.","x.news":"Vig-IA in Sabes magazine, November 2026.","x.go":"Open section",
+"nav.about":"About us","nav.proj":"Projects","nav.news":"News","nav.contact":"Contact","about.title":"About us","about.lead":"Vig-IA Tech is a startup from Chile's Biobío Region that builds artificial intelligence to inspect corrosion, coatings and cracks on industrial assets. It grew out of a doctoral thesis at the University of Concepción and works together with the company DITNOVA.","about.1t":"Our mission","about.1d":"Help every inspector cover more surface, with less risk and with criteria that stay comparable over time. The AI proposes; the expert decides and signs.","about.2t":"Team","about.2d":"CEO and founder. Author of the University of Concepción doctoral thesis that gave rise to Vig-IA.","about.3t":"Where we work","about.3d":"From Biobío, Chile, for mining, ports and shipyards, energy and infrastructure.","proj.title":"Projects","proj.lead":"Vig-IA's technology is built on applied research and validated on real assets.","proj.1m":"ANID, 2024 call","proj.1t":"Doctoral Thesis in the Productive Sector (project 88240004)","proj.1d":"ANID-funded project that gave rise to Vig-IA: doctoral research at the University of Concepción carried out with DITNOVA to bring AI corrosion inspection to industry.","proj.2m":"Field validation","proj.2t":"Ships, steel structures and bridges","proj.2d":"The technology has been tested on ship hulls, steel structures and bridges. According to Sabes magazine, one of its algorithms cuts error by about 10% compared with the standard method.","proj.3m":"Open","proj.3t":"Pilots with companies","proj.3d":"We are looking for pilot assets in mining, ports, energy and infrastructure: one real asset, a validated report and measurable results.",
+"back.title":"Backed by ANID and DITNOVA","back.d":"Vig-IA grew out of a doctoral thesis at the University of Concepción, funded by ANID through the 2024 Doctoral Thesis in the Productive Sector program (project 88240004) and developed together with DITNOVA, the startup's partner company.","back.anid":"Project funding","back.dit":"Partner company",
 "meta.title":"VigIA — Structural inspection with artificial intelligence",
 "nav.press":"Press","hero.cta2":"Explore the platform","press.kicker":"In the media","press.title":"VigIA in the press","press.src":"Sabes magazine · Nov 9, 2026","press.by":"By Ariela Ramírez","press.d":"Sabes tells how VigIA grew out of a doctoral thesis at the University of Concepción and how it uses drone or phone images to detect and classify corrosion, paint damage and cracks in mining, ports, energy and infrastructure, supporting inspectors in their work.","press.btn":"Read the article","ct.btn":"Request a pilot","ct.btn2":"Book a demo",
 "mock.overlay":"AI draft \u00b7 conf 0.91","mock.valid":"Validated","mock.diag":"Diagnosis (draft)","mock.verdict":"Moderate","mock.chip":"Placed on the 3D twin",
@@ -561,6 +625,9 @@ en:{
 "ft.tag":"Structural-inspection copilot with a 3D digital twin. The AI proposes, your expert decides. Chile → Latin America.",
 },
 zh:{
+"x.sol":"VigIA 如何检测和诊断缺陷。","x.deliv":"您将获得的 ISO 报告和三维孪生。","x.about":"初创公司、团队与支持方。","x.news":"Sabes 杂志报道，2026 年 11 月。","x.go":"查看",
+"nav.about":"关于我们","nav.proj":"项目","nav.news":"新闻","nav.contact":"联系","about.title":"关于我们","about.lead":"Vig-IA Tech 是一家来自智利比奥比奥大区的初创公司，开发用于检测工业资产腐蚀、涂层和裂缝的人工智能。公司源自康塞普西翁大学的一篇博士论文，并与 DITNOVA 公司合作。","about.1t":"我们的使命","about.1d":"让每位检测员以更低的风险覆盖更大的面积，并采用可长期比较的标准。AI 提出建议，专家做出决定并签署。","about.2t":"团队","about.2d":"首席执行官兼创始人。康塞普西翁大学博士论文作者，Vig-IA 由此诞生。","about.3t":"服务区域","about.3d":"立足智利比奥比奥，服务采矿、港口与船厂、能源和基础设施。","proj.title":"项目","proj.lead":"Vig-IA 的技术以应用研究为基础，并在真实资产上验证。","proj.1m":"ANID，2024 年度","proj.1t":"生产部门博士论文（项目编号 88240004）","proj.1d":"由 ANID 资助、催生 Vig-IA 的项目：康塞普西翁大学与 DITNOVA 合作开展的博士研究，旨在将 AI 腐蚀检测引入工业。","proj.2m":"现场验证","proj.2t":"船舶、钢结构与桥梁","proj.2d":"该技术已在船体、钢结构和桥梁上进行测试。据 Sabes 杂志报道，其中一种算法相比标准方法将误差降低约 10%。","proj.3m":"开放中","proj.3t":"企业试点","proj.3d":"我们正在采矿、港口、能源和基础设施领域寻找试点资产：一个真实资产、一份经验证的报告和可衡量的结果。",
+"back.title":"由 ANID 与 DITNOVA 支持","back.d":"Vig-IA 源自康塞普西翁大学的一项博士论文，由 ANID 通过 2024 年“生产部门博士论文”项目（项目编号 88240004）资助，并与初创公司的合作企业 DITNOVA 共同开发。","back.anid":"项目资助方","back.dit":"合作企业",
 "meta.title":"VigIA — 人工智能结构检测",
 "nav.press":"媒体报道","hero.cta2":"了解平台","press.kicker":"媒体报道","press.title":"媒体上的 VigIA","press.src":"Sabes 杂志 · 2026年11月9日","press.by":"作者：Ariela Ramírez","press.d":"Sabes 介绍了 VigIA 如何源自康塞普西翁大学的一篇博士论文，以及它如何利用无人机或手机图像，在采矿、港口、能源和基础设施领域检测并分级腐蚀、涂层损伤和裂缝，为检测人员提供支持。","press.btn":"阅读文章","ct.btn":"申请试点","ct.btn2":"预约演示",
 "mock.overlay":"AI \u8349\u7a3f \u00b7 \u7f6e\u4fe1\u5ea6 0.91","mock.valid":"\u5df2\u786e\u8ba4","mock.diag":"\u8bca\u65ad\uff08\u8349\u7a3f\uff09","mock.verdict":"\u4e2d\u5ea6","mock.chip":"\u5df2\u5b9a\u4f4d\u5230\u4e09\u7ef4\u5b6a\u751f",
@@ -621,6 +688,9 @@ zh:{
 "ft.tag":"配三维数字孪生的结构检测副驾驶。AI 提出建议，专家做决定。智利 → 拉丁美洲。",
 },
 fr:{
+"x.sol":"Comment VigIA détecte et diagnostique les défauts.","x.deliv":"Le rapport ISO et le jumeau 3D que vous recevez.","x.about":"La startup, l'équipe et nos soutiens.","x.news":"Vig-IA dans le magazine Sabes, novembre 2026.","x.go":"Voir la section",
+"nav.about":"Qui sommes-nous","nav.proj":"Projets","nav.news":"Actualités","nav.contact":"Contact","about.title":"Qui sommes-nous","about.lead":"Vig-IA Tech est une startup de la région du Biobío, au Chili, qui développe une intelligence artificielle pour inspecter la corrosion, les revêtements et les fissures des actifs industriels. Elle est née d'une thèse de doctorat à l'Université de Concepción et travaille avec l'entreprise DITNOVA.","about.1t":"Notre mission","about.1d":"Permettre à chaque inspecteur de couvrir plus de surface, avec moins de risque et des critères comparables dans le temps. L'IA propose ; l'expert décide et signe.","about.2t":"Équipe","about.2d":"CEO et fondateur. Auteur de la thèse de doctorat de l'Université de Concepción à l'origine de Vig-IA.","about.3t":"Où nous travaillons","about.3d":"Depuis le Biobío, au Chili, pour les mines, les ports et chantiers navals, l'énergie et les infrastructures.","proj.title":"Projets","proj.lead":"La technologie de Vig-IA repose sur la recherche appliquée et se valide sur des actifs réels.","proj.1m":"ANID, appel 2024","proj.1t":"Thèse de doctorat dans le secteur productif (projet 88240004)","proj.1d":"Projet financé par l'ANID à l'origine de Vig-IA : recherche doctorale de l'Université de Concepción menée avec DITNOVA pour apporter l'inspection de la corrosion par IA à l'industrie.","proj.2m":"Validation sur le terrain","proj.2t":"Navires, structures en acier et ponts","proj.2d":"La technologie a été testée sur des coques de navires, des structures en acier et des ponts. Selon le magazine Sabes, l'un de ses algorithmes réduit l'erreur d'environ 10 % par rapport à la méthode standard.","proj.3m":"Ouvert","proj.3t":"Pilotes avec des entreprises","proj.3d":"Nous recherchons des actifs pilotes dans les mines, les ports, l'énergie et les infrastructures : un actif réel, un rapport validé et des résultats mesurables.",
+"back.title":"Avec le soutien de l'ANID et de DITNOVA","back.d":"Vig-IA est née d'une thèse de doctorat à l'Université de Concepción, financée par l'ANID dans le cadre du concours Thèse de doctorat dans le secteur productif 2024 (projet 88240004) et développée avec DITNOVA, entreprise partenaire de la startup.","back.anid":"Financement du projet","back.dit":"Entreprise partenaire",
 "meta.title":"VigIA — Inspection structurelle par intelligence artificielle",
 "nav.press":"Presse","hero.cta2":"Découvrir la plateforme","press.kicker":"Dans les médias","press.title":"VigIA dans la presse","press.src":"Magazine Sabes · 9 nov. 2026","press.by":"Par Ariela Ramírez","press.d":"Sabes raconte comment VigIA est née d'une thèse de doctorat à l'Université de Concepción et comment elle utilise des images de drone ou de téléphone pour détecter et classer la corrosion, les dégâts de peinture et les fissures dans les mines, les ports, l'énergie et les infrastructures, en appui aux inspecteurs.","press.btn":"Lire l'article","ct.btn":"Demander un pilote","ct.btn2":"Réserver une démo",
 "mock.overlay":"Brouillon IA \u00b7 conf 0.91","mock.valid":"Valid\u00e9","mock.diag":"Diagnostic (brouillon)","mock.verdict":"Mod\u00e9r\u00e9","mock.chip":"Plac\u00e9 sur le jumeau 3D",
@@ -711,6 +781,37 @@ fr:{
   try { saved = localStorage.getItem("vigia-lang"); } catch (e) {}
   apply(saved || "en");
 
+
+  /* ---------- views ---------- */
+  const views = Array.prototype.slice.call(document.querySelectorAll(".view"));
+  function route(){
+    const h = decodeURIComponent(location.hash.slice(1)) || "inicio";
+    let v = views.find(function(x){ return x.getAttribute("data-view") === h; });
+    let target = null;
+    if (!v) { const el = document.getElementById(h); if (el && el.closest(".view")) { v = el.closest(".view"); target = el; } }
+    if (!v) v = views[0];
+    views.forEach(function(x){ x.hidden = x !== v; });
+    document.querySelectorAll("[data-view-link]").forEach(function(a){
+      if (a.getAttribute("href") === "#" + v.getAttribute("data-view")) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    if (target) target.scrollIntoView({block: "start"}); else window.scrollTo({top: 0, behavior: "instant"});
+  }
+  window.addEventListener("hashchange", route);
+  route();
+
+  /* ---------- theme ---------- */
+  const tb = document.getElementById("themebtn");
+  function setTheme(t){
+    document.documentElement.setAttribute("data-theme", t);
+    const m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", t === "light" ? "#f4f7fa" : "#061a2e");
+  }
+  setTheme(document.documentElement.getAttribute("data-theme") || "dark");
+  if (tb) tb.addEventListener("click", function(){
+    const t = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+    setTheme(t);
+    try { localStorage.setItem("vigia-theme", t); } catch (e) {}
+  });
 
   /* ---------- scroll reveal ---------- */
   const rv = Array.prototype.slice.call(document.querySelectorAll(".rv"));
