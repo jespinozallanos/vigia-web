@@ -237,16 +237,16 @@
   .jv{flex-direction:column;align-items:center;justify-content:center;gap:4px;height:auto;padding-left:16px;margin-left:-4px}
   .jvlbl{order:2;font-size:10.5px;font-weight:600;letter-spacing:.02em}
   .jv .lg{height:24px}
-  .navlinks{margin:0 auto;gap:2px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
-  .nav a.link{padding:7px 15px;border:0;border-radius:999px;font-size:14.5px;font-weight:500;color:var(--muted);transition:background-color .2s,color .2s}
-  .nav a.link:hover{color:var(--text);background:var(--surface2)}
-  .nav a.link[aria-current=page]{background:var(--text);color:var(--bg)}
+  .navlinks{margin:0 auto;gap:24px}
+  .nav a.link{padding:6px 0;border-bottom:2px solid transparent;font-size:15px;font-weight:500;color:var(--muted);transition:color .2s}
+  .nav a.link:hover{color:var(--text)}
+  .nav a.link[aria-current=page]{color:var(--text);border-bottom-color:var(--accent)}
   .nav .langsel{margin-left:0}
   /* ---- hero v2: full-bleed backdrop ---- */
   .hero{background:linear-gradient(90deg,var(--bg) 0%,var(--bg) 34%,color-mix(in srgb,var(--bg) 70%,transparent) 58%,color-mix(in srgb,var(--bg) 35%,transparent) 100%),url(img/warehouse-aerial.jpg) right center/cover no-repeat}
   .hero .glow{display:none}
   @media(max-width:1280px){
-    header .navlinks{order:10;width:100%;margin:0 0 2px;gap:2px;padding:4px;justify-content:flex-start;overflow-x:auto;scrollbar-width:none}
+    header .navlinks{order:10;width:100%;margin:0;gap:22px;padding:0 0 4px;justify-content:flex-start;overflow-x:auto;scrollbar-width:none}
     .nav .langsel{margin-left:auto}
   }
   @media(max-width:1000px){
@@ -257,7 +257,7 @@
     .logo .brand{height:42px}
     .jv{padding-left:10px;gap:3px}
     .jv .lg{height:18px}
-    .nav a.link{padding:6px 12px;font-size:14px}
+    .nav a.link{font-size:14px}
   }
   @media(max-width:1000px){
     .hero .wrap{grid-template-columns:1fr;gap:76px;padding-bottom:76px}
