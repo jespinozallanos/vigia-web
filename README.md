@@ -1,14 +1,12 @@
 # VigIA — sitio público
 
 Landing comercial de **VigIA**, inspección estructural con inteligencia artificial.
-Sitio estático: HTML, CSS y una función de JavaScript para el cambio de idioma (ES/EN).
+Sitio estático: HTML, CSS y una función de JavaScript para el cambio de idioma (EN por defecto, ES, 中文, FR).
 No requiere build ni backend.
 
 ```
-index.html                        Landing (ES / EN)
+index.html                        Landing (EN / ES / 中文 / FR)
 img/                              Imágenes del producto
-VigIA_Deck_Inversion_2026.pdf     Deck de inversión
-VigIA_Pitch_Comercial_2026.pdf    Pitch comercial
 ```
 
 Publicado con GitHub Pages desde la rama `main`, carpeta raíz.
